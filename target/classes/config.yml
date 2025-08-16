@@ -1,0 +1,20 @@
+# KartaPetsPlus Configuration File
+
+# The prefix that appears before all plugin messages.
+# Supports MiniMessage format: https://docs.advntr.dev/minimessage/format.html
+prefix: "<dark_gray>[<aqua>Pets</aqua>]</dark_gray> "
+
+# Default currency to use for the pet shop.
+# Can be 'Vault' or 'PlayerPoints'. The plugin will use the first one available if this is not found.
+default-currency: "Vault"
+
+# The maximum number of pets a player can own.
+# You can add more limits with kartapetsplus.limit.<amount> permission.
+default-pet-limit: 5
+
+# Pet Shop settings
+pet-shop:
+  # The title of the Pet Shop inventory menu.
+  menu-title: "Pet Shop"
+  # The number of rows in the shop menu (1-6).
+  menu-rows: 4

@@ -1,0 +1,31 @@
+name: KartaPetsPlus
+version: '${project.version}'
+main: com.karta.petsplus.KartaPetsPlus
+api-version: '1.21'
+authors: [Jules]
+description: ${project.description}
+softdepend: [Vault, PlayerPoints]
+commands:
+  pets:
+    description: Opens the pet management menu.
+    usage: /pets
+    permission: kartapetsplus.use
+  petshop:
+    description: Opens the pet shop menu.
+    usage: /petshop
+    permission: kartapetsplus.shop
+  petsreload:
+    description: Reloads the plugin configuration.
+    usage: /petsreload
+    permission: kartapetsplus.admin
+
+permissions:
+  kartapetsplus.use:
+    description: Allows players to use pets and the pet menu.
+    default: true
+  kartapetsplus.shop:
+    description: Allows players to use the pet shop.
+    default: true
+  kartapetsplus.admin:
+    description: Allows access to administrative commands.
+    default: op
