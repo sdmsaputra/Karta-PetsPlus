@@ -1,7 +1,6 @@
 package com.karta.petsplus.command;
 
 import com.karta.petsplus.KartaPetsPlus;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,8 +21,7 @@ public class PetShopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            String playerOnlyMessage = plugin.getConfigManager().getMessages().getString("player-only-command", "<red>This command can only be executed by a player.</red>");
-            sender.sendMessage(MiniMessage.miniMessage().deserialize(playerOnlyMessage));
+            plugin.getMessageManager().sendMessage(sender, "player-only-command", "<red>This command can only be executed by a player.</red>");
             return true;
         }
 

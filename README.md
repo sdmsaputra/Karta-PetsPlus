@@ -1,6 +1,16 @@
 # KartaPetsPlus
 
+**Version: 1.0.2-SNAPSHOT**
+
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
+
+## What's New in 1.0.2?
+
+- **Pet Shop GUI Overhaul**: The pet shop is now fully interactive!
+  - Items in the shop can no longer be moved or taken by players.
+  - Clicking a pet in the shop will now purchase it.
+- **Prefixed Messages**: All plugin messages now have a configurable prefix for better chat visibility.
+- **Bug Fixes & Performance Improvements**: General code cleanup and improvements.
 
 ## Features
 

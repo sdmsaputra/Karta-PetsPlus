@@ -41,8 +41,7 @@ public class PetMenuGui {
         List<Pet> playerPets = playerDataManager.getPets(player);
 
         if (playerPets.isEmpty()) {
-            String noPetsMessage = configManager.getMessages().getString("no-pets-owned", "<gray>You do not own any pets yet. Visit the <aqua>/petshop</aqua> to buy one!</gray>");
-            player.sendMessage(MiniMessage.miniMessage().deserialize(noPetsMessage));
+            plugin.getMessageManager().sendMessage(player, "no-pets-owned", "<gray>You do not own any pets yet. Visit the <aqua>/petshop</aqua> to buy one!</gray>");
             return;
         }
 
