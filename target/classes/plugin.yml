@@ -1,10 +1,10 @@
-name: KartaPetsPlus
-version: '1.0-SNAPSHOT'
+name: Karta PetsPlus
+version: '1.0.1-SNAPSHOT'
 main: com.karta.petsplus.KartaPetsPlus
 api-version: '1.21'
 authors: [Jules]
 description: A feature-rich pets plugin for PaperMC servers.
-softdepend: [Vault, PlayerPoints]
+softdepend: [Vault, PlayerPoints, PlaceholderAPI]
 commands:
   pets:
     description: Opens the pet management menu.

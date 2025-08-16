@@ -48,6 +48,12 @@ public final class KartaPetsPlus extends JavaPlugin {
         registerCommands();
         registerListeners();
 
+        // Register PlaceholderAPI expansion
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new com.karta.petsplus.placeholder.PlaceholderExpansion(this).register();
+            getLogger().info("PlaceholderAPI expansion has been registered.");
+        }
+
         getLogger().info("KartaPetsPlus has been enabled successfully!");
     }
 

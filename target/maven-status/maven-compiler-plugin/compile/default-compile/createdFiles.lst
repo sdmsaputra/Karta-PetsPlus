@@ -7,4 +7,5 @@ com/karta/petsplus/KartaPetsPlus.class
 com/karta/petsplus/manager/PlayerDataManager.class
 com/karta/petsplus/manager/EconomyManager.class
 com/karta/petsplus/data/Pet.class
+com/karta/petsplus/placeholder/PlaceholderExpansion.class
 com/karta/petsplus/data/Pet$PetStatus.class
