@@ -1,0 +1,22 @@
+# KartaPetsPlus - Messages File
+# All messages support MiniMessage format: https://docs.advntr.dev/minimessage/format.html
+
+no-permission: "<red>You do not have permission to use this command.</red>"
+reload-success: "<green>Configuration files reloaded successfully.</green>"
+player-only-command: "<red>This command can only be run by a player.</red>"
+
+pet-shop:
+  title: "<blue>Pet Shop</blue>"
+  buy-success: "<green>You have successfully purchased a <yellow>{pet_type}</yellow> pet!</green>"
+  buy-failure-money: "<red>You do not have enough money to buy this pet.</red>"
+  buy-failure-limit: "<red>You have reached your pet limit.</red>"
+
+pet-menu:
+  title: "<blue>Your Pets</blue>"
+  no-pets: "<gray>You do not own any pets yet. Visit the /petshop to buy one!</gray>"
+
+economy:
+  no-provider: "<red>No economy provider (Vault or PlayerPoints) found. The plugin will be disabled.</red>"
+  invalid-currency: "<red>Invalid currency '{currency}' set in config.yml. Disabling plugin.</red>"
+  using-vault: "<green>Using Vault for economy.</green>"
+  using-playerpoints: "<green>Using PlayerPoints for economy.</green>"
