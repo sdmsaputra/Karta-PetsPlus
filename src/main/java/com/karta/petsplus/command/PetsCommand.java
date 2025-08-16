@@ -1,6 +1,7 @@
 package com.karta.petsplus.command;
 
 import com.karta.petsplus.KartaPetsPlus;
+import com.karta.petsplus.ui.PetMenuGui;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

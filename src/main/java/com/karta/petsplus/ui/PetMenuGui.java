@@ -45,12 +45,28 @@ public class PetMenuGui {
             return;
         }
 
-        // TODO: Make title configurable
-        Component title = Component.text("My Pets");
-        // Calculate inventory size, max 54 slots (6 rows)
-        int size = Math.min(54, ((playerPets.size() - 1) / 9 + 1) * 9);
+        // Get GUI configuration from gui.yml
+        String title = plugin.getGuiManager().getGuiConfig().getString("pet-menu.title", "My Pets");
+        int size = plugin.getGuiManager().getGuiConfig().getInt("pet-menu.size", 54);
 
-        Inventory gui = Bukkit.createInventory(null, size, title);
+        Inventory gui = Bukkit.createInventory(null, size, MiniMessage.miniMessage().deserialize(title));
+
+        // Fill empty slots if enabled
+        if (plugin.getGuiManager().getGuiConfig().getBoolean("pet-menu.fill-item.enabled", false)) {
+            String materialName = plugin.getGuiManager().getGuiConfig().getString("pet-menu.fill-item.material", "GRAY_STAINED_GLASS_PANE");
+            Material fillMaterial = Material.getMaterial(materialName);
+            if (fillMaterial != null) {
+                ItemStack fillItem = new ItemStack(fillMaterial);
+                ItemMeta meta = fillItem.getItemMeta();
+                if (meta != null) {
+                    meta.displayName(Component.text(" "));
+                    fillItem.setItemMeta(meta);
+                }
+                for (int i = 0; i < size; i++) {
+                    gui.setItem(i, fillItem);
+                }
+            }
+        }
 
         for (Pet pet : playerPets) {
             String petType = pet.getPetType();

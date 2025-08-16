@@ -2,6 +2,8 @@
 # All messages support MiniMessage format.
 # A useful tool for creating messages: https://webui.advntr.dev/
 
+prefix: "<#00A3FF>KartaPetsPlus</#00A3FF> <dark_gray>»</dark_gray> "
+
 # General messages
 reload-success: "<green>KartaPetsPlus configuration has been reloaded successfully!</green>"
 no-permission: "<red>You do not have permission to use this command.</red>"

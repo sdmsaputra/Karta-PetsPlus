@@ -6,7 +6,9 @@ import com.karta.petsplus.command.PetsReloadCommand;
 import com.karta.petsplus.listener.PlayerListener;
 import com.karta.petsplus.manager.ConfigManager;
 import com.karta.petsplus.manager.EconomyManager;
+import com.karta.petsplus.manager.GuiManager;
 import com.karta.petsplus.manager.MessageManager;
+import com.karta.petsplus.manager.DatabaseManager;
 import com.karta.petsplus.manager.PlayerDataManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,6 +27,8 @@ public final class KartaPetsPlus extends JavaPlugin {
     private ConfigManager configManager;
     private PlayerDataManager playerDataManager;
     private MessageManager messageManager;
+    private GuiManager guiManager;
+    private DatabaseManager databaseManager;
 
     @Override
     public void onEnable() {
@@ -34,6 +38,12 @@ public final class KartaPetsPlus extends JavaPlugin {
         // Setup configuration files
         configManager = new ConfigManager(this);
         configManager.loadConfigs();
+
+        // Setup gui manager
+        guiManager = new GuiManager(this);
+
+        // Setup database manager
+        databaseManager = new DatabaseManager(this);
 
         // Setup message manager
         messageManager = new MessageManager(this);
@@ -68,6 +78,7 @@ public final class KartaPetsPlus extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             playerDataManager.savePlayerPets(player);
         }
+        databaseManager.close();
         getLogger().info("KartaPetsPlus has been disabled.");
     }
 
@@ -76,8 +87,11 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     private void registerCommands() {
         getCommand("pets").setExecutor(new PetsCommand(this));
+        getCommand("pets").setTabCompleter(new com.karta.petsplus.command.PetsCommandCompleter());
         getCommand("petshop").setExecutor(new PetShopCommand(this));
+        getCommand("petshop").setTabCompleter(new com.karta.petsplus.command.PetShopCommandCompleter());
         getCommand("petsreload").setExecutor(new PetsReloadCommand(this));
+        getCommand("petsreload").setTabCompleter(new com.karta.petsplus.command.PetsReloadCommandCompleter());
         getLogger().info("Commands have been registered.");
     }
 
@@ -87,6 +101,7 @@ public final class KartaPetsPlus extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new com.karta.petsplus.ui.PetShopGuiListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.karta.petsplus.ui.PetMenuGuiListener(this), this);
         getLogger().info("Listeners have been registered.");
     }
 
@@ -124,5 +139,28 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     public MessageManager getMessageManager() {
         return messageManager;
+    }
+
+    /**
+     * Gets the scheduler manager.
+     *
+     * @return The scheduler manager instance.
+     */
+    /**
+     * Gets the gui manager.
+     *
+     * @return The gui manager instance.
+     */
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
+
+    /**
+     * Gets the database manager.
+     *
+     * @return The database manager instance.
+     */
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
     }
 }
