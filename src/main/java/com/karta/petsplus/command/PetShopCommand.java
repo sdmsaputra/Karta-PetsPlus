@@ -29,12 +29,8 @@ public class PetShopCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // For now, just sends a placeholder message.
-        // In the future, this will open the pet shop GUI.
-        String petShopMessage = plugin.getConfigManager().getMessages().getString("pet-shop-opened", "<gray>Opening the Pet Shop...</gray>");
-        player.sendMessage(MiniMessage.miniMessage().deserialize(petShopMessage));
-
-        // TODO: Implement Pet Shop GUI
+        // Open the pet shop GUI
+        new com.karta.petsplus.ui.PetShopGui(plugin, player).open();
 
         return true;
     }

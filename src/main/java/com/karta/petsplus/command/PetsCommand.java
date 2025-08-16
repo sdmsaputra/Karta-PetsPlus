@@ -29,12 +29,8 @@ public class PetsCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        // For now, just sends a placeholder message.
-        // In the future, this will open the pet management GUI.
-        String petMenuMessage = plugin.getConfigManager().getMessages().getString("pet-menu-opened", "<gray>Opening your pet menu...</gray>");
-        player.sendMessage(MiniMessage.miniMessage().deserialize(petMenuMessage));
-
-        // TODO: Implement Pet Management GUI
+        // Open the pet management GUI
+        new com.karta.petsplus.ui.PetMenuGui(plugin, player).open();
 
         return true;
     }
