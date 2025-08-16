@@ -108,4 +108,18 @@ public class ConfigManager {
         }
         return pets;
     }
+
+    /**
+     * Saves the pets configuration to pets.yml.
+     */
+    public void savePets() {
+        if (pets == null || petsFile == null) {
+            return;
+        }
+        try {
+            pets.save(petsFile);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Could not save pets.yml: " + e.getMessage());
+        }
+    }
 }

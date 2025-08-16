@@ -64,16 +64,27 @@ public class PetShopGui {
             }
         }
 
-        ConfigurationSection petsSection = configManager.getPets().getConfigurationSection("pets");
-        if (petsSection == null) {
-            plugin.getLogger().warning("The 'pets' section is missing from pets.yml. The pet shop will be empty.");
+        ConfigurationSection itemsSection = plugin.getGuiManager().getGuiConfig().getConfigurationSection("pet-shop.items");
+        if (itemsSection == null) {
+            plugin.getLogger().warning("The 'pet-shop.items' section is missing from gui.yml. The pet shop will be empty.");
             player.openInventory(gui);
             return;
         }
 
-        for (String petId : petsSection.getKeys(false)) {
-            String path = "pets." + petId + ".";
-            String iconName = configManager.getPets().getString(path + "icon", "BARRIER").toUpperCase();
+        for (String petId : itemsSection.getKeys(false)) {
+            String petPath = "pets." + petId;
+            if (!configManager.getPets().contains(petPath)) {
+                plugin.getLogger().warning("Pet '" + petId + "' defined in gui.yml does not exist in pets.yml.");
+                continue;
+            }
+
+            int slot = itemsSection.getInt(petId + ".slot", -1);
+            if (slot < 0 || slot >= size) {
+                plugin.getLogger().warning("Invalid slot for pet '" + petId + "' in gui.yml. Slot: " + slot);
+                continue;
+            }
+
+            String iconName = configManager.getPets().getString(petPath + ".icon", "BARRIER").toUpperCase();
             Material iconMaterial = Material.getMaterial(iconName);
             if (iconMaterial == null) {
                 plugin.getLogger().warning("Invalid icon material '" + iconName + "' for pet '" + petId + "'. Using BARRIER.");
@@ -84,13 +95,13 @@ public class PetShopGui {
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null) {
-                String displayName = configManager.getPets().getString(path + "display-name", "<red>Unknown Pet</red>");
+                String displayName = configManager.getPets().getString(petPath + ".display-name", "<red>Unknown Pet</red>");
                 meta.displayName(MiniMessage.miniMessage().deserialize(displayName));
 
-                double price = configManager.getPets().getDouble(path + "price", 0.0);
+                double price = configManager.getPets().getDouble(petPath + ".price", 0.0);
                 String formattedPrice = economyManager.format(price);
 
-                List<String> loreStrings = configManager.getPets().getStringList(path + "lore");
+                List<String> loreStrings = configManager.getPets().getStringList(petPath + ".lore");
                 List<Component> lore = loreStrings.stream()
                         .map(line -> MiniMessage.miniMessage().deserialize(line.replace("{price}", formattedPrice)))
                         .collect(Collectors.toList());
@@ -106,7 +117,8 @@ public class PetShopGui {
 
                 item.setItemMeta(meta);
             }
-            gui.addItem(item);
+
+            gui.setItem(slot, item);
         }
         player.openInventory(gui);
     }

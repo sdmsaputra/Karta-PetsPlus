@@ -1,17 +1,15 @@
 # KartaPetsPlus
 
-**Version: 2.0.0**
+**Version: 2.1.0**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
 
-## What's New in 2.0.0?
+## What's New in 2.1.0?
 
-- **MySQL Storage**: Added support for MySQL storage to store player data.
-- **GUI Configuration**: A new `gui.yml` file allows you to configure all GUIs, including the pet shop and pet menu.
-- **Pet GUI System**: A new GUI for managing your pets.
-- **Command Suggestions**: Added tab completion for all commands.
-- **Hex Color Support**: All messages now support hex colors.
-- **Updated Prefix**: The default prefix has been changed to `KartaPetsPlus`.
+- **Pet Shop Item Slots**: The Pet Shop GUI items are no longer hard-coded. You can now define which pets appear and in which slot directly from the `gui.yml` file. This fixes a bug where items would not appear in the shop.
+- **Configurable Pet Menu Slots**: You can now define the specific slots that players' owned pets will appear in within the `/pets` menu via the `gui.yml` file.
+- **Add Pets via Command**: A new admin command, `/petshop add <entityType> <price>`, allows you to add new pets to the shop without manually editing the `pets.yml` file.
+- **Build Fixes**: Resolved a Maven warning related to the MySQL dependency.
 
 ## Features
 
@@ -28,6 +26,8 @@ KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to pro
     *   **Permission**: `kartapetsplus.use`
 *   **/petshop** - Opens the pet shop menu.
     *   **Permission**: `kartapetsplus.shop`
+*   **/petshop add <entityType> <price>** - Adds a new pet to the shop.
+    *   **Permission**: `kartapetsplus.admin`
 *   **/petsreload** - Reloads the plugin configuration.
     *   **Permission**: `kartapetsplus.admin`
 
@@ -53,6 +53,8 @@ The plugin's behavior can be customized through four main files located in the `
 - **`config.yml`**: Main configuration file. Used to set the storage type (YAML or MySQL), database credentials, economy provider, and default pet limits.
 - **`pets.yml`**: Defines all the pets available in the shop. You can set their name, icon, price, and lore here.
 - **`messages.yml`**: Customize all user-facing messages, such as command responses and notifications.
-- **`gui.yml`**: Customize the GUIs, including titles, sizes, and fill items.
+- **`gui.yml`**: Customize the GUIs, including titles, sizes, and fill items. You can also define the exact slots for items in the pet shop and pet menu.
+    - **`pet-shop.items`**: A list of pets to be displayed in the shop. Each entry is a pet ID from `pets.yml` and has a `slot` number.
+    - **`pet-menu.slots`**: A list of inventory slots where players' owned pets will be displayed.
 
 All configuration files and messages support the [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format for advanced text styling.

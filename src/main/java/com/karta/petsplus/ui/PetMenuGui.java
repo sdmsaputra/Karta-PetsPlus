@@ -68,40 +68,64 @@ public class PetMenuGui {
             }
         }
 
-        for (Pet pet : playerPets) {
-            String petType = pet.getPetType();
-            // Get icon from pets.yml, default to a barrier if not found
-            String iconMaterialName = configManager.getPets().getString("pets." + petType + ".icon", "BARRIER").toUpperCase();
-            Material iconMaterial = Material.getMaterial(iconMaterialName);
-            if (iconMaterial == null) {
-                iconMaterial = Material.BARRIER;
+        List<Integer> petSlots = plugin.getGuiManager().getGuiConfig().getIntegerList("pet-menu.slots");
+
+        // Iterate through player's pets and place them in the specified slots
+        for (int i = 0; i < playerPets.size(); i++) {
+            if (i >= petSlots.size()) {
+                plugin.getLogger().warning("Not enough slots defined in gui.yml for player " + player.getName() + "'s pets. Some pets will not be displayed.");
+                break;
             }
 
-            ItemStack petItem = new ItemStack(iconMaterial);
-            ItemMeta meta = petItem.getItemMeta();
+            Pet pet = playerPets.get(i);
+            int slot = petSlots.get(i);
 
-            if (meta != null) {
-                // Set the display name to the pet's custom name
-                meta.displayName(MiniMessage.miniMessage().deserialize(pet.getPetName()));
-
-                // Create the lore
-                List<Component> lore = new ArrayList<>();
-                // TODO: Make lore format configurable
-                String petTypeName = configManager.getPets().getString("pets." + petType + ".display-name", petType);
-                lore.add(MiniMessage.miniMessage().deserialize("<gray>Type: " + petTypeName));
-                lore.add(Component.text("")); // Spacer
-                lore.add(MiniMessage.miniMessage().deserialize("<gray>Status: <yellow>" + pet.getStatus().name() + "</yellow>"));
-                lore.add(Component.text("")); // Spacer
-                lore.add(MiniMessage.miniMessage().deserialize("<aqua>Left-click to summon/stow.</aqua>"));
-                lore.add(MiniMessage.miniMessage().deserialize("<aqua>Right-click to rename.</aqua>"));
-
-                meta.lore(lore);
-                petItem.setItemMeta(meta);
+            if (slot >= 0 && slot < size) {
+                gui.setItem(slot, createPetItem(pet));
+            } else {
+                plugin.getLogger().warning("Invalid slot " + slot + " defined in gui.yml for PetMenuGui.");
             }
-
-            gui.addItem(petItem);
         }
 
         player.openInventory(gui);
+    }
+
+    /**
+     * Creates an ItemStack representing a pet for the GUI.
+     * @param pet The pet to create an item for.
+     * @return The created ItemStack.
+     */
+    private ItemStack createPetItem(Pet pet) {
+        String petType = pet.getPetType();
+        // Get icon from pets.yml, default to a barrier if not found
+        String iconMaterialName = configManager.getPets().getString("pets." + petType + ".icon", "BARRIER").toUpperCase();
+        Material iconMaterial = Material.getMaterial(iconMaterialName);
+        if (iconMaterial == null) {
+            iconMaterial = Material.BARRIER;
+        }
+
+        ItemStack petItem = new ItemStack(iconMaterial);
+        ItemMeta meta = petItem.getItemMeta();
+
+        if (meta != null) {
+            // Set the display name to the pet's custom name
+            meta.displayName(MiniMessage.miniMessage().deserialize(pet.getPetName()));
+
+            // Create the lore
+            List<Component> lore = new ArrayList<>();
+            // TODO: Make lore format configurable
+            String petTypeName = configManager.getPets().getString("pets." + petType + ".display-name", petType);
+            lore.add(MiniMessage.miniMessage().deserialize("<gray>Type: " + petTypeName));
+            lore.add(Component.text("")); // Spacer
+            lore.add(MiniMessage.miniMessage().deserialize("<gray>Status: <yellow>" + pet.getStatus().name() + "</yellow>"));
+            lore.add(Component.text("")); // Spacer
+            lore.add(MiniMessage.miniMessage().deserialize("<aqua>Left-click to summon/stow.</aqua>"));
+            lore.add(MiniMessage.miniMessage().deserialize("<aqua>Right-click to rename.</aqua>"));
+
+            meta.lore(lore);
+            petItem.setItemMeta(meta);
+        }
+
+        return petItem;
     }
 }
