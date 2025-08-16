@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class YamlStorage implements Storage {
 
@@ -35,11 +36,14 @@ public class YamlStorage implements Storage {
         FileConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
         List<Pet> pets = new ArrayList<>();
         if (playerData.isConfigurationSection("pets")) {
-            for (String petId : playerData.getConfigurationSection("pets").getKeys(false)) {
-                String petType = playerData.getString("pets." + petId + ".type");
-                String petName = playerData.getString("pets." + petId + ".name");
-                String petStatus = playerData.getString("pets." + petId + ".status", "STOWED");
-                Pet pet = new Pet(player.getUniqueId(), petType, petName);
+            for (String petIdStr : playerData.getConfigurationSection("pets").getKeys(false)) {
+                UUID petId = UUID.fromString(petIdStr);
+                String path = "pets." + petIdStr;
+                String petType = playerData.getString(path + ".type");
+                String petName = playerData.getString(path + ".name");
+                String petStatus = playerData.getString(path + ".status", "STOWED");
+
+                Pet pet = new Pet(player.getUniqueId(), petType, petName, petId);
                 pet.setStatus(Pet.PetStatus.valueOf(petStatus));
                 pets.add(pet);
             }
@@ -65,9 +69,11 @@ public class YamlStorage implements Storage {
             return;
         }
 
-        for (int i = 0; i < pets.size(); i++) {
-            Pet pet = pets.get(i);
-            String path = "pets.pet" + i;
+        // Set pets to null to clear old data before saving
+        playerData.set("pets", null);
+
+        for (Pet pet : pets) {
+            String path = "pets." + pet.getPetId().toString();
             playerData.set(path + ".type", pet.getPetType());
             playerData.set(path + ".name", pet.getPetName());
             playerData.set(path + ".status", pet.getStatus().name());
@@ -86,7 +92,19 @@ public class YamlStorage implements Storage {
     }
 
     @Override
-    public void addPet(Player player, Pet pet) {
-        playerPetCache.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()).add(pet);
+    public void addPet(Player player, String petType) {
+        String displayName = plugin.getConfigManager().getPets().getString("pets." + petType + ".display-name", "My Pet");
+        Pet newPet = new Pet(player.getUniqueId(), petType, displayName);
+        playerPetCache.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()).add(newPet);
+    }
+
+    @Override
+    public Optional<Pet> getPet(Player player, UUID petId) {
+        return getPets(player).stream().filter(p -> p.getPetId().equals(petId)).findFirst();
+    }
+
+    @Override
+    public boolean hasPet(Player player, String petType) {
+        return getPets(player).stream().anyMatch(p -> p.getPetType().equalsIgnoreCase(petType));
     }
 }

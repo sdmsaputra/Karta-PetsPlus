@@ -1,7 +1,7 @@
 package com.karta.petsplus.command;
 
 import com.karta.petsplus.KartaPetsPlus;
-import com.karta.petsplus.ui.PetMenuGui;
+import com.karta.petsplus.ui.PetManagementGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class PetsCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         // Open the pet management GUI
-        new com.karta.petsplus.ui.PetMenuGui(plugin, player).open();
+        com.karta.petsplus.ui.PetManagementGUI.open(plugin, player, 0);
 
         return true;
     }

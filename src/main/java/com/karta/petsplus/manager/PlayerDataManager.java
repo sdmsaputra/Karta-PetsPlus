@@ -5,6 +5,8 @@ import com.karta.petsplus.data.Pet;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Manages the storage and retrieval of player-specific pet data.
@@ -51,10 +53,32 @@ public class PlayerDataManager {
     /**
      * Adds a new pet to a player's collection in the cache.
      *
-     * @param player The player who will own the pet.
-     * @param pet    The pet to add.
+     * @param player  The player who will own the pet.
+     * @param petType The type of pet to add.
      */
-    public void addPet(Player player, Pet pet) {
-        storageManager.addPet(player, pet);
+    public void addPet(Player player, String petType) {
+        storageManager.addPet(player, petType);
+    }
+
+    /**
+     * Gets a specific pet for a player by its UUID.
+     *
+     * @param player The player.
+     * @param petId  The UUID of the pet.
+     * @return An Optional containing the pet if found.
+     */
+    public Optional<Pet> getPet(Player player, UUID petId) {
+        return storageManager.getPet(player, petId);
+    }
+
+    /**
+     * Checks if a player owns a pet of a specific type.
+     *
+     * @param player  The player.
+     * @param petType The type of pet to check for.
+     * @return True if the player owns a pet of this type, false otherwise.
+     */
+    public boolean hasPet(Player player, String petType) {
+        return storageManager.hasPet(player, petType);
     }
 }

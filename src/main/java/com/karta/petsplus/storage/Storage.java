@@ -4,6 +4,8 @@ import com.karta.petsplus.data.Pet;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface Storage {
 
@@ -13,5 +15,9 @@ public interface Storage {
 
     List<Pet> getPets(Player player);
 
-    void addPet(Player player, Pet pet);
+    Optional<Pet> getPet(Player player, UUID petId);
+
+    void addPet(Player player, String petType);
+
+    boolean hasPet(Player player, String petType);
 }
