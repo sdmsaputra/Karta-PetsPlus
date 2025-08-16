@@ -6,6 +6,7 @@ import com.karta.petsplus.command.PetsReloadCommand;
 import com.karta.petsplus.listener.PlayerListener;
 import com.karta.petsplus.manager.ConfigManager;
 import com.karta.petsplus.manager.EconomyManager;
+import com.karta.petsplus.manager.MessageManager;
 import com.karta.petsplus.manager.PlayerDataManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -23,6 +24,7 @@ public final class KartaPetsPlus extends JavaPlugin {
     private EconomyManager economyManager;
     private ConfigManager configManager;
     private PlayerDataManager playerDataManager;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
@@ -32,6 +34,9 @@ public final class KartaPetsPlus extends JavaPlugin {
         // Setup configuration files
         configManager = new ConfigManager(this);
         configManager.loadConfigs();
+
+        // Setup message manager
+        messageManager = new MessageManager(this);
 
         // Setup data storage
         playerDataManager = new PlayerDataManager(this);
@@ -81,6 +86,7 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new com.karta.petsplus.ui.PetShopGuiListener(this), this);
         getLogger().info("Listeners have been registered.");
     }
 
@@ -109,5 +115,14 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     public PlayerDataManager getPlayerDataManager() {
         return playerDataManager;
+    }
+
+    /**
+     * Gets the message manager.
+     *
+     * @return The message manager instance.
+     */
+    public MessageManager getMessageManager() {
+        return messageManager;
     }
 }

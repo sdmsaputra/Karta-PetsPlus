@@ -10,8 +10,10 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,11 @@ public class PetShopGui {
                 lore.add(MiniMessage.miniMessage().deserialize("<green>Click to purchase!</green>"));
 
                 meta.lore(lore);
+
+                // Add pet ID to the item's persistent data container
+                NamespacedKey key = new NamespacedKey(plugin, "pet_id");
+                meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, petId);
+
                 item.setItemMeta(meta);
             }
             gui.addItem(item);
