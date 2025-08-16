@@ -70,7 +70,7 @@ public class PetShopGUI extends PagedGUI {
 
             List<String> loreStrings = configManager.getPets().getStringList(petPath + ".lore");
             List<Component> lore = loreStrings.stream()
-                    .map(line -> MiniMessage.miniMessage().deserialize(line.replace("{price}", formattedPrice)))
+                    .map(line -> MiniMessage.miniMessage().deserialize("<!i>" + line.replace("{price}", formattedPrice)))
                     .collect(Collectors.toList());
 
             lore.add(Component.text("")); // Spacer

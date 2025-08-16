@@ -41,10 +41,11 @@ public class GUIListener implements Listener {
             return;
         }
 
-        String inventoryTitle = event.getView().getTitle();
-        String shopTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-shop.title", "Pet Shop")));
-        String menuTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-menu.title", "My Pets")));
-        String confirmTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize("<dark_aqua>Confirm Purchase</dark_aqua>"));
+        Component inventoryTitle = event.getView().title();
+
+        Component shopTitle = MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-shop.title", "Pet Shop"));
+        Component menuTitle = MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-menu.title", "My Pets"));
+        Component confirmTitle = MiniMessage.miniMessage().deserialize("<dark_aqua>Confirm Purchase</dark_aqua>");
 
         boolean isCustomGui = inventoryTitle.equals(shopTitle) || inventoryTitle.equals(menuTitle) || inventoryTitle.equals(confirmTitle);
 
@@ -92,7 +93,7 @@ public class GUIListener implements Listener {
         }
     }
 
-    private void handleItemClick(Player player, String inventoryTitle, String shopTitle, ItemStack clickedItem) {
+    private void handleItemClick(Player player, Component inventoryTitle, Component shopTitle, ItemStack clickedItem) {
         PersistentDataContainer data = clickedItem.getItemMeta().getPersistentDataContainer();
 
         if (inventoryTitle.equals(shopTitle)) {
