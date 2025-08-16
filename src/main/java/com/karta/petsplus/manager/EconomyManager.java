@@ -80,4 +80,18 @@ public class EconomyManager {
     // public PlayerPointsAPI getPlayerPointsAPI() {
     //     return playerPointsAPI;
     // }
+
+    /**
+     * Formats the given amount using the active economy provider.
+     *
+     * @param amount The amount to format.
+     * @return The formatted currency string.
+     */
+    public String format(double amount) {
+        if ("Vault".equals(activeEconomyProvider) && vaultEconomy != null) {
+            return vaultEconomy.format(amount);
+        }
+        // Fallback for when no economy provider is available
+        return String.format("%.2f", amount);
+    }
 }
