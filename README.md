@@ -1,15 +1,14 @@
 # KartaPetsPlus
 
-**Version: 2.1.0**
+**Version: 2.2.0**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
 
-## What's New in 2.1.0?
+## What's New in 2.2.0?
 
-- **Pet Shop Item Slots**: The Pet Shop GUI items are no longer hard-coded. You can now define which pets appear and in which slot directly from the `gui.yml` file. This fixes a bug where items would not appear in the shop.
-- **Configurable Pet Menu Slots**: You can now define the specific slots that players' owned pets will appear in within the `/pets` menu via the `gui.yml` file.
-- **Add Pets via Command**: A new admin command, `/petshop add <entityType> <price>`, allows you to add new pets to the shop without manually editing the `pets.yml` file.
-- **Build Fixes**: Resolved a Maven warning related to the MySQL dependency.
+- **Italics Fix**: Fixed a bug where item lore in the pet shop would appear italicized by default.
+- **GUI Protection**: The purchase confirmation GUI is now properly protected, preventing players from moving items around.
+- **Pet Shop Command**: Implemented the `/petshop add` command, allowing admins to add new pets to the shop without manual configuration. This includes robust validation to prevent errors.
 
 ## Features
 
