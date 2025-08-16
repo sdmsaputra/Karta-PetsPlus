@@ -5,6 +5,21 @@ pet-menu:
     enabled: true
     material: "GRAY_STAINED_GLASS_PANE"
     name: " "
+  slots:
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 19
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
+    - 25
 
 pet-shop:
   title: "Pet Shop"
@@ -13,3 +28,8 @@ pet-shop:
     enabled: true
     material: "BLACK_STAINED_GLASS_PANE"
     name: " "
+  items:
+    wolf:
+      slot: 20
+    parrot:
+      slot: 24
