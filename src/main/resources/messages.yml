@@ -1,0 +1,22 @@
+# KartaPetsPlus Messages File
+# All messages support MiniMessage format.
+# A useful tool for creating messages: https://webui.advntr.dev/
+
+# General messages
+reload-success: "<green>KartaPetsPlus configuration has been reloaded successfully!</green>"
+no-permission: "<red>You do not have permission to use this command.</red>"
+player-only-command: "<red>This command can only be executed by a player.</red>"
+invalid-command-usage: "<red>Invalid usage. Use: {usage}</red>"
+
+# Pet Shop messages
+pet-shop-opened: "<gray>Opening the Pet Shop...</gray>"
+pet-purchase-success: "<green>You have successfully purchased a {pet_name}!</green>"
+not-enough-money: "<red>You do not have enough money to purchase this pet.</red>"
+pet-limit-reached: "<red>You have reached your maximum pet limit.</red>"
+
+# Pet management messages
+pet-menu-opened: "<gray>Opening your pet menu...</gray>"
+no-pets-owned: "<gray>You do not own any pets yet. Visit the <aqua>/petshop</aqua> to buy one!</gray>"
+pet-summoned: "<green>You have summoned your pet, {pet_name}!</green>"
+pet-stowed: "<gray>You have stowed your pet, {pet_name}.</gray>"
+pet-name-changed: "<green>You have renamed your pet to {new_pet_name}.</green>"
