@@ -8,6 +8,7 @@ import java.util.UUID;
  */
 public class Pet {
 
+    private final UUID petId;
     private final UUID owner;
     private final String petType;
     private String petName;
@@ -21,10 +22,23 @@ public class Pet {
      * @param petName The custom name of the pet.
      */
     public Pet(UUID owner, String petType, String petName) {
+        this.petId = UUID.randomUUID();
         this.owner = owner;
         this.petType = petType;
         this.petName = petName;
         this.status = PetStatus.STOWED; // Pets are stowed by default
+    }
+
+    public Pet(UUID owner, String petType, String petName, UUID petId) {
+        this.petId = petId;
+        this.owner = owner;
+        this.petType = petType;
+        this.petName = petName;
+        this.status = PetStatus.STOWED;
+    }
+
+    public UUID getPetId() {
+        return petId;
     }
 
     public UUID getOwner() {

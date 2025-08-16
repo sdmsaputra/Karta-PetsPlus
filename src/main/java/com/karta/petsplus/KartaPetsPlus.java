@@ -3,12 +3,14 @@ package com.karta.petsplus;
 import com.karta.petsplus.command.PetShopCommand;
 import com.karta.petsplus.command.PetsCommand;
 import com.karta.petsplus.command.PetsReloadCommand;
+import com.karta.petsplus.listener.GUIListener;
 import com.karta.petsplus.listener.PlayerListener;
 import com.karta.petsplus.manager.ConfigManager;
 import com.karta.petsplus.manager.EconomyManager;
 import com.karta.petsplus.manager.GuiManager;
 import com.karta.petsplus.manager.MessageManager;
 import com.karta.petsplus.manager.DatabaseManager;
+import com.karta.petsplus.manager.PetManager;
 import com.karta.petsplus.manager.PlayerDataManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -29,6 +31,7 @@ public final class KartaPetsPlus extends JavaPlugin {
     private MessageManager messageManager;
     private GuiManager guiManager;
     private DatabaseManager databaseManager;
+    private PetManager petManager;
 
     @Override
     public void onEnable() {
@@ -50,6 +53,9 @@ public final class KartaPetsPlus extends JavaPlugin {
 
         // Setup data storage
         playerDataManager = new PlayerDataManager(this);
+
+        // Setup pet manager
+        petManager = new PetManager(this);
 
         // Initialize economy manager and check for dependencies
         economyManager = new EconomyManager(this);
@@ -100,8 +106,7 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        getServer().getPluginManager().registerEvents(new com.karta.petsplus.ui.PetShopGuiListener(this), this);
-        getServer().getPluginManager().registerEvents(new com.karta.petsplus.ui.PetMenuGuiListener(this), this);
+        getServer().getPluginManager().registerEvents(new GUIListener(this), this);
         getLogger().info("Listeners have been registered.");
     }
 
@@ -162,5 +167,14 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
+    }
+
+    /**
+     * Gets the pet manager.
+     *
+     * @return The pet manager instance.
+     */
+    public PetManager getPetManager() {
+        return petManager;
     }
 }

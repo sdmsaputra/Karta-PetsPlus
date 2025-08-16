@@ -8,6 +8,8 @@ import com.karta.petsplus.storage.YamlStorage;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class StorageManager implements Storage {
 
@@ -38,7 +40,17 @@ public class StorageManager implements Storage {
     }
 
     @Override
-    public void addPet(Player player, Pet pet) {
-        storage.addPet(player, pet);
+    public void addPet(Player player, String petType) {
+        storage.addPet(player, petType);
+    }
+
+    @Override
+    public Optional<Pet> getPet(Player player, UUID petId) {
+        return storage.getPet(player, petId);
+    }
+
+    @Override
+    public boolean hasPet(Player player, String petType) {
+        return storage.hasPet(player, petType);
     }
 }

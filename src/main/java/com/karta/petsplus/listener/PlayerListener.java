@@ -28,8 +28,10 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        // Despawn any active pets
+        plugin.getPetManager().handlePlayerQuit(event.getPlayer());
+
         // Save player data and clear from cache
         plugin.getPlayerDataManager().savePlayerPets(event.getPlayer());
-        // playerPetCache.remove(event.getPlayer().getUniqueId()); // This should be handled inside the PlayerDataManager
     }
 }
