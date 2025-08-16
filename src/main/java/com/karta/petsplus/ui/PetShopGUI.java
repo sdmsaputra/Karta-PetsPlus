@@ -28,7 +28,7 @@ public class PetShopGUI extends PagedGUI {
 
     public PetShopGUI(KartaPetsPlus plugin, Player player, int page) {
         super(plugin,
-              plugin.getConfigManager().getGui().getString("pet-shop.title", "Pet Shop"),
+              plugin.getGuiManager().getGuiConfig().getString("pet-shop.title", "Pet Shop"),
               6, // 6 rows
               page,
               (int) Math.ceil((double) getPetIds(plugin).size() / PETS_PER_PAGE));
@@ -88,7 +88,7 @@ public class PetShopGUI extends PagedGUI {
             inventory.addItem(item);
         }
 
-        String fillMaterialName = plugin.getConfigManager().getGui().getString("pet-shop.fill-item.material", "BLACK_STAINED_GLASS_PANE");
+        String fillMaterialName = plugin.getGuiManager().getGuiConfig().getString("pet-shop.fill-item.material", "BLACK_STAINED_GLASS_PANE");
         fillBackground(Material.getMaterial(fillMaterialName));
         addNavigationButtons();
     }

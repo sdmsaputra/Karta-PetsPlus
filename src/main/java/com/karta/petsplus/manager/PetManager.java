@@ -3,6 +3,7 @@ package com.karta.petsplus.manager;
 import com.karta.petsplus.KartaPetsPlus;
 import com.karta.petsplus.data.Pet;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -48,7 +49,7 @@ public class PetManager {
 
         activePets.put(player.getUniqueId(), spawnedPet.getUniqueId());
         pet.setStatus(Pet.PetStatus.SUMMONED);
-        plugin.getMessageManager().sendMessage(player, "pet-summoned", "{pet_name}", pet.getPetName());
+        plugin.getMessageManager().sendMessage(player, "pet-summoned", "<green>Your pet <pet_name> has been summoned!</green>", Placeholder.parsed("pet_name", pet.getPetName()));
     }
 
     public void despawnPet(Player player) {
@@ -65,7 +66,7 @@ public class PetManager {
             .findFirst()
             .ifPresent(pet -> {
                 pet.setStatus(Pet.PetStatus.STOWED);
-                plugin.getMessageManager().sendMessage(player, "pet-stowed", "{pet_name}", pet.getPetName());
+                plugin.getMessageManager().sendMessage(player, "pet-stowed", "<gray>Your pet <pet_name> has been put away.</gray>", Placeholder.parsed("pet_name", pet.getPetName()));
             });
     }
 

@@ -28,7 +28,7 @@ public class PetShopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendMessage(sender, "player-only-command");
+            plugin.getMessageManager().sendMessage(sender, "player-only-command", "<red>This command can only be run by a player.</red>");
             return true;
         }
 

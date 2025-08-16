@@ -26,7 +26,7 @@ public class PetManagementGUI extends PagedGUI {
 
     public PetManagementGUI(KartaPetsPlus plugin, Player player, int page) {
         super(plugin,
-              plugin.getConfigManager().getGui().getString("pet-menu.title", "My Pets"),
+              plugin.getGuiManager().getGuiConfig().getString("pet-menu.title", "My Pets"),
               6,
               page,
               (int) Math.ceil((double) plugin.getPlayerDataManager().getPets(player).size() / PETS_PER_PAGE));
@@ -46,7 +46,7 @@ public class PetManagementGUI extends PagedGUI {
             inventory.addItem(createPetItem(pets.get(i)));
         }
 
-        String fillMaterialName = plugin.getConfigManager().getGui().getString("pet-menu.fill-item.material", "GRAY_STAINED_GLASS_PANE");
+        String fillMaterialName = plugin.getGuiManager().getGuiConfig().getString("pet-menu.fill-item.material", "GRAY_STAINED_GLASS_PANE");
         fillBackground(Material.getMaterial(fillMaterialName));
         addNavigationButtons();
     }
@@ -84,7 +84,7 @@ public class PetManagementGUI extends PagedGUI {
 
     public static void open(KartaPetsPlus plugin, Player player, int page) {
         if (plugin.getPlayerDataManager().getPets(player).isEmpty()) {
-            plugin.getMessageManager().sendMessage(player, "no-pets-owned");
+            plugin.getMessageManager().sendMessage(player, "no-pets-owned", "<red>You do not own any pets.</red>");
             return;
         }
         PetManagementGUI gui = new PetManagementGUI(plugin, player, page);

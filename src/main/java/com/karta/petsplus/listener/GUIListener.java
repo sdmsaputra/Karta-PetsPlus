@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -41,8 +42,8 @@ public class GUIListener implements Listener {
         }
 
         String inventoryTitle = event.getView().getTitle();
-        String shopTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getConfigManager().getGui().getString("pet-shop.title", "Pet Shop")));
-        String menuTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getConfigManager().getGui().getString("pet-menu.title", "My Pets")));
+        String shopTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-shop.title", "Pet Shop")));
+        String menuTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(plugin.getGuiManager().getGuiConfig().getString("pet-menu.title", "My Pets")));
         String confirmTitle = MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize("<dark_aqua>Confirm Purchase</dark_aqua>"));
 
         boolean isCustomGui = inventoryTitle.equals(shopTitle) || inventoryTitle.equals(menuTitle) || inventoryTitle.equals(confirmTitle);
@@ -122,20 +123,21 @@ public class GUIListener implements Listener {
     private void purchasePet(Player player, String petId) {
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
         if (playerDataManager.hasPet(player, petId)) {
-            plugin.getMessageManager().sendMessage(player, "pet-already-owned");
+            plugin.getMessageManager().sendMessage(player, "pet-already-owned", "<red>You already own this pet!</red>");
             return;
         }
 
         double price = plugin.getConfigManager().getPets().getDouble("pets." + petId + ".price");
         EconomyManager economyManager = plugin.getEconomyManager();
 
-        if (economyManager.has(player, price)) {
-            economyManager.withdraw(player, price);
+        if (economyManager.getVaultEconomy() != null && economyManager.getVaultEconomy().has(player, price)) {
+            economyManager.getVaultEconomy().withdrawPlayer(player, price);
             playerDataManager.addPet(player, petId);
-            plugin.getMessageManager().sendMessage(player, "pet-purchase-success", "{pet_name}", plugin.getConfigManager().getPets().getString("pets." + petId + ".display-name"));
+            String petName = plugin.getConfigManager().getPets().getString("pets." + petId + ".display-name", petId);
+            plugin.getMessageManager().sendMessage(player, "pet-purchase-success", "<green>You have successfully purchased <pet_name>!</green>", Placeholder.parsed("pet_name", petName));
             player.closeInventory();
         } else {
-            plugin.getMessageManager().sendMessage(player, "not-enough-money");
+            plugin.getMessageManager().sendMessage(player, "not-enough-money", "<red>You do not have enough money to purchase this pet.</red>");
         }
     }
 

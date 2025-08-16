@@ -147,11 +147,6 @@ public final class KartaPetsPlus extends JavaPlugin {
     }
 
     /**
-     * Gets the scheduler manager.
-     *
-     * @return The scheduler manager instance.
-     */
-    /**
      * Gets the gui manager.
      *
      * @return The gui manager instance.
