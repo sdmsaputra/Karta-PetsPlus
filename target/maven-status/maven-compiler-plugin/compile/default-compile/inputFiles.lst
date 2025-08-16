@@ -1,6 +1,7 @@
 /app/src/main/java/com/karta/petsplus/command/PetShopCommand.java
-/app/src/main/java/com/karta/petsplus/manager/ConfigManager.java
 /app/src/main/java/com/karta/petsplus/command/PetsReloadCommand.java
+/app/src/main/java/com/karta/petsplus/manager/ConfigManager.java
+/app/src/main/java/com/karta/petsplus/placeholder/PlaceholderExpansion.java
 /app/src/main/java/com/karta/petsplus/data/Pet.java
 /app/src/main/java/com/karta/petsplus/manager/EconomyManager.java
 /app/src/main/java/com/karta/petsplus/manager/PlayerDataManager.java
