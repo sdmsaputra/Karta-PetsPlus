@@ -1,4 +1,4 @@
-name: Karta PetsPlus
+name: KartaPetsPlus
 version: '${project.version}'
 main: com.karta.petsplus.KartaPetsPlus
 api-version: '1.21'
