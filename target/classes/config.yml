@@ -1,5 +1,17 @@
 # KartaPetsPlus Configuration File
 
+# -- Storage Settings --
+# The storage type to use for player data.
+# Supported types: "yaml", "mysql"
+storage-type: "yaml"
+
+database:
+  host: "localhost"
+  port: 3306
+  database: "petsplus"
+  username: "user"
+  password: "password"
+
 # The prefix that appears before all plugin messages.
 # Supports MiniMessage format: https://docs.advntr.dev/minimessage/format.html
 prefix: "<dark_gray>[<aqua>Pets</aqua>]</dark_gray> "

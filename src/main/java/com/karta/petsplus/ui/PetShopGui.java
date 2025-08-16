@@ -41,13 +41,28 @@ public class PetShopGui {
      * Creates and opens the pet shop inventory for the player.
      */
     public void open() {
-        String titleString = configManager.getConfig().getString("pet-shop.menu-title", "Pet Shop");
-        Component title = MiniMessage.miniMessage().deserialize(titleString);
+        // Get GUI configuration from gui.yml
+        String title = plugin.getGuiManager().getGuiConfig().getString("pet-shop.title", "Pet Shop");
+        int size = plugin.getGuiManager().getGuiConfig().getInt("pet-shop.size", 54);
 
-        int rows = configManager.getConfig().getInt("pet-shop.menu-rows", 4);
-        int size = Math.max(9, Math.min(54, rows * 9)); // Ensure size is between 9 and 54
+        Inventory gui = Bukkit.createInventory(null, size, MiniMessage.miniMessage().deserialize(title));
 
-        Inventory gui = Bukkit.createInventory(null, size, title);
+        // Fill empty slots if enabled
+        if (plugin.getGuiManager().getGuiConfig().getBoolean("pet-shop.fill-item.enabled", false)) {
+            String materialName = plugin.getGuiManager().getGuiConfig().getString("pet-shop.fill-item.material", "BLACK_STAINED_GLASS_PANE");
+            Material fillMaterial = Material.getMaterial(materialName);
+            if (fillMaterial != null) {
+                ItemStack fillItem = new ItemStack(fillMaterial);
+                ItemMeta meta = fillItem.getItemMeta();
+                if (meta != null) {
+                    meta.displayName(Component.text(" "));
+                    fillItem.setItemMeta(meta);
+                }
+                for (int i = 0; i < size; i++) {
+                    gui.setItem(i, fillItem);
+                }
+            }
+        }
 
         ConfigurationSection petsSection = configManager.getPets().getConfigurationSection("pets");
         if (petsSection == null) {

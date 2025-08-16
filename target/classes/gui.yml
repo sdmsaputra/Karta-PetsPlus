@@ -1,0 +1,15 @@
+pet-menu:
+  title: "My Pets"
+  size: 54
+  fill-item:
+    enabled: true
+    material: "GRAY_STAINED_GLASS_PANE"
+    name: " "
+
+pet-shop:
+  title: "Pet Shop"
+  size: 54
+  fill-item:
+    enabled: true
+    material: "BLACK_STAINED_GLASS_PANE"
+    name: " "

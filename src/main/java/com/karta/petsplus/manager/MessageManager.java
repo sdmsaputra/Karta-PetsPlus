@@ -16,7 +16,7 @@ public class MessageManager {
 
     public MessageManager(KartaPetsPlus plugin) {
         this.plugin = plugin;
-        this.prefix = plugin.getConfigManager().getConfig().getString("prefix", "<dark_gray>[<aqua>Pets</aqua>]</dark_gray> ");
+        this.prefix = plugin.getConfigManager().getMessages().getString("prefix", "<#00A3FF>KartaPetsPlus</#00A3FF> <dark_gray>»</dark_gray> ");
     }
 
     public void sendMessage(CommandSender sender, String path, String defaultMessage) {

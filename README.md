@@ -1,16 +1,17 @@
 # KartaPetsPlus
 
-**Version: 1.0.2-SNAPSHOT**
+**Version: 2.0.0**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
 
-## What's New in 1.0.2?
+## What's New in 2.0.0?
 
-- **Pet Shop GUI Overhaul**: The pet shop is now fully interactive!
-  - Items in the shop can no longer be moved or taken by players.
-  - Clicking a pet in the shop will now purchase it.
-- **Prefixed Messages**: All plugin messages now have a configurable prefix for better chat visibility.
-- **Bug Fixes & Performance Improvements**: General code cleanup and improvements.
+- **MySQL Storage**: Added support for MySQL storage to store player data.
+- **GUI Configuration**: A new `gui.yml` file allows you to configure all GUIs, including the pet shop and pet menu.
+- **Pet GUI System**: A new GUI for managing your pets.
+- **Command Suggestions**: Added tab completion for all commands.
+- **Hex Color Support**: All messages now support hex colors.
+- **Updated Prefix**: The default prefix has been changed to `KartaPetsPlus`.
 
 ## Features
 
@@ -19,6 +20,7 @@ KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to pro
 - **Economy Support**: Integrates with Vault and PlayerPoints for purchasing pets.
 - **Configurable**: Almost everything is configurable, from pet types and prices to messages and menu layouts.
 - **PlaceholderAPI Support**: A wide range of placeholders to display pet information.
+- **MySQL Storage**: Support for storing player data in a MySQL database.
 
 ## Commands & Permissions
 
@@ -46,10 +48,11 @@ KartaPetsPlus provides the following placeholders through PlaceholderAPI:
 
 ## Configuration
 
-The plugin's behavior can be customized through three main files located in the `/plugins/KartaPetsPlus/` directory:
+The plugin's behavior can be customized through four main files located in the `/plugins/KartaPetsPlus/` directory:
 
-- **`config.yml`**: Main configuration file. Used to set the economy provider, default pet limits, and the pet shop menu settings.
-- **`pets.yml`**: Defines all the pets available in the shop. You can set their name, icon, price, lore, and entity type here.
+- **`config.yml`**: Main configuration file. Used to set the storage type (YAML or MySQL), database credentials, economy provider, and default pet limits.
+- **`pets.yml`**: Defines all the pets available in the shop. You can set their name, icon, price, and lore here.
 - **`messages.yml`**: Customize all user-facing messages, such as command responses and notifications.
+- **`gui.yml`**: Customize the GUIs, including titles, sizes, and fill items.
 
 All configuration files and messages support the [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format for advanced text styling.
