@@ -1,29 +1,21 @@
 # KartaPetsPlus
 
-**Version: 2.2.2-BETA**
+**Version: 3.0.1**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
 
-## What's New in 2.2.2-BETA?
+## What's New in 3.0.1?
 
-- **Pet Combat Fixes**:
-    - Fixed a bug that allowed pets to attack each other.
-    - Fixed a bug where pets added to the shop via command would attack their owners.
-- **Command Suggestions**: Added tab-completion to all commands, including suggestions for pet IDs, entity types, and item/block icons.
-- **Updated Messages**: The `messages.yml` file has been updated to include all messages used throughout the plugin, with clear categorization for easier management.
-
-## What's New in 2.2.1-BETA?
-
-- **Pet Rename Feature**: The pet rename feature has been fixed and is now fully functional.
-- **Italics Fix**: Fixed a bug where item names in the GUIs would appear italicized by default.
-- **Placeholder Fix**: Placeholders are now consistently using the `{placeholder}` format.
-- **New Edit Command**: Added the `/petshop edit` command for easy management of pets in the shop.
-- **Improved Add Command**: The `/petshop add` command now supports optional `icon` and `description` arguments.
+- **GUI Overhaul**: Fixed a major bug that made items in the pet shop unclickable and movable. The entire GUI handling system has been refactored to be more robust and reliable, using modern Bukkit API practices.
+- **The Entire Zoo**: The pet shop has been expanded to include every single mob from Minecraft 1.21 (excluding bosses). From Allays to Zoglins, you can now own almost any creature as a pet.
+- **Standardized Naming**: All pet display names in the default configuration have been standardized to the `MobName Pet` format for consistency (e.g., "Pig Pet", "Creeper Pet").
+- **Configuration Cleanup**: The default `pets.yml` has been streamlined, removing unnecessary lore and `head-texture` values to simplify configuration and improve performance.
 
 ## Features
 
 - **Pet Ownership**: Players can buy, summon, stow, and rename their pets.
 - **GUI Menus**: Easy-to-use GUI menus for managing pets (`/pets`) and browsing the shop (`/petshop`).
+- **All Mobs as Pets**: The default configuration now includes every non-boss mob from Minecraft 1.21.
 - **Economy Support**: Integrates with Vault and PlayerPoints for purchasing pets.
 - **Configurable**: Almost everything is configurable, from pet types and prices to messages and menu layouts.
 - **PlaceholderAPI Support**: A wide range of placeholders to display pet information.
@@ -56,8 +48,6 @@ KartaPetsPlus provides the following placeholders through PlaceholderAPI:
 *   `%kartapetsplus_active_pet_type%` - The display name of the currently summoned pet's type.
 *   `%kartapetsplus_active_pet_status%` - The status of the currently summoned pet (e.g., `SUMMONED`).
 
-*Note: The older `pet_name`, `pet_type`, and `pet_status` placeholders are still available for backward compatibility.*
-
 ## Configuration
 
 The plugin's behavior can be customized through four main files located in the `/plugins/KartaPetsPlus/` directory:
@@ -65,8 +55,6 @@ The plugin's behavior can be customized through four main files located in the `
 - **`config.yml`**: Main configuration file. Used to set the storage type (YAML or MySQL), database credentials, economy provider, and default pet limits.
 - **`pets.yml`**: Defines all the pets available in the shop. You can set their name, icon, price, and lore here.
 - **`messages.yml`**: Customize all user-facing messages, such as command responses and notifications.
-- **`gui.yml`**: Customize the GUIs, including titles, sizes, and fill items. You can also define the exact slots for items in the pet shop and pet menu.
-    - **`pet-shop.items`**: A list of pets to be displayed in the shop. Each entry is a pet ID from `pets.yml` and has a `slot` number.
-    - **`pet-menu.slots`**: A list of inventory slots where players' owned pets will be displayed.
+- **`gui.yml`**: Customize the GUIs, including titles, sizes, and fill items.
 
 All configuration files and messages support the [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format for advanced text styling.

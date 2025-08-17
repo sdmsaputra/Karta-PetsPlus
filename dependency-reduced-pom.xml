@@ -4,7 +4,7 @@
   <groupId>com.karta</groupId>
   <artifactId>kartapetsplus</artifactId>
   <name>Karta PetsPlus</name>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <description>A feature-rich pets plugin for PaperMC servers.</description>
   <build>
     <resources>
