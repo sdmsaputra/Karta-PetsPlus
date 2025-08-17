@@ -85,6 +85,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (event.getFrom().getWorld() == null || event.getTo().getWorld() == null || !event.getFrom().getWorld().equals(event.getTo().getWorld())) {
+            return;
+        }
         // We only care about large teleports, as small ones are handled by the regular tick
         if (event.getFrom().distanceSquared(event.getTo()) > 4) { // 2 blocks
             Entity petEntity = plugin.getPetManager().getActivePetEntity(event.getPlayer());

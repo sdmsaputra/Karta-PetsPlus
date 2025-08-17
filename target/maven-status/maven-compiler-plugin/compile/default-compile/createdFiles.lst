@@ -7,8 +7,8 @@ com/karta/petsplus/command/PetsReloadCommandCompleter.class
 com/karta/petsplus/listener/EntityListener$1.class
 com/karta/petsplus/manager/PetManager$1.class
 com/karta/petsplus/ui/ConfirmationGUI.class
-com/karta/petsplus/ui/PetShopGUI.class
 com/karta/petsplus/manager/DatabaseManager.class
+com/karta/petsplus/ui/PetShopGUI.class
 com/karta/petsplus/manager/PetManager.class
 com/karta/petsplus/placeholder/PlaceholderExpansion.class
 com/karta/petsplus/ui/lib/PagedGUI.class
