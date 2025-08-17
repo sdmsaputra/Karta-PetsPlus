@@ -7,7 +7,7 @@ pet-menu:
     name: " "
 
 pet-shop:
-  title: "Pet Shop"
+  title: "<light_purple><bold>KartaPetsPlus</bold></light_purple>"
   size: 54
   fill-item:
     enabled: true
