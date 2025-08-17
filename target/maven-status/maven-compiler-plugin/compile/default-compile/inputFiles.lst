@@ -1,6 +1,6 @@
 /app/src/main/java/com/karta/petsplus/ui/ConfirmationGUI.java
-/app/src/main/java/com/karta/petsplus/command/PetShopCommandCompleter.java
 /app/src/main/java/com/karta/petsplus/manager/GuiManager.java
+/app/src/main/java/com/karta/petsplus/command/PetShopCommandCompleter.java
 /app/src/main/java/com/karta/petsplus/command/PetsCommand.java
 /app/src/main/java/com/karta/petsplus/listener/GUIListener.java
 /app/src/main/java/com/karta/petsplus/manager/DatabaseManager.java
@@ -19,10 +19,10 @@
 /app/src/main/java/com/karta/petsplus/ui/lib/PagedGUI.java
 /app/src/main/java/com/karta/petsplus/storage/YamlStorage.java
 /app/src/main/java/com/karta/petsplus/ui/PetManagementGUI.java
-/app/src/main/java/com/karta/petsplus/command/PetsCommandCompleter.java
 /app/src/main/java/com/karta/petsplus/manager/StorageManager.java
+/app/src/main/java/com/karta/petsplus/command/PetsCommandCompleter.java
 /app/src/main/java/com/karta/petsplus/manager/PetManager.java
 /app/src/main/java/com/karta/petsplus/command/PetsReloadCommandCompleter.java
 /app/src/main/java/com/karta/petsplus/manager/PlayerDataManager.java
-/app/src/main/java/com/karta/petsplus/manager/EconomyManager.java
 /app/src/main/java/com/karta/petsplus/manager/MessageManager.java
+/app/src/main/java/com/karta/petsplus/manager/EconomyManager.java

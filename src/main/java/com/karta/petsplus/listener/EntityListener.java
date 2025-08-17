@@ -2,6 +2,7 @@ package com.karta.petsplus.listener;
 
 import com.karta.petsplus.KartaPetsPlus;
 import com.karta.petsplus.manager.ConfigManager;
+import com.karta.petsplus.ui.PetManagementGUI;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -23,6 +24,19 @@ public class EntityListener implements Listener {
     public void onPetDamage(EntityDamageEvent event) {
         if (!plugin.getPetManager().isPet(event.getEntity())) {
             return; // Not a pet, we don't care
+        }
+
+        if (event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent) event;
+            if (entityEvent.getDamager() instanceof Player) {
+                Player damager = (Player) entityEvent.getDamager();
+                Player owner = plugin.getPetManager().getPetOwner(event.getEntity());
+                if (owner != null && owner.equals(damager)) {
+                    event.setCancelled(true);
+                    PetManagementGUI.open(plugin, owner, 0);
+                    return;
+                }
+            }
         }
 
         ConfigManager.DamagePolicy policy = plugin.getConfigManager().getDamagePolicy();
@@ -82,14 +96,32 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPetAttack(EntityDamageByEntityEvent event) {
-        // Prevent pets from attacking their owners
-        if (plugin.getPetManager().isPet(event.getDamager())) {
-            Entity victim = event.getEntity();
-            if (victim instanceof Player) {
-                Player owner = plugin.getPetManager().getPetOwner(event.getDamager());
-                if (owner != null && owner.getUniqueId().equals(victim.getUniqueId())) {
-                    event.setCancelled(true);
-                }
+        Entity damager = event.getDamager();
+        Entity victim = event.getEntity();
+
+        // We only care about pets attacking players
+        if (!(victim instanceof Player)) {
+            return;
+        }
+
+        Player victimPlayer = (Player) victim;
+        Entity petEntity = null;
+
+        if (plugin.getPetManager().isPet(damager)) {
+            // Direct attack by pet
+            petEntity = damager;
+        } else if (damager instanceof Projectile) {
+            Projectile projectile = (Projectile) damager;
+            if (projectile.getShooter() instanceof Entity && plugin.getPetManager().isPet((Entity) projectile.getShooter())) {
+                // Projectile attack by pet
+                petEntity = (Entity) projectile.getShooter();
+            }
+        }
+
+        if (petEntity != null) {
+            Player owner = plugin.getPetManager().getPetOwner(petEntity);
+            if (owner != null && owner.getUniqueId().equals(victimPlayer.getUniqueId())) {
+                event.setCancelled(true);
             }
         }
     }
