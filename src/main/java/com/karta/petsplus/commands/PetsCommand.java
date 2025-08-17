@@ -50,6 +50,14 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
             case "help":
                 sendHelpMessage(player);
                 break;
+            case "shop":
+                if (!player.hasPermission("petsplus.shop")) {
+                    player.sendMessage(plugin.getMessageManager().getMessage("no-permission"));
+                    return true;
+                }
+                ShopMenu shopMenu = new ShopMenu(plugin, player);
+                shopMenu.open();
+                break;
             case "summon":
                 if (args.length < 2) {
                     player.sendMessage(plugin.getMessageManager().getMessage("summon-usage"));
@@ -78,6 +86,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                 }
                 plugin.getConfigManager().reloadConfig();
                 plugin.getMessageManager().reloadMessages();
+                plugin.getShopManager().reloadShopConfig();
                 player.sendMessage(plugin.getMessageManager().getMessage("reload"));
                 break;
             default:
@@ -114,7 +123,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> subcommands = new ArrayList<>(Arrays.asList("summon", "dismiss", "rename", "list", "help"));
+            List<String> subcommands = new ArrayList<>(Arrays.asList("summon", "dismiss", "rename", "list", "help", "shop"));
             if (sender.hasPermission("petsplus.admin")) {
                 subcommands.add("reload");
             }

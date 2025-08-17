@@ -54,4 +54,10 @@ public class PetData {
     public List<String> getOwnedPets() {
         return ownedPets;
     }
+
+    public void addOwnedPet(String petType) {
+        if (!ownedPets.contains(petType)) {
+            ownedPets.add(petType);
+        }
+    }
 }

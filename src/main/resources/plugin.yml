@@ -14,6 +14,9 @@ permissions:
   petsplus.use:
     description: Allows players to use basic pet commands.
     default: true
+  petsplus.shop:
+    description: Allows players to open the pet shop.
+    default: true
   petsplus.admin:
     description: Allows access to administrative commands.
     default: op

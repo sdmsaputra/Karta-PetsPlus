@@ -1,0 +1,24 @@
+shop-menu:
+  title: "&e&lPet Shop"
+  size: 54
+  pets:
+    dog:
+      slot: 11
+      material: WOLF_SPAWN_EGG
+      name: "&aDog"
+      lore:
+        - "&7A loyal companion."
+        - "&7Status: %pet_status%"
+        - "&7Price: &6%pet_price% %currency_type%"
+      price: 1000
+      currency: VAULT
+    cat:
+      slot: 12
+      material: CAT_SPAWN_EGG
+      name: "&bCat"
+      lore:
+        - "&7Independent and smart."
+        - "&7Status: %pet_status%"
+        - "&7Price: &6%pet_price% %currency_type%"
+      price: 1500
+      currency: VAULT

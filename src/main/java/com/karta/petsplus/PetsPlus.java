@@ -10,6 +10,10 @@ public class PetsPlus extends JavaPlugin {
     private StorageManager storageManager;
     private PetManager petManager;
     private CommandManager commandManager;
+    private ShopManager shopManager;
+    private EconomyManager economyManager;
+    private PurchaseHandler purchaseHandler;
+
 
     @Override
     public void onEnable() {
@@ -19,6 +23,10 @@ public class PetsPlus extends JavaPlugin {
         storageManager = new StorageManager(this);
         petManager = new PetManager(this);
         commandManager = new CommandManager(this);
+        shopManager = new ShopManager(this);
+        economyManager = new EconomyManager(this);
+        purchaseHandler = new PurchaseHandler(this);
+
 
         // Initialize Storage
         storageManager.init();
@@ -26,6 +34,9 @@ public class PetsPlus extends JavaPlugin {
 
         // Register Commands
         commandManager.registerCommands();
+
+        // Register Listeners
+        getServer().getPluginManager().registerEvents(new com.karta.petsplus.listeners.InventoryListener(), this);
 
         getLogger().info("KartaPetsPlus has been enabled!");
     }
@@ -58,5 +69,17 @@ public class PetsPlus extends JavaPlugin {
 
     public PetManager getPetManager() {
         return petManager;
+    }
+
+    public ShopManager getShopManager() {
+        return shopManager;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
+
+    public PurchaseHandler getPurchaseHandler() {
+        return purchaseHandler;
     }
 }

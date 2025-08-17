@@ -25,6 +25,14 @@ no-pets-owned: "%prefix%&cYou do not own any pets."
 owned-pets-header: "%prefix%&aYour owned pets:"
 owned-pets-entry: "&8- &b{pet_type}"
 
+# Shop Messages
+pet-not-found: "&cThat pet could not be found in the shop."
+pet-already-owned: "&cYou already own this pet."
+economy-disabled: "&cThe economy features are currently disabled."
+not-enough-money: "&cYou don't have enough money to purchase this pet."
+pet-purchase-success: "&aYou have successfully purchased the {pet_name} pet!"
+purchase-failed: "&cAn error occurred during the purchase. Please try again later."
+
 # --- Help Message ---
 help-message:
   - "&b&lKartaPetsPlus Help"
