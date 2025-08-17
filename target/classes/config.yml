@@ -30,3 +30,28 @@ pet-shop:
   menu-title: "Pet Shop"
   # The number of rows in the shop menu (1-6).
   menu-rows: 4
+
+# Pet Behavior settings
+pet-behavior:
+  # The interval in server ticks for running pet behavior updates. (20 ticks = 1 second)
+  # Lower values are more responsive but may use more server resources.
+  ticks-per-update: 10
+  # The maximum number of pets a player can have active at one time.
+  max-active-pets-per-player: 1
+  # The distance in blocks a pet must be from its owner before teleporting.
+  teleport-distance: 15.0
+  # If true, enables detailed logging for debugging pet behavior.
+  debug-logging: false
+  # If true, pets will automatically respawn when their owner joins the server.
+  auto-respawn-on-join: true
+  # If true, pets will automatically respawn after their owner respawns from death.
+  auto-respawn-on-death: true
+  # A list of worlds where pets are not allowed.
+  # If a player enters one of these worlds, their pet will be despawned.
+  world-blacklist:
+    - "world_the_end"
+  # The damage policy for pets.
+  # INVULNERABLE: Pets cannot take any damage.
+  # OWNER_ONLY: Only the pet's owner can damage it.
+  # ALL: Anyone can damage the pet.
+  damage-policy: "INVULNERABLE"
