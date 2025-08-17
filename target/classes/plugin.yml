@@ -1,5 +1,5 @@
 name: KartaPetsPlus
-version: '3.0.0'
+version: '3.0.1'
 main: com.karta.petsplus.KartaPetsPlus
 api-version: '1.21'
 authors: [Jules]

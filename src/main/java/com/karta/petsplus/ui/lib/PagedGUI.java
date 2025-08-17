@@ -8,13 +8,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
-public abstract class PagedGUI {
+public abstract class PagedGUI implements InventoryHolder {
 
     protected final KartaPetsPlus plugin;
     protected final Inventory inventory;
@@ -25,7 +26,7 @@ public abstract class PagedGUI {
         this.plugin = plugin;
         this.page = page;
         this.totalPages = totalPages;
-        this.inventory = Bukkit.createInventory(null, rows * 9, MiniMessage.miniMessage().deserialize(title));
+        this.inventory = Bukkit.createInventory(this, rows * 9, MiniMessage.miniMessage().deserialize(title));
     }
 
     protected void fillBackground(Material material) {

@@ -5,7 +5,7 @@
 
     <groupId>com.karta</groupId>
     <artifactId>kartapetsplus</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <packaging>jar</packaging>
 
     <name>Karta PetsPlus</name>

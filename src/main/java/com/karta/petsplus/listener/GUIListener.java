@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -35,14 +36,11 @@ public class GUIListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) event.getWhoClicked();
-        String inventoryTitle = MiniMessage.miniMessage().serialize(event.getView().title());
+        InventoryHolder holder = event.getInventory().getHolder();
 
-        String shopTitle = "§d§lKartaPetsPlus";
-        String myPetsTitle = "§d§lMy Pets";
-
-        if (inventoryTitle.equals(shopTitle)) {
+        if (holder instanceof PetShopGUI) {
             handlePetShopClick(event, player);
-        } else if (inventoryTitle.equals(myPetsTitle)) {
+        } else if (holder instanceof MyPetsGUI) {
             handleMyPetsClick(event, player);
         }
     }
