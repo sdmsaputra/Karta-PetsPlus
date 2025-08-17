@@ -1,8 +1,36 @@
 # KartaPetsPlus Pets Definition File
 # This file defines all the pets available in the Pet Shop.
 
-# You can add as many pets as you like. The key (e.g., 'wolf') is the internal ID.
+# You can add as many pets as you like. The key (e.g., 'pig') is the internal ID.
 pets:
+  pig:
+    display-name: "§ePig Pet"
+    icon: "PLAYER_HEAD"
+    head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThiYTc3NTkxMzRlZWRiMzE1YWRkNjMzMjQyMTQ5ZmYzOTljNGNmOTdjZTdhNGQ0ZDhmNWQxODI1MTc0MzUifX19"
+    price: 5000.0
+    entity-type: "PIG"
+    abilities:
+      - "NONE"
+  cow:
+    display-name: "§eCow Pet"
+    icon: "PLAYER_HEAD"
+    head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWJkNTU4MzhjNGM0Yjk1MWJmYjQ1NDgyNzU2YjcyYjgwNjhiZTRkOGQxNWUyMzU5N2Q4YjJkZGMxMDU3YTIifX19"
+    price: 5000.0
+    entity-type: "COW"
+    abilities:
+      - "NONE"
+  bee:
+    display-name: "<yellow>Buzzy Bee</yellow>"
+    icon: "PLAYER_HEAD"
+    head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTQ3MzIyZjgzMWUzYzE2OGNmYmQzZTI4ZmU5MjUxNDRiMjYxZTc5ZWIzOWM3NzEzNDlmYWM1NWE4MTI2NDczIn19fQ=="
+    price: 4500.0
+    lore:
+      - "<gray>A friendly bee that loves flowers."
+      - ""
+      - "<aqua>Price: <white>{price}</white>"
+    entity-type: "BEE"
+    abilities:
+      - "FLYING"
   wolf:
     display-name: "<white>Loyal Wolf</white>"
     icon: "BONE"
@@ -48,17 +76,6 @@ pets:
     entity-type: "FOX"
     abilities:
       - "NONE"
-  bee:
-    display-name: "<yellow>Buzzy Bee</yellow>"
-    icon: "HONEYCOMB"
-    price: 4500.0
-    lore:
-      - "<gray>A friendly bee that loves flowers."
-      - ""
-      - "<aqua>Price: <white>{price}</white>"
-    entity-type: "BEE"
-    abilities:
-      - "FLYING"
   rabbit:
     display-name: "<white>Hopping Rabbit</white>"
     icon: "RABBIT_FOOT"
