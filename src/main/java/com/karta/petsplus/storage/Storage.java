@@ -22,4 +22,6 @@ public interface Storage {
     boolean hasPet(Player player, String petType);
 
     void savePlayerPet(Player player, Pet pet);
+
+    void removePet(Player player, Pet pet);
 }

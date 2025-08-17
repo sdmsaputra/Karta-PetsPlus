@@ -2,6 +2,7 @@ package com.karta.petsplus.storage;
 
 import com.karta.petsplus.KartaPetsPlus;
 import com.karta.petsplus.data.Pet;
+import com.karta.petsplus.data.PetType;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -40,7 +41,7 @@ public class MySqlStorage implements Storage {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 UUID petId = UUID.fromString(resultSet.getString("pet_uuid"));
-                String petType = resultSet.getString("pet_type");
+                PetType petType = PetType.valueOf(resultSet.getString("pet_type"));
                 String petName = resultSet.getString("pet_name");
                 String petStatus = resultSet.getString("pet_status");
                 Pet pet = new Pet(player.getUniqueId(), petType, petName, petId);
@@ -61,7 +62,7 @@ public class MySqlStorage implements Storage {
             statement.setString(2, petId.toString());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String petType = resultSet.getString("pet_type");
+                PetType petType = PetType.valueOf(resultSet.getString("pet_type"));
                 String petName = resultSet.getString("pet_name");
                 String petStatus = resultSet.getString("pet_status");
                 Pet pet = new Pet(player.getUniqueId(), petType, petName, petId);
@@ -77,13 +78,13 @@ public class MySqlStorage implements Storage {
     @Override
     public void addPet(Player player, String petType) {
         String defaultName = plugin.getConfigManager().getPets().getString("pets." + petType + ".display-name", "My Pet");
-        Pet newPet = new Pet(player.getUniqueId(), petType, defaultName, UUID.randomUUID());
+        Pet newPet = new Pet(player.getUniqueId(), PetType.valueOf(petType), defaultName, UUID.randomUUID());
 
         try (Connection connection = plugin.getDatabaseManager().getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO pets (owner_uuid, pet_uuid, pet_type, pet_name, pet_status) VALUES (?, ?, ?, ?, ?)")) {
             statement.setString(1, player.getUniqueId().toString());
             statement.setString(2, newPet.getPetId().toString());
-            statement.setString(3, newPet.getPetType());
+            statement.setString(3, newPet.getPetType().name());
             statement.setString(4, newPet.getPetName());
             statement.setString(5, newPet.getStatus().name());
             statement.executeUpdate();
@@ -116,6 +117,17 @@ public class MySqlStorage implements Storage {
             statement.executeUpdate();
         } catch (SQLException e) {
             plugin.getLogger().severe("Could not save pet data to database for " + player.getName() + ": " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void removePet(Player player, Pet pet) {
+        try (Connection connection = plugin.getDatabaseManager().getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM pets WHERE pet_uuid = ?")) {
+            statement.setString(1, pet.getPetId().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Could not remove pet from database for " + player.getName() + ": " + e.getMessage());
         }
     }
 }

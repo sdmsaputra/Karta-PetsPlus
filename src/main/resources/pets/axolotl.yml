@@ -1,0 +1,9 @@
+entity-type: "AXOLOTL"
+display-name: "<light_purple>Cute Axolotl</light_purple>"
+price: 18000.0
+lore:
+  - "<gray>An adorable aquatic companion."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "NONE"

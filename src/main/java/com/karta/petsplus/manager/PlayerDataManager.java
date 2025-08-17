@@ -85,4 +85,8 @@ public class PlayerDataManager {
     public void savePlayerPet(Player player, Pet pet) {
         storageManager.savePlayerPet(player, pet);
     }
+
+    public void removePet(Player player, Pet pet) {
+        storageManager.removePet(player, pet);
+    }
 }

@@ -1,0 +1,9 @@
+entity-type: "RABBIT"
+display-name: "<white>Hopping Rabbit</white>"
+price: 5500.0
+lore:
+  - "<gray>A fast and cute companion."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "NONE"

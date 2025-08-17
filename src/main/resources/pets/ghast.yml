@@ -1,0 +1,9 @@
+entity-type: "GHAST"
+display-name: "<white>Wailing Ghast</white>"
+price: 60000.0
+lore:
+  - "<gray>A giant, flying creature from the Nether."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "FLYING"

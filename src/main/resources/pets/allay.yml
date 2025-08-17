@@ -1,0 +1,9 @@
+entity-type: "ALLAY"
+display-name: "<aqua>Helpful Allay</aqua>"
+price: 35000.0
+lore:
+  - "<gray>A friendly spirit that loves to collect items."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "FLYING"

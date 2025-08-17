@@ -2,6 +2,7 @@ package com.karta.petsplus.storage;
 
 import com.karta.petsplus.KartaPetsPlus;
 import com.karta.petsplus.data.Pet;
+import com.karta.petsplus.data.PetType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -39,7 +40,7 @@ public class YamlStorage implements Storage {
             for (String petIdStr : playerData.getConfigurationSection("pets").getKeys(false)) {
                 UUID petId = UUID.fromString(petIdStr);
                 String path = "pets." + petIdStr;
-                String petType = playerData.getString(path + ".type");
+                PetType petType = PetType.valueOf(playerData.getString(path + ".type"));
                 String petName = playerData.getString(path + ".name");
                 String petStatus = playerData.getString(path + ".status", "STOWED");
 
@@ -74,7 +75,7 @@ public class YamlStorage implements Storage {
 
         for (Pet pet : pets) {
             String path = "pets." + pet.getPetId().toString();
-            playerData.set(path + ".type", pet.getPetType());
+            playerData.set(path + ".type", pet.getPetType().name());
             playerData.set(path + ".name", pet.getPetName());
             playerData.set(path + ".status", pet.getStatus().name());
         }
@@ -94,7 +95,7 @@ public class YamlStorage implements Storage {
     @Override
     public void addPet(Player player, String petType) {
         String displayName = plugin.getConfigManager().getPets().getString("pets." + petType + ".display-name", "My Pet");
-        Pet newPet = new Pet(player.getUniqueId(), petType, displayName);
+        Pet newPet = new Pet(player.getUniqueId(), PetType.valueOf(petType), displayName);
         playerPetCache.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()).add(newPet);
     }
 
@@ -105,7 +106,7 @@ public class YamlStorage implements Storage {
 
     @Override
     public boolean hasPet(Player player, String petType) {
-        return getPets(player).stream().anyMatch(p -> p.getPetType().equalsIgnoreCase(petType));
+        return getPets(player).stream().anyMatch(p -> p.getPetType().name().equalsIgnoreCase(petType));
     }
 
     @Override
@@ -117,6 +118,13 @@ public class YamlStorage implements Storage {
                 break;
             }
         }
+        savePlayerPets(player);
+    }
+
+    @Override
+    public void removePet(Player player, Pet pet) {
+        List<Pet> pets = getPets(player);
+        pets.removeIf(p -> p.getPetId().equals(pet.getPetId()));
         savePlayerPets(player);
     }
 }

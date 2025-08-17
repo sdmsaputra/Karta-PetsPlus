@@ -1,0 +1,9 @@
+entity-type: "PARROT"
+display-name: "<green>Swift Parrot</green>"
+price: 7500.0
+lore:
+  - "<gray>A colorful bird that soars through the skies."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "FLYING"

@@ -1,0 +1,9 @@
+entity-type: "CREEPER"
+display-name: "<green>Explosive Creeper</green>"
+price: 30000.0
+lore:
+  - "<dark_green>A risky but powerful companion."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "NONE"

@@ -76,7 +76,7 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
                 case "active_pet_type":
                 case "pet_type": // Keep old for backwards compatibility
                     // Get the display name from pets.yml for consistency
-                    return configManager.getPets().getString("pets." + activePet.getPetType() + ".display-name", activePet.getPetType());
+                    return configManager.getPets().getString("pets." + activePet.getPetType().name().toLowerCase() + ".display-name", activePet.getPetType().name());
                 case "active_pet_status":
                 case "pet_status": // Keep old for backwards compatibility
                     return activePet.getStatus().name();
