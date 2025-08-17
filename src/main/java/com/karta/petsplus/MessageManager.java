@@ -38,4 +38,10 @@ public class MessageManager {
         String prefix = messagesConfig.getString("prefix", "");
         return ChatColor.translateAlternateColorCodes('&', message.replace("%prefix%", prefix));
     }
+
+    public java.util.List<String> getHelpMessage() {
+        java.util.List<String> helpLines = messagesConfig.getStringList("help-message");
+        helpLines.replaceAll(line -> ChatColor.translateAlternateColorCodes('&', line));
+        return helpLines;
+    }
 }

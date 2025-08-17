@@ -11,6 +11,8 @@ public class CommandManager {
     }
 
     public void registerCommands() {
-        plugin.getCommand("pets").setExecutor(new PetsCommand(plugin));
+        PetsCommand petsCommand = new PetsCommand(plugin);
+        plugin.getCommand("pets").setExecutor(petsCommand);
+        plugin.getCommand("pets").setTabCompleter(petsCommand);
     }
 }

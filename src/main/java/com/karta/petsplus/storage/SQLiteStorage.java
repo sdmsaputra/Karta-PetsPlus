@@ -9,8 +9,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class SQLiteStorage implements Storage {
 
@@ -47,15 +52,16 @@ public class SQLiteStorage implements Storage {
 
     @Override
     public void createTables() {
-        String query = "CREATE TABLE IF NOT EXISTS pet_data (" +
+        String tableQuery = "CREATE TABLE IF NOT EXISTS pet_data (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
-                "pet_type VARCHAR(255)," +
+                "active_pet_type VARCHAR(255)," +
                 "pet_name VARCHAR(255)," +
-                "level INT," +
-                "xp DOUBLE" +
+                "level INT NOT NULL DEFAULT 1," +
+                "xp DOUBLE NOT NULL DEFAULT 0," +
+                "owned_pets TEXT NOT NULL DEFAULT ''" +
                 ");";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.execute();
+        try (Statement stmt = connection.createStatement()) {
+            stmt.execute(tableQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,29 +75,39 @@ public class SQLiteStorage implements Storage {
                 stmt.setString(1, uuid.toString());
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
-                    String petType = rs.getString("pet_type");
+                    String activePetType = rs.getString("active_pet_type");
                     String petName = rs.getString("pet_name");
                     int level = rs.getInt("level");
                     double xp = rs.getDouble("xp");
-                    return new PetData(petType, petName, level, xp);
+                    String ownedPetsRaw = rs.getString("owned_pets");
+                    List<String> ownedPets = new ArrayList<>();
+                    if (ownedPetsRaw != null && !ownedPetsRaw.isEmpty()) {
+                        ownedPets.addAll(Arrays.asList(ownedPetsRaw.split(",")));
+                    }
+                    return new PetData(activePetType, petName, level, xp, ownedPets);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return null;
+            // Return a new PetData object for new players
+            return new PetData(null, null, 1, 0, new ArrayList<>());
         });
     }
 
     @Override
     public CompletableFuture<Void> savePlayerData(UUID uuid, PetData data) {
         return CompletableFuture.runAsync(() -> {
-            String query = "INSERT OR REPLACE INTO pet_data (uuid, pet_type, pet_name, level, xp) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO pet_data (uuid, active_pet_type, pet_name, level, xp, owned_pets) VALUES (?, ?, ?, ?, ?, ?) " +
+                           "ON CONFLICT(uuid) DO UPDATE SET active_pet_type = excluded.active_pet_type, pet_name = excluded.pet_name, " +
+                           "level = excluded.level, xp = excluded.xp, owned_pets = excluded.owned_pets;";
             try (PreparedStatement stmt = connection.prepareStatement(query)) {
                 stmt.setString(1, uuid.toString());
                 stmt.setString(2, data.getActivePetType());
                 stmt.setString(3, data.getPetName());
                 stmt.setInt(4, data.getLevel());
                 stmt.setDouble(5, data.getXp());
+                String ownedPetsStr = String.join(",", data.getOwnedPets());
+                stmt.setString(6, ownedPetsStr);
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();

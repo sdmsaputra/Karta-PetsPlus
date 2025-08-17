@@ -1,0 +1,283 @@
+# ---------------------------------------------------------------------------------------------------- #
+# Pet Configuration
+#
+# This file defines the types of pets available on the server.
+#
+# Format:
+# <internal-name>:
+#   display-name: "<display name>"
+#   entity: <minecraft-entity-type>
+#   price: <cost-to-buy>
+#   baby: <true/false> (optional, defaults to false)
+#
+# Example:
+#   wolf:
+#     display-name: "&aWolf"
+#     entity: WOLF
+#     price: 500.0
+#     baby: false
+# ---------------------------------------------------------------------------------------------------- #
+
+# --- Animals ---
+axolotl:
+  display-name: "&dAxolotl"
+  entity: AXOLOTL
+  price: 250
+bat:
+  display-name: "&8Bat"
+  entity: BAT
+  price: 50
+bee:
+  display-name: "&eBee"
+  entity: BEE
+  price: 100
+camel:
+  display-name: "&6Camel"
+  entity: CAMEL
+  price: 750
+cat:
+  display-name: "&dCat"
+  entity: CAT
+  price: 200
+chicken:
+  display-name: "&fChicken"
+  entity: CHICKEN
+  price: 50
+cow:
+  display-name: "&fCow"
+  entity: COW
+  price: 100
+dolphin:
+  display-name: "&bMarine Friend"
+  entity: DOLPHIN
+  price: 500
+donkey:
+  display-name: "&7Donkey"
+  entity: DONKEY
+  price: 300
+frog:
+  display-name: "&2Frog"
+  entity: FROG
+  price: 150
+fox:
+  display-name: "&6Fox"
+  entity: FOX
+  price: 300
+glow_squid:
+  display-name: "&bGlowing Squid"
+  entity: GLOW_SQUID
+  price: 200
+goat:
+  display-name: "&fGoat"
+  entity: GOAT
+  price: 250
+horse:
+  display-name: "&6Horse"
+  entity: HORSE
+  price: 500
+llama:
+  display-name: "&7Llama"
+  entity: LLAMA
+  price: 400
+mooshroom:
+  display-name: "&cMooshroom"
+  entity: MOOSHROOM
+  price: 200
+mule:
+  display-name: "&7Mule"
+  entity: MULE
+  price: 350
+ocelot:
+  display-name: "&eOcelot"
+  entity: OCELOT
+  price: 300
+panda:
+  display-name: "&f&oPanda"
+  entity: PANDA
+  price: 600
+parrot:
+  display-name: "&aParrot"
+  entity: PARROT
+  price: 400
+pig:
+  display-name: "&dPig"
+  entity: PIG
+  price: 100
+polar_bear:
+  display-name: "&fPolar Bear"
+  entity: POLAR_BEAR
+  price: 800
+rabbit:
+  display-name: "&fRabbit"
+  entity: RABBIT
+  price: 150
+sheep:
+  display-name: "&fSheep"
+  entity: SHEEP
+  price: 100
+sniffer:
+  display-name: "&dSniffer"
+  entity: SNIFFER
+  price: 1200
+squid:
+  display-name: "&bSquid"
+  entity: SQUID
+  price: 100
+strider:
+  display-name: "&cStrider"
+  entity: STRIDER
+  price: 400
+turtle:
+  display-name: "&aTurtle"
+  entity: TURTLE
+  price: 300
+wolf:
+  display-name: "&7Wolf"
+  entity: WOLF
+  price: 500
+
+# --- Monsters ---
+blaze:
+  display-name: "&6Blaze"
+  entity: BLAZE
+  price: 1500
+bogged:
+  display-name: "&2Bogged"
+  entity: BOGGED
+  price: 1200
+breeze:
+  display-name: "&bBreeze"
+  entity: BREEZE
+  price: 2500
+cave_spider:
+  display-name: "&8Cave Spider"
+  entity: CAVE_SPIDER
+  price: 800
+creeper:
+  display-name: "&aCreeper"
+  entity: CREEPER
+  price: 2000
+drowned:
+  display-name: "&bDrowned"
+  entity: DROWNED
+  price: 1000
+elder_guardian:
+  display-name: "&3Elder Guardian"
+  entity: ELDER_GUARDIAN
+  price: 5000
+ender_dragon:
+  display-name: "&5Ender Dragon"
+  entity: ENDER_DRAGON
+  price: 50000
+enderman:
+  display-name: "&5Enderman"
+  entity: ENDERMAN
+  price: 2500
+endermite:
+  display-name: "&5Endermite"
+  entity: ENDERMITE
+  price: 500
+evoker:
+  display-name: "&7Evoker"
+  entity: EVOKER
+  price: 3000
+ghast:
+  display-name: "&fGhast"
+  entity: GHAST
+  price: 2000
+guardian:
+  display-name: "&3Guardian"
+  entity: GUARDIAN
+  price: 1500
+husk:
+  display-name: "&eHusk"
+  entity: HUSK
+  price: 800
+magma_cube:
+  display-name: "&6Magma Cube"
+  entity: MAGMA_CUBE
+  price: 1000
+phantom:
+  display-name: "&8Phantom"
+  entity: PHANTOM
+  price: 1200
+piglin:
+  display-name: "&dPiglin"
+  entity: PIGLIN
+  price: 1500
+piglin_brute:
+  display-name: "&dPiglin Brute"
+  entity: PIGLIN_BRUTE
+  price: 2500
+pillager:
+  display-name: "&7Pillager"
+  entity: PILLAGER
+  price: 1000
+ravager:
+  display-name: "&7Ravager"
+  entity: RAVAGER
+  price: 4000
+shulker:
+  display-name: "&dShulker"
+  entity: SHULKER
+  price: 2000
+silverfish:
+  display-name: "&7Silverfish"
+  entity: SILVERFISH
+  price: 400
+skeleton:
+  display-name: "&fSkeleton"
+  entity: SKELETON
+  price: 1000
+slime:
+  display-name: "&aSlime"
+  entity: SLIME
+  price: 800
+spider:
+  display-name: "&8Spider"
+  entity: SPIDER
+  price: 1000
+stray:
+  display-name: "&fStray"
+  entity: STRAY
+  price: 1200
+vex:
+  display-name: "&7Vex"
+  entity: VEX
+  price: 1500
+vindicator:
+  display-name: "&7Vindicator"
+  entity: VINDICATOR
+  price: 2000
+warden:
+  display-name: "&4Warden"
+  entity: WARDEN
+  price: 10000
+witch:
+  display-name: "&dWitch"
+  entity: WITCH
+  price: 1500
+wither:
+  display-name: "&8Wither"
+  entity: WITHER
+  price: 25000
+wither_skeleton:
+  display-name: "&8Wither Skeleton"
+  entity: WITHER_SKELETON
+  price: 2000
+zoglin:
+  display-name: "&dZoglin"
+  entity: ZOGLIN
+  price: 1500
+zombie:
+  display-name: "&2Zombie"
+  entity: ZOMBIE
+  price: 800
+zombie_villager:
+  display-name: "&2Zombie Villager"
+  entity: ZOMBIE_VILLAGER
+  price: 1000
+zombified_piglin:
+  display-name: "&dZombified Piglin"
+  entity: ZOMBIFIED_PIGLIN
+  price: 1200
