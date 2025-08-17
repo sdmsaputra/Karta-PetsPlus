@@ -81,11 +81,22 @@ public final class KartaPetsPlus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Save data for all online players before shutting down
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            playerDataManager.savePlayerPets(player);
+        // Shutdown pet manager (despawns pets, stops scheduler)
+        if (petManager != null) {
+            petManager.shutdown();
         }
-        databaseManager.close();
+
+        // Save data for all online players before shutting down
+        if (playerDataManager != null) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                playerDataManager.savePlayerPets(player);
+            }
+        }
+
+        if (databaseManager != null) {
+            databaseManager.close();
+        }
+
         getLogger().info("KartaPetsPlus has been disabled.");
     }
 
