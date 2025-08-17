@@ -167,6 +167,8 @@ public class PetManager {
 
     private void tick() {
         double teleportDistSq = Math.pow(plugin.getConfigManager().getTeleportDistance(), 2);
+        double stayDespawnDistSq = Math.pow(50, 2); // TODO: Make this configurable
+
         for (UUID ownerId : activePets.keySet()) {
             Player owner = Bukkit.getPlayer(ownerId);
             Entity petEntity = getActivePetEntity(owner);
@@ -177,28 +179,49 @@ public class PetManager {
             }
 
             getActivePet(owner).ifPresentOrElse(petData -> {
+                double distanceSq = owner.getLocation().distanceSquared(petEntity.getLocation());
+
                 if (petData.getStatus() == Pet.PetStatus.SUMMONED) {
-                    handleFollowing(owner, petEntity, teleportDistSq);
+                    handleFollowing(owner, petEntity, distanceSq, teleportDistSq);
                 } else if (petData.getStatus() == Pet.PetStatus.STAY) {
-                     if (petEntity instanceof Mob) ((Mob) petEntity).getPathfinder().stopPathfinding();
+                    if (distanceSq > stayDespawnDistSq) {
+                        despawnAndNotify(owner, petData, "pet-too-far-despawn", "<red>Your pet got lost because you moved too far away!</red>");
+                    } else {
+                        if (petEntity instanceof Mob) {
+                            ((Mob) petEntity).setAI(false); // Ensure pet remains sitting
+                        }
+                    }
                 }
             }, () -> cleanupPet(ownerId));
         }
     }
 
-    private void handleFollowing(Player owner, Entity petEntity, double teleportDistSq) {
+    private void handleFollowing(Player owner, Entity petEntity, double distanceSq, double teleportDistSq) {
         if (!petEntity.getWorld().equals(owner.getWorld())) {
             logDebug("Pet for " + owner.getName() + " is in a different world. Teleporting.");
             teleportPetToPlayer(petEntity, owner);
             return;
         }
-        double distanceSq = owner.getLocation().distanceSquared(petEntity.getLocation());
+
         if (distanceSq > teleportDistSq) {
             logDebug("Pet for " + owner.getName() + " is too far (" + Math.sqrt(distanceSq) + " blocks). Teleporting.");
             teleportPetToPlayer(petEntity, owner);
         } else if (petEntity instanceof Mob mob) {
-            mob.getPathfinder().moveTo(owner, 1.2);
+            double followStopRadiusSq = Math.pow(4, 2); // TODO: Make this configurable
+            if (distanceSq > followStopRadiusSq) {
+                mob.setAI(true); // Ensure AI is on
+                mob.getPathfinder().moveTo(owner, 1.2);
+            } else {
+                mob.getPathfinder().stopPathfinding();
+            }
         }
+    }
+
+    private void despawnAndNotify(Player owner, Pet pet, String messageKey, String defaultMessage) {
+        despawnPet(owner);
+        pet.setStatus(Pet.PetStatus.STOWED);
+        plugin.getPlayerDataManager().savePlayerPet(owner, pet);
+        plugin.getMessageManager().sendMessage(owner, messageKey, defaultMessage);
     }
 
     private void cleanupPet(UUID ownerId) {

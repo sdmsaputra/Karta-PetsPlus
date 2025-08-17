@@ -60,7 +60,7 @@ public class PetShopCommand implements CommandExecutor {
 
     private void addPet(Player player, String[] args) {
         if (args.length < 3 || args.length > 5) {
-            plugin.getMessageManager().sendMessage(player, "petshop-add-usage", "<red>Usage: /petshop add <entityType> <price> [icon] [description]</red>");
+            plugin.getMessageManager().sendMessage(player, "petshop-add-usage", "<red>Usage: /petshop add <entityType> <price> [icon|texture:<value>] [description]</red>");
             return;
         }
 
@@ -93,11 +93,19 @@ public class PetShopCommand implements CommandExecutor {
             return;
         }
 
-        String icon = args.length > 3 ? args[3].toUpperCase(Locale.ROOT) : "PAPER";
+        String iconArg = args.length > 3 ? args[3] : "PAPER";
         String description = args.length > 4 ? args[4] : "";
 
+        if (iconArg.toLowerCase().startsWith("texture:")) {
+            String texture = iconArg.substring(8);
+            configManager.getPets().set(petPath + ".icon", "PLAYER_HEAD");
+            configManager.getPets().set(petPath + ".head-texture", texture);
+        } else {
+            configManager.getPets().set(petPath + ".icon", iconArg.toUpperCase(Locale.ROOT));
+            configManager.getPets().set(petPath + ".head-texture", null); // Ensure it's not set
+        }
+
         configManager.getPets().set(petPath + ".display-name", "<white>" + entityTypeStr.substring(0, 1).toUpperCase(Locale.ROOT) + entityTypeStr.substring(1).toLowerCase(Locale.ROOT) + "</white>");
-        configManager.getPets().set(petPath + ".icon", icon);
         configManager.getPets().set(petPath + ".price", price);
         configManager.getPets().set(petPath + ".lore", java.util.Collections.singletonList(description));
         configManager.getPets().set(petPath + ".entity-type", entityTypeStr);
