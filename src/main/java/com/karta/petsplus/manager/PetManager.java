@@ -79,4 +79,18 @@ public class PetManager {
             despawnPet(player);
         }
     }
+
+    public boolean isPet(Entity entity) {
+        return activePets.containsValue(entity.getUniqueId());
+    }
+
+    public Player getPetOwner(Entity entity) {
+        UUID petId = entity.getUniqueId();
+        for (Map.Entry<UUID, UUID> entry : activePets.entrySet()) {
+            if (entry.getValue().equals(petId)) {
+                return Bukkit.getPlayer(entry.getKey());
+            }
+        }
+        return null;
+    }
 }
