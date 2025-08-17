@@ -19,6 +19,8 @@ public class ConfigManager {
     private File messagesFile;
     private FileConfiguration pets;
     private File petsFile;
+    private FileConfiguration gui;
+    private File guiFile;
 
     // Behavior settings
     private int behaviorTicks;
@@ -63,12 +65,16 @@ public class ConfigManager {
 
         if (petsFile == null) petsFile = new File(plugin.getDataFolder(), "pets.yml");
         if (!petsFile.exists()) plugin.saveResource("pets.yml", false);
+
+        if (guiFile == null) guiFile = new File(plugin.getDataFolder(), "gui.yml");
+        if (!guiFile.exists()) plugin.saveResource("gui.yml", false);
     }
 
     public void loadConfigs() {
         config = YamlConfiguration.loadConfiguration(configFile);
         messages = YamlConfiguration.loadConfiguration(messagesFile);
         pets = YamlConfiguration.loadConfiguration(petsFile);
+        gui = YamlConfiguration.loadConfiguration(guiFile);
         loadBehaviorSettings();
         plugin.getLogger().info("Configuration files have been loaded.");
     }
@@ -108,6 +114,7 @@ public class ConfigManager {
             config.load(configFile);
             messages.load(messagesFile);
             pets.load(petsFile);
+            gui.load(guiFile);
             loadBehaviorSettings();
             plugin.getLogger().info("Configuration files have been reloaded.");
         } catch (Exception e) {
@@ -128,6 +135,11 @@ public class ConfigManager {
     public FileConfiguration getPets() {
         if (pets == null) loadConfigs();
         return pets;
+    }
+
+    public FileConfiguration getGui() {
+        if (gui == null) loadConfigs();
+        return gui;
     }
 
     public void savePets() {

@@ -35,7 +35,7 @@ public class PetShopGUI extends PagedGUI {
 
     public PetShopGUI(KartaPetsPlus plugin, Player player, int page) {
         super(plugin,
-              "§d§lKartaPetsPlus",
+              plugin.getConfigManager().getGui().getString("pet-shop.title", "<light_purple><bold>KartaPetsPlus</bold></light_purple>"),
               6, // 6 rows
               page,
               (int) Math.ceil((double) getPetIds(plugin).size() / PETS_PER_PAGE));
