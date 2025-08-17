@@ -22,6 +22,7 @@ public class PetsPlus extends JavaPlugin {
 
         // Initialize Storage
         storageManager.init();
+        petManager.init();
 
         // Register Commands
         commandManager.registerCommands();
@@ -31,6 +32,11 @@ public class PetsPlus extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Shutdown PetManager first to save data
+        if (petManager != null) {
+            petManager.shutdown();
+        }
+
         // Shutdown Storage
         if (storageManager != null) {
             storageManager.shutdown();

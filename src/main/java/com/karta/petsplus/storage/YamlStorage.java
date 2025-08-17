@@ -7,6 +7,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -17,7 +19,7 @@ public class YamlStorage implements Storage {
 
     public YamlStorage(PetsPlus plugin) {
         this.plugin = plugin;
-        this.dataFolder = new File(plugin.getDataFolder(), "data");
+        this.dataFolder = new File(plugin.getDataFolder(), "playerdata");
     }
 
     @Override
@@ -37,14 +39,17 @@ public class YamlStorage implements Storage {
         return CompletableFuture.supplyAsync(() -> {
             File playerFile = new File(dataFolder, uuid.toString() + ".yml");
             if (!playerFile.exists()) {
-                return null; // Or a default PetData object
+                // Return a new PetData object for new players
+                return new PetData(null, null, 1, 0, new ArrayList<>());
             }
             FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            String petType = config.getString("pet.type");
-            String petName = config.getString("pet.name");
-            int level = config.getInt("pet.level");
-            double xp = config.getDouble("pet.xp");
-            return new PetData(petType, petName, level, xp);
+            String activePetType = config.getString("active-pet-type");
+            String petName = config.getString("pet-name");
+            int level = config.getInt("level", 1);
+            double xp = config.getDouble("xp", 0);
+            List<String> ownedPets = config.getStringList("owned-pets");
+
+            return new PetData(activePetType, petName, level, xp, ownedPets);
         });
     }
 
@@ -52,11 +57,14 @@ public class YamlStorage implements Storage {
     public CompletableFuture<Void> savePlayerData(UUID uuid, PetData data) {
         return CompletableFuture.runAsync(() -> {
             File playerFile = new File(dataFolder, uuid.toString() + ".yml");
-            FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            config.set("pet.type", data.getActivePetType());
-            config.set("pet.name", data.getPetName());
-            config.set("pet.level", data.getLevel());
-            config.set("pet.xp", data.getXp());
+            FileConfiguration config = new YamlConfiguration(); // Use new config to avoid keeping old data
+
+            config.set("active-pet-type", data.getActivePetType());
+            config.set("pet-name", data.getPetName());
+            config.set("level", data.getLevel());
+            config.set("xp", data.getXp());
+            config.set("owned-pets", data.getOwnedPets());
+
             try {
                 config.save(playerFile);
             } catch (IOException e) {

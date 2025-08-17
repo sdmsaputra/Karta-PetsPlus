@@ -2,9 +2,35 @@
 
 prefix: "&8[&bKartaPetsPlus&8] &r"
 
+# --- General Messages ---
 reload: "%prefix%&aConfiguration and messages reloaded successfully."
 no-permission: "%prefix%&cYou do not have permission to use this command."
-player-only: "%prefix%&cThis command can only be run by a player."
+players-only: "%prefix%&cThis command can only be run by a player."
+unknown-command: "%prefix%&cUnknown command. Use /pets help for a list of commands."
+player-data-loading: "%prefix%&eYour data is loading, please try again in a moment."
+
+# --- Pet Messages ---
+pet-summoned: "%prefix%&aYou have summoned your pet: {pet}"
+pet-dismissed: "%prefix%&eYour pet has been dismissed."
+pet-renamed: "%prefix%&aYour pet has been renamed to {name}."
+no-active-pet: "%prefix%&cYou do not have an active pet."
+pet-type-not-found: "%prefix%&cThe pet type '{type}' was not found."
+
+# --- Command Usage ---
+summon-usage: "%prefix%&cUsage: /pets summon <type>"
+rename-usage: "%prefix%&cUsage: /pets rename <name>"
+
+# --- Pet List ---
+no-pets-owned: "%prefix%&cYou do not own any pets."
+owned-pets-header: "%prefix%&aYour owned pets:"
+owned-pets-entry: "&8- &b{pet_type}"
+
+# --- Help Message ---
 help-message:
-  - "&b/pets &7- Shows this help message."
-  - "&b/pets reload &7- Reloads the configuration."
+  - "&b&lKartaPetsPlus Help"
+  - "&b/pets summon <type> &7- Summons one of your pets."
+  - "&b/pets dismiss &7- Dismisses your active pet."
+  - "&b/pets rename <name> &7- Renames your active pet."
+  - "&b/pets list &7- Lists all the pets you own."
+  - "&b/pets help &7- Shows this help message."
+  - "&b/pets reload &7- &o(Admin) &r&7Reloads the configuration."

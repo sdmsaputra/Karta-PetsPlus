@@ -6,6 +6,9 @@ max-pets-per-player: 1
 # The default pet given to a new player. 'none' for no pet.
 default-pet: none
 
+# The tick delay for the pet follow task. 20 ticks = 1 second.
+follow-task-ticks: 20
+
 # Enable or disable the economy features of the plugin.
 enable-economy: true
 
