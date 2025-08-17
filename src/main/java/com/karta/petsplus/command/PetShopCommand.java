@@ -9,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -35,14 +36,21 @@ public class PetShopCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("add")) {
-                if (!player.hasPermission("kartapetsplus.admin")) {
-                    plugin.getMessageManager().sendMessage(player, "no-permission", "<red>You do not have permission to use this command.</red>");
-                    return true;
-                }
-                addPet(player, args);
-            } else {
-                plugin.getMessageManager().sendMessage(player, "unknown-subcommand", "<red>Unknown subcommand. Usage: /petshop [add]</red>");
+            String subCommand = args[0].toLowerCase(Locale.ROOT);
+            if (!player.hasPermission("kartapetsplus.admin")) {
+                plugin.getMessageManager().sendMessage(player, "no-permission", "<red>You do not have permission to use this command.</red>");
+                return true;
+            }
+            switch (subCommand) {
+                case "add":
+                    addPet(player, args);
+                    break;
+                case "edit":
+                    new PetShopEditCommand(plugin).onCommand(sender, command, label, Arrays.copyOfRange(args, 1, args.length));
+                    break;
+                default:
+                    plugin.getMessageManager().sendMessage(player, "unknown-subcommand", "<red>Unknown subcommand. Usage: /petshop [add|edit]</red>");
+                    break;
             }
         } else {
             com.karta.petsplus.ui.PetShopGUI.openShop(plugin, player, 0);
@@ -51,8 +59,8 @@ public class PetShopCommand implements CommandExecutor {
     }
 
     private void addPet(Player player, String[] args) {
-        if (args.length != 3) {
-            plugin.getMessageManager().sendMessage(player, "petshop-add-usage", "<red>Usage: /petshop add <entityType> <price></red>");
+        if (args.length < 3 || args.length > 5) {
+            plugin.getMessageManager().sendMessage(player, "petshop-add-usage", "<red>Usage: /petshop add <entityType> <price> [icon] [description]</red>");
             return;
         }
 
@@ -85,10 +93,13 @@ public class PetShopCommand implements CommandExecutor {
             return;
         }
 
+        String icon = args.length > 3 ? args[3].toUpperCase(Locale.ROOT) : "PAPER";
+        String description = args.length > 4 ? args[4] : "";
+
         configManager.getPets().set(petPath + ".display-name", "<white>" + entityTypeStr.substring(0, 1).toUpperCase(Locale.ROOT) + entityTypeStr.substring(1).toLowerCase(Locale.ROOT) + "</white>");
-        configManager.getPets().set(petPath + ".icon", "PAPER");
+        configManager.getPets().set(petPath + ".icon", icon);
         configManager.getPets().set(petPath + ".price", price);
-        configManager.getPets().set(petPath + ".lore", new java.util.ArrayList<String>());
+        configManager.getPets().set(petPath + ".lore", java.util.Collections.singletonList(description));
         configManager.getPets().set(petPath + ".entity-type", entityTypeStr);
         configManager.savePets();
 

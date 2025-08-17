@@ -63,7 +63,7 @@ public class PetShopGUI extends PagedGUI {
             if (meta == null) continue;
 
             String displayName = configManager.getPets().getString(petPath + ".display-name", "<red>Unknown Pet</red>");
-            meta.displayName(MiniMessage.miniMessage().deserialize(displayName));
+            meta.displayName(MiniMessage.miniMessage().deserialize("<!i>" + displayName));
 
             double price = configManager.getPets().getDouble(petPath + ".price", 0.0);
             String formattedPrice = plugin.getEconomyManager().format(price);

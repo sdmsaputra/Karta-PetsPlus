@@ -81,4 +81,8 @@ public class PlayerDataManager {
     public boolean hasPet(Player player, String petType) {
         return storageManager.hasPet(player, petType);
     }
+
+    public void savePlayerPet(Player player, Pet pet) {
+        storageManager.savePlayerPet(player, pet);
+    }
 }

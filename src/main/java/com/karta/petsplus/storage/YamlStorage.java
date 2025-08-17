@@ -107,4 +107,16 @@ public class YamlStorage implements Storage {
     public boolean hasPet(Player player, String petType) {
         return getPets(player).stream().anyMatch(p -> p.getPetType().equalsIgnoreCase(petType));
     }
+
+    @Override
+    public void savePlayerPet(Player player, Pet pet) {
+        List<Pet> pets = getPets(player);
+        for (int i = 0; i < pets.size(); i++) {
+            if (pets.get(i).getPetId().equals(pet.getPetId())) {
+                pets.set(i, pet);
+                break;
+            }
+        }
+        savePlayerPets(player);
+    }
 }

@@ -29,4 +29,8 @@ public class MessageManager {
         sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + message, placeholders));
     }
 
+    public String replacePlaceholders(String message, TagResolver... placeholders) {
+        return MiniMessage.miniMessage().serialize(MiniMessage.miniMessage().deserialize(message, placeholders));
+    }
+
 }

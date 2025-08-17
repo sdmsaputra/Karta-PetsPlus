@@ -1,14 +1,16 @@
 # KartaPetsPlus
 
-**Version: 2.2.0**
+**Version: 2.2.1-BETA**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
 
-## What's New in 2.2.0?
+## What's New in 2.2.1-BETA?
 
-- **Italics Fix**: Fixed a bug where item lore in the pet shop would appear italicized by default.
-- **GUI Protection**: The purchase confirmation GUI is now properly protected, preventing players from moving items around.
-- **Pet Shop Command**: Implemented the `/petshop add` command, allowing admins to add new pets to the shop without manual configuration. This includes robust validation to prevent errors.
+- **Pet Rename Feature**: The pet rename feature has been fixed and is now fully functional.
+- **Italics Fix**: Fixed a bug where item names in the GUIs would appear italicized by default.
+- **Placeholder Fix**: Placeholders are now consistently using the `{placeholder}` format.
+- **New Edit Command**: Added the `/petshop edit` command for easy management of pets in the shop.
+- **Improved Add Command**: The `/petshop add` command now supports optional `icon` and `description` arguments.
 
 ## Features
 
@@ -25,7 +27,9 @@ KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to pro
     *   **Permission**: `kartapetsplus.use`
 *   **/petshop** - Opens the pet shop menu.
     *   **Permission**: `kartapetsplus.shop`
-*   **/petshop add <entityType> <price>** - Adds a new pet to the shop.
+*   **/petshop add <entityType> <price> [icon] [description]** - Adds a new pet to the shop.
+    *   **Permission**: `kartapetsplus.admin`
+*   **/petshop edit <petId> <name|icon|description|price|delete> [value]** - Edits a pet in the shop.
     *   **Permission**: `kartapetsplus.admin`
 *   **/petsreload** - Reloads the plugin configuration.
     *   **Permission**: `kartapetsplus.admin`

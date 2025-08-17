@@ -20,4 +20,6 @@ public interface Storage {
     void addPet(Player player, String petType);
 
     boolean hasPet(Player player, String petType);
+
+    void savePlayerPet(Player player, Pet pet);
 }

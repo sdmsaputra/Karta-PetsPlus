@@ -105,4 +105,17 @@ public class MySqlStorage implements Storage {
             return false;
         }
     }
+
+    @Override
+    public void savePlayerPet(Player player, Pet pet) {
+        try (Connection connection = plugin.getDatabaseManager().getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE pets SET pet_name = ?, pet_status = ? WHERE pet_uuid = ?")) {
+            statement.setString(1, pet.getPetName());
+            statement.setString(2, pet.getStatus().name());
+            statement.setString(3, pet.getPetId().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Could not save pet data to database for " + player.getName() + ": " + e.getMessage());
+        }
+    }
 }
