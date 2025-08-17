@@ -3,6 +3,7 @@ package com.karta.petsplus;
 import com.karta.petsplus.command.PetShopCommand;
 import com.karta.petsplus.command.PetsCommand;
 import com.karta.petsplus.command.PetsReloadCommand;
+import com.karta.petsplus.listener.EntityListener;
 import com.karta.petsplus.listener.GUIListener;
 import com.karta.petsplus.listener.PlayerListener;
 import com.karta.petsplus.manager.ConfigManager;
@@ -93,11 +94,11 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     private void registerCommands() {
         getCommand("pets").setExecutor(new PetsCommand(this));
-        getCommand("pets").setTabCompleter(new com.karta.petsplus.command.PetsCommandCompleter());
+        getCommand("pets").setTabCompleter(new com.karta.petsplus.command.PetsCommandCompleter(this));
         getCommand("petshop").setExecutor(new PetShopCommand(this));
-        getCommand("petshop").setTabCompleter(new com.karta.petsplus.command.PetShopCommandCompleter());
+        getCommand("petshop").setTabCompleter(new com.karta.petsplus.command.PetShopCommandCompleter(this));
         getCommand("petsreload").setExecutor(new PetsReloadCommand(this));
-        getCommand("petsreload").setTabCompleter(new com.karta.petsplus.command.PetsReloadCommandCompleter());
+        getCommand("petsreload").setTabCompleter(new com.karta.petsplus.command.PetsReloadCommandCompleter(this));
         getLogger().info("Commands have been registered.");
     }
 
@@ -107,6 +108,7 @@ public final class KartaPetsPlus extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityListener(this), this);
         getLogger().info("Listeners have been registered.");
     }
 

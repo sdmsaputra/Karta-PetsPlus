@@ -1,8 +1,16 @@
 # KartaPetsPlus
 
-**Version: 2.2.1-BETA**
+**Version: 2.2.2-BETA**
 
 KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to provide a seamless and engaging pet ownership experience. It includes a fully functional pet shop, detailed pet management, and extensive customization options.
+
+## What's New in 2.2.2-BETA?
+
+- **Pet Combat Fixes**:
+    - Fixed a bug that allowed pets to attack each other.
+    - Fixed a bug where pets added to the shop via command would attack their owners.
+- **Command Suggestions**: Added tab-completion to all commands, including suggestions for pet IDs, entity types, and item/block icons.
+- **Updated Messages**: The `messages.yml` file has been updated to include all messages used throughout the plugin, with clear categorization for easier management.
 
 ## What's New in 2.2.1-BETA?
 
@@ -20,6 +28,7 @@ KartaPetsPlus is a feature-rich pets plugin for PaperMC servers, designed to pro
 - **Configurable**: Almost everything is configurable, from pet types and prices to messages and menu layouts.
 - **PlaceholderAPI Support**: A wide range of placeholders to display pet information.
 - **MySQL Storage**: Support for storing player data in a MySQL database.
+- **Command Suggestions**: Full tab-completion support for all commands and their arguments.
 
 ## Commands & Permissions
 
