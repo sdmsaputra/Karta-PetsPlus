@@ -4,7 +4,7 @@
 # You can add as many pets as you like. The key (e.g., 'pig') is the internal ID.
 pets:
   pig:
-    display-name: "§ePig Pet"
+    display-name: "<yellow>Pig Pet</yellow>"
     icon: "PLAYER_HEAD"
     head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThiYTc3NTkxMzRlZWRiMzE1YWRkNjMzMjQyMTQ5ZmYzOTljNGNmOTdjZTdhNGQ0ZDhmNWQxODI1MTc0MzUifX19"
     price: 5000.0
@@ -12,7 +12,7 @@ pets:
     abilities:
       - "NONE"
   cow:
-    display-name: "§eCow Pet"
+    display-name: "<yellow>Cow Pet</yellow>"
     icon: "PLAYER_HEAD"
     head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWJkNTU4MzhjNGM0Yjk1MWJmYjQ1NDgyNzU2YjcyYjgwNjhiZTRkOGQxNWUyMzU5N2Q4YjJkZGMxMDU3YTIifX19"
     price: 5000.0
