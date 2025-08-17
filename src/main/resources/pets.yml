@@ -4,7 +4,7 @@
 # You can add as many pets as you like. The key (e.g., 'pig') is the internal ID.
 pets:
   pig:
-    display-name: "§ePig Pet"
+    display-name: "<yellow>Pig Pet</yellow>"
     icon: "PLAYER_HEAD"
     head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThiYTc3NTkxMzRlZWRiMzE1YWRkNjMzMjQyMTQ5ZmYzOTljNGNmOTdjZTdhNGQ0ZDhmNWQxODI1MTc0MzUifX19"
     price: 5000.0
@@ -12,7 +12,7 @@ pets:
     abilities:
       - "NONE"
   cow:
-    display-name: "§eCow Pet"
+    display-name: "<yellow>Cow Pet</yellow>"
     icon: "PLAYER_HEAD"
     head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWJkNTU4MzhjNGM0Yjk1MWJmYjQ1NDgyNzU2YjcyYjgwNjhiZTRkOGQxNWUyMzU5N2Q4YjJkZGMxMDU3YTIifX19"
     price: 5000.0
@@ -20,7 +20,7 @@ pets:
     abilities:
       - "NONE"
   bee:
-    display-name: "<yellow>Buzzy Bee</yellow>"
+    display-name: "<yellow>Bee Pet</yellow>"
     icon: "PLAYER_HEAD"
     head-texture: "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTQ3MzIyZjgzMWUzYzE2OGNmYmQzZTI4ZmU5MjUxNDRiMjYxZTc5ZWIzOWM3NzEzNDlmYWM1NWE4MTI2NDczIn19fQ=="
     price: 4500.0
@@ -32,7 +32,7 @@ pets:
     abilities:
       - "FLYING"
   wolf:
-    display-name: "<white>Loyal Wolf</white>"
+    display-name: "<yellow>Wolf Pet</yellow>"
     icon: "BONE"
     price: 5000.0
     lore:
@@ -44,7 +44,7 @@ pets:
     abilities:
       - "NONE"
   parrot:
-    display-name: "<green>Swift Parrot</green>"
+    display-name: "<yellow>Parrot Pet</yellow>"
     icon: "FEATHER"
     price: 7500.0
     lore:
@@ -55,7 +55,7 @@ pets:
     abilities:
       - "FLYING"
   cat:
-    display-name: "<yellow>Agile Cat</yellow>"
+    display-name: "<yellow>Cat Pet</yellow>"
     icon: "STRING"
     price: 6000.0
     lore:
@@ -66,7 +66,7 @@ pets:
     abilities:
       - "NONE"
   fox:
-    display-name: "<gold>Cunning Fox</gold>"
+    display-name: "<yellow>Fox Pet</yellow>"
     icon: "SWEET_BERRIES"
     price: 8000.0
     lore:
@@ -77,7 +77,7 @@ pets:
     abilities:
       - "NONE"
   rabbit:
-    display-name: "<white>Hopping Rabbit</white>"
+    display-name: "<yellow>Rabbit Pet</yellow>"
     icon: "RABBIT_FOOT"
     price: 5500.0
     lore:
@@ -88,7 +88,7 @@ pets:
     abilities:
       - "NONE"
   polar_bear:
-    display-name: "<white>Arctic Polar Bear</white>"
+    display-name: "<yellow>Polar Bear Pet</yellow>"
     icon: "SNOWBALL"
     price: 12000.0
     lore:
@@ -99,7 +99,7 @@ pets:
     abilities:
       - "NONE"
   ocelot:
-    display-name: "<yellow>Spotted Ocelot</yellow>"
+    display-name: "<yellow>Ocelot Pet</yellow>"
     icon: "TROPICAL_FISH"
     price: 9000.0
     lore:
@@ -110,7 +110,7 @@ pets:
     abilities:
       - "NONE"
   panda:
-    display-name: "<white>Playful Panda</white>"
+    display-name: "<yellow>Panda Pet</yellow>"
     icon: "BAMBOO"
     price: 11000.0
     lore:
@@ -121,7 +121,7 @@ pets:
     abilities:
       - "NONE"
   turtle:
-    display-name: "<green>Wise Turtle</green>"
+    display-name: "<yellow>Turtle Pet</yellow>"
     icon: "SCUTE"
     price: 9500.0
     lore:
@@ -132,7 +132,7 @@ pets:
     abilities:
       - "NONE"
   blaze:
-    display-name: "<gold>Fiery Blaze</gold>"
+    display-name: "<yellow>Blaze Pet</yellow>"
     icon: "BLAZE_ROD"
     price: 25000.0
     lore:
@@ -143,7 +143,7 @@ pets:
     abilities:
       - "FLYING"
   creeper:
-    display-name: "<green>Explosive Creeper</green>"
+    display-name: "<yellow>Creeper Pet</yellow>"
     icon: "GUNPOWDER"
     price: 30000.0
     lore:
@@ -154,7 +154,7 @@ pets:
     abilities:
       - "NONE"
   enderman:
-    display-name: "<dark_purple>Mysterious Enderman</dark_purple>"
+    display-name: "<yellow>Enderman Pet</yellow>"
     icon: "ENDER_PEARL"
     price: 40000.0
     lore:
@@ -165,7 +165,7 @@ pets:
     abilities:
       - "NONE"
   iron_golem:
-    display-name: "<gray>Sturdy Iron Golem</gray>"
+    display-name: "<yellow>Iron Golem Pet</yellow>"
     icon: "IRON_BLOCK"
     price: 50000.0
     lore:
@@ -176,7 +176,7 @@ pets:
     abilities:
       - "NONE"
   snow_golem:
-    display-name: "<white>Chilly Snow Golem</white>"
+    display-name: "<yellow>Snow Golem Pet</yellow>"
     icon: "SNOW_BLOCK"
     price: 15000.0
     lore:
@@ -187,7 +187,7 @@ pets:
     abilities:
       - "NONE"
   ghast:
-    display-name: "<white>Wailing Ghast</white>"
+    display-name: "<yellow>Ghast Pet</yellow>"
     icon: "GHAST_TEAR"
     price: 60000.0
     lore:
@@ -198,7 +198,7 @@ pets:
     abilities:
       - "FLYING"
   allay:
-    display-name: "<aqua>Helpful Allay</aqua>"
+    display-name: "<yellow>Allay Pet</yellow>"
     icon: "AMETHYST_SHARD"
     price: 35000.0
     lore:
@@ -209,7 +209,7 @@ pets:
     abilities:
       - "FLYING"
   axolotl:
-    display-name: "<light_purple>Cute Axolotl</light_purple>"
+    display-name: "<yellow>Axolotl Pet</yellow>"
     icon: "AXOLOTL_BUCKET"
     price: 18000.0
     lore:
@@ -220,7 +220,7 @@ pets:
     abilities:
       - "NONE"
   goat:
-    display-name: "<white>Mountain Goat</white>"
+    display-name: "<yellow>Goat Pet</yellow>"
     icon: "GOAT_HORN"
     price: 13000.0
     lore:
@@ -231,7 +231,7 @@ pets:
     abilities:
       - "NONE"
   hoglin:
-    display-name: "<dark_red>Fearsome Hoglin</dark_red>"
+    display-name: "<yellow>Hoglin Pet</yellow>"
     icon: "PORKCHOP"
     price: 22000.0
     lore:
@@ -239,5 +239,110 @@ pets:
       - ""
       - "<aqua>Price: <white>{price}</white>"
     entity-type: "HOGLIN"
+    abilities:
+      - "NONE"
+  zombie:
+    display-name: "<yellow>Zombie Pet</yellow>"
+    icon: "ZOMBIE_HEAD"
+    price: 1000.0
+    entity-type: "ZOMBIE"
+    abilities:
+      - "NONE"
+  skeleton:
+    display-name: "<yellow>Skeleton Pet</yellow>"
+    icon: "SKELETON_SKULL"
+    price: 1000.0
+    entity-type: "SKELETON"
+    abilities:
+      - "NONE"
+  spider:
+    display-name: "<yellow>Spider Pet</yellow>"
+    icon: "SPIDER_EYE"
+    price: 1000.0
+    entity-type: "SPIDER"
+    abilities:
+      - "NONE"
+  chicken:
+    display-name: "<yellow>Chicken Pet</yellow>"
+    icon: "FEATHER"
+    price: 1000.0
+    entity-type: "CHICKEN"
+    abilities:
+      - "NONE"
+  sheep:
+    display-name: "<yellow>Sheep Pet</yellow>"
+    icon: "WHITE_WOOL"
+    price: 1000.0
+    entity-type: "SHEEP"
+    abilities:
+      - "NONE"
+  squid:
+    display-name: "<yellow>Squid Pet</yellow>"
+    icon: "INK_SAC"
+    price: 1000.0
+    entity-type: "SQUID"
+    abilities:
+      - "NONE"
+  villager:
+    display-name: "<yellow>Villager Pet</yellow>"
+    icon: "EMERALD"
+    price: 10000.0
+    entity-type: "VILLAGER"
+    abilities:
+      - "NONE"
+  cave_spider:
+    display-name: "<yellow>Cave Spider Pet</yellow>"
+    icon: "SPIDER_EYE"
+    price: 2000.0
+    entity-type: "CAVE_SPIDER"
+    abilities:
+      - "NONE"
+  cod:
+    display-name: "<yellow>Cod Pet</yellow>"
+    icon: "COD"
+    price: 500.0
+    entity-type: "COD"
+    abilities:
+      - "NONE"
+  dolphin:
+    display-name: "<yellow>Dolphin Pet</yellow>"
+    icon: "HEART_OF_THE_SEA"
+    price: 15000.0
+    entity-type: "DOLPHIN"
+    abilities:
+      - "NONE"
+  drowned:
+    display-name: "<yellow>Drowned Pet</yellow>"
+    icon: "TRIDENT"
+    price: 5000.0
+    entity-type: "DROWNED"
+    abilities:
+      - "NONE"
+  elder_guardian:
+    display-name: "<yellow>Elder Guardian Pet</yellow>"
+    icon: "PRISMARINE_SHARD"
+    price: 100000.0
+    entity-type: "ELDER_GUARDIAN"
+    abilities:
+      - "NONE"
+  ender_dragon:
+    display-name: "<yellow>Ender Dragon Pet</yellow>"
+    icon: "DRAGON_HEAD"
+    price: 1000000.0
+    entity-type: "ENDER_DRAGON"
+    abilities:
+      - "FLYING"
+  evoker:
+    display-name: "<yellow>Evoker Pet</yellow>"
+    icon: "TOTEM_OF_UNDYING"
+    price: 75000.0
+    entity-type: "EVOKER"
+    abilities:
+      - "NONE"
+  frog:
+    display-name: "<yellow>Frog Pet</yellow>"
+    icon: "OCHRE_FROGLIGHT"
+    price: 3000.0
+    entity-type: "FROG"
     abilities:
       - "NONE"

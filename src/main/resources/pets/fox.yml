@@ -1,5 +1,5 @@
 entity-type: "FOX"
-display-name: "<gold>Cunning Fox</gold>"
+display-name: "<yellow>Fox Pet</yellow>"
 price: 8000.0
 lore:
   - "<gray>A sly and intelligent friend."

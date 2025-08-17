@@ -1,5 +1,5 @@
 entity-type: "ENDERMAN"
-display-name: "<dark_purple>Mysterious Enderman</dark_purple>"
+display-name: "<yellow>Enderman Pet</yellow>"
 price: 40000.0
 lore:
   - "<gray>A teleporting being from the End."

@@ -1,5 +1,5 @@
 entity-type: "IRON_GOLEM"
-display-name: "<gray>Sturdy Iron Golem</gray>"
+display-name: "<yellow>Iron Golem Pet</yellow>"
 price: 50000.0
 lore:
   - "<dark_gray>A powerful protector."

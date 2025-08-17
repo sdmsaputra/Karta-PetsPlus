@@ -1,5 +1,5 @@
 entity-type: "BEE"
-display-name: "<yellow>Buzzy Bee</yellow>"
+display-name: "<yellow>Bee Pet</yellow>"
 price: 4500.0
 lore:
   - "<gray>A friendly bee that loves flowers."

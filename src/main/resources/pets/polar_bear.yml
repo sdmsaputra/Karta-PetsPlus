@@ -1,5 +1,5 @@
 entity-type: "POLAR_BEAR"
-display-name: "<white>Arctic Polar Bear</white>"
+display-name: "<yellow>Polar Bear Pet</yellow>"
 price: 12000.0
 lore:
   - "<gray>A strong and protective bear from the north."

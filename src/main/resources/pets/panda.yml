@@ -1,5 +1,5 @@
 entity-type: "PANDA"
-display-name: "<white>Playful Panda</white>"
+display-name: "<yellow>Panda Pet</yellow>"
 price: 11000.0
 lore:
   - "<gray>A gentle giant that loves bamboo."

@@ -7,8 +7,8 @@ description: A feature-rich pets plugin for PaperMC servers.
 softdepend: [Vault, PlayerPoints, PlaceholderAPI]
 commands:
   pets:
-    description: Opens the pet management menu.
-    usage: /pets
+    description: Opens the pet management menu or use subcommands.
+    usage: /pets [reload|list|rename|remove|stay|follow|generatemobs]
     permission: kartapetsplus.use
   petshop:
     description: Opens the pet shop menu.
@@ -28,4 +28,7 @@ permissions:
     default: true
   kartapetsplus.admin:
     description: Allows access to administrative commands.
+    default: op
+  kartapetsplus.admin.generatemobs:
+    description: Allows generating default mob configurations.
     default: op

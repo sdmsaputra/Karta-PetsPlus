@@ -5,6 +5,7 @@ import com.karta.petsplus.command.subcommand.FollowCommand;
 import com.karta.petsplus.command.subcommand.ListCommand;
 import com.karta.petsplus.command.subcommand.RemoveCommand;
 import com.karta.petsplus.command.subcommand.RenameCommand;
+import com.karta.petsplus.command.subcommand.GenerateMobsCommand;
 import com.karta.petsplus.command.subcommand.ReloadCommand;
 import com.karta.petsplus.command.subcommand.StayCommand;
 import com.karta.petsplus.ui.PetManagementGUI;
@@ -23,6 +24,7 @@ public class PetsCommand extends ParentCommand {
         registerSubCommand(new ListCommand(plugin));
         registerSubCommand(new RemoveCommand(plugin));
         registerSubCommand(new ReloadCommand(plugin));
+        registerSubCommand(new GenerateMobsCommand(plugin));
     }
 
     @Override

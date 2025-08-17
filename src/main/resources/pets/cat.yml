@@ -1,5 +1,5 @@
 entity-type: "CAT"
-display-name: "<yellow>Agile Cat</yellow>"
+display-name: "<yellow>Cat Pet</yellow>"
 price: 6000.0
 lore:
   - "<gray>A sneaky and quick companion."

@@ -1,5 +1,5 @@
 entity-type: "CREEPER"
-display-name: "<green>Explosive Creeper</green>"
+display-name: "<yellow>Creeper Pet</yellow>"
 price: 30000.0
 lore:
   - "<dark_green>A risky but powerful companion."

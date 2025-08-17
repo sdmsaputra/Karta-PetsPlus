@@ -1,5 +1,5 @@
 entity-type: "GHAST"
-display-name: "<white>Wailing Ghast</white>"
+display-name: "<yellow>Ghast Pet</yellow>"
 price: 60000.0
 lore:
   - "<gray>A giant, flying creature from the Nether."

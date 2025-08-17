@@ -1,5 +1,5 @@
 entity-type: "SNOW_GOLEM"
-display-name: "<white>Chilly Snow Golem</white>"
+display-name: "<yellow>Snow Golem Pet</yellow>"
 price: 15000.0
 lore:
   - "<gray>A frosty friend that loves the cold."

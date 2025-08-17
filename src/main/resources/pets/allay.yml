@@ -1,5 +1,5 @@
 entity-type: "ALLAY"
-display-name: "<aqua>Helpful Allay</aqua>"
+display-name: "<yellow>Allay Pet</yellow>"
 price: 35000.0
 lore:
   - "<gray>A friendly spirit that loves to collect items."

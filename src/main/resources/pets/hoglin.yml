@@ -1,5 +1,5 @@
 entity-type: "HOGLIN"
-display-name: "<dark_red>Fearsome Hoglin</dark_red>"
+display-name: "<yellow>Hoglin Pet</yellow>"
 price: 22000.0
 lore:
   - "<gray>A beast from the Crimson Forest."

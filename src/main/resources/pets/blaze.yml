@@ -1,5 +1,5 @@
 entity-type: "BLAZE"
-display-name: "<gold>Fiery Blaze</gold>"
+display-name: "<yellow>Blaze Pet</yellow>"
 price: 25000.0
 lore:
   - "<red>A creature of fire from the Nether."

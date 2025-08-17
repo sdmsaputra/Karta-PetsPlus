@@ -1,5 +1,5 @@
 entity-type: "WOLF"
-display-name: "<white>Loyal Wolf</white>"
+display-name: "<yellow>Wolf Pet</yellow>"
 price: 5000.0
 lore:
   - "<gray>A faithful companion that will follow"

@@ -1,5 +1,5 @@
 entity-type: "RABBIT"
-display-name: "<white>Hopping Rabbit</white>"
+display-name: "<yellow>Rabbit Pet</yellow>"
 price: 5500.0
 lore:
   - "<gray>A fast and cute companion."

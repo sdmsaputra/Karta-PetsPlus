@@ -35,14 +35,17 @@ public class GUIListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) event.getWhoClicked();
-        String inventoryTitle = MiniMessage.miniMessage().serialize(event.getView().title());
+        Component inventoryTitleComponent = event.getView().title();
 
-        String shopTitle = "§d§lKartaPetsPlus";
-        String myPetsTitle = "§d§lMy Pets";
+        String shopTitleString = plugin.getConfigManager().getGui().getString("pet-shop.title", "");
+        Component shopTitleComponent = MiniMessage.miniMessage().deserialize(shopTitleString);
 
-        if (inventoryTitle.equals(shopTitle)) {
+        String myPetsTitleString = plugin.getConfigManager().getGui().getString("pet-menu.title", "");
+        Component myPetsTitleComponent = MiniMessage.miniMessage().deserialize(myPetsTitleString);
+
+        if (inventoryTitleComponent.equals(shopTitleComponent)) {
             handlePetShopClick(event, player);
-        } else if (inventoryTitle.equals(myPetsTitle)) {
+        } else if (inventoryTitleComponent.equals(myPetsTitleComponent)) {
             handleMyPetsClick(event, player);
         }
     }
@@ -150,8 +153,11 @@ public class GUIListener implements Listener {
         ItemStack navItem = inventory.getItem(47); // Next page button slot
         if (navItem == null) return 0; // Default to page 0
 
-        String title = MiniMessage.miniMessage().serialize(inventory.getViewers().get(0).getOpenInventory().title());
-        if (title.equals("§d§lMy Pets")) {
+        Component currentTitle = inventory.getViewers().get(0).getOpenInventory().title();
+        String myPetsTitleString = plugin.getConfigManager().getGui().getString("pet-menu.title", "");
+        Component myPetsTitleComponent = MiniMessage.miniMessage().deserialize(myPetsTitleString);
+
+        if (currentTitle.equals(myPetsTitleComponent)) {
              navItem = inventory.getItem(49); // Back to shop button
         }
 

@@ -1,5 +1,5 @@
 entity-type: "PARROT"
-display-name: "<green>Swift Parrot</green>"
+display-name: "<yellow>Parrot Pet</yellow>"
 price: 7500.0
 lore:
   - "<gray>A colorful bird that soars through the skies."

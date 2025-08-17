@@ -1,5 +1,5 @@
 entity-type: "GOAT"
-display-name: "<white>Mountain Goat</white>"
+display-name: "<yellow>Goat Pet</yellow>"
 price: 13000.0
 lore:
   - "<gray>A goat that loves to climb mountains."
