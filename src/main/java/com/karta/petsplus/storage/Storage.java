@@ -1,27 +1,19 @@
 package com.karta.petsplus.storage;
 
-import com.karta.petsplus.data.Pet;
-import org.bukkit.entity.Player;
+import com.karta.petsplus.PetData;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface Storage {
 
-    void loadPlayerPets(Player player);
+    void init();
 
-    void savePlayerPets(Player player);
+    void shutdown();
 
-    List<Pet> getPets(Player player);
+    CompletableFuture<PetData> loadPlayerData(UUID uuid);
 
-    Optional<Pet> getPet(Player player, UUID petId);
+    CompletableFuture<Void> savePlayerData(UUID uuid, PetData data);
 
-    void addPet(Player player, String petType);
-
-    boolean hasPet(Player player, String petType);
-
-    void savePlayerPet(Player player, Pet pet);
-
-    void removePet(Player player, Pet pet);
+    void createTables();
 }

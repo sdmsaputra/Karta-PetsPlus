@@ -1,9 +1,0 @@
-entity-type: "IRON_GOLEM"
-display-name: "<gray>Sturdy Iron Golem</gray>"
-price: 50000.0
-lore:
-  - "<dark_gray>A powerful protector."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"

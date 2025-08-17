@@ -1,9 +1,0 @@
-entity-type: "OCELOT"
-display-name: "<yellow>Spotted Ocelot</yellow>"
-price: 9000.0
-lore:
-  - "<gray>A shy but loyal jungle cat."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"

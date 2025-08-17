@@ -1,9 +1,0 @@
-entity-type: "TURTLE"
-display-name: "<green>Wise Turtle</green>"
-price: 9500.0
-lore:
-  - "<gray>A slow but steady companion."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"
