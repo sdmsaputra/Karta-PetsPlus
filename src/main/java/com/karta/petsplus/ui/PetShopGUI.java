@@ -45,7 +45,7 @@ public class PetShopGUI extends PagedGUI {
         ConfigManager configManager = plugin.getConfigManager();
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
         List<String> ownedPets = playerDataManager.getPets(player).stream()
-                                                  .map(p -> p.getPetType())
+                                                  .map(p -> p.getPetType().name())
                                                   .collect(Collectors.toList());
 
         for (int i = startIndex; i < endIndex; i++) {

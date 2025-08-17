@@ -54,7 +54,7 @@ public class PetManagementGUI extends PagedGUI {
 
     private ItemStack createPetItem(Pet pet) {
         ConfigManager configManager = plugin.getConfigManager();
-        String petType = pet.getPetType();
+        String petType = pet.getPetType().name().toLowerCase();
         String iconName = configManager.getPets().getString("pets." + petType + ".icon", "BARRIER").toUpperCase();
         Material iconMaterial = Material.getMaterial(iconName);
         if (iconMaterial == null) {

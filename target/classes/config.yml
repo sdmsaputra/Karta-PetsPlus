@@ -55,3 +55,30 @@ pet-behavior:
   # OWNER_ONLY: Only the pet's owner can damage it.
   # ALL: Anyone can damage the pet.
   damage-policy: "INVULNERABLE"
+  # If true, players will not take fall damage while riding a pet.
+  cancel-fall-damage-when-riding-pet: true
+  # If true, pets will be despawned when their owner changes worlds or teleports.
+  remove-pet-on-world-change: true
+  # If true, a GUI will be opened when a player right-clicks their pet.
+  pet-interaction-gui-enabled: true
+
+# Pet Rename settings
+pet-rename:
+  # If true, enables the pet renaming feature.
+  enabled: true
+  # A list of words that are not allowed in pet names.
+  blocked-words:
+    - "admin"
+    - "owner"
+  # A regex pattern for blocking pet names.
+  blocked-pattern: ""
+  # If true, allows players with permission to use color codes in pet names.
+  color-enabled: true
+  # If true, allows players with permission to use hex color codes in pet names.
+  color-hex: true
+  # If true, limits the number of characters in a pet's name.
+  limit-chars-enabled: true
+  # The maximum number of characters allowed in a pet's name.
+  limit-chars-number: 16
+  # If true, trims leading and trailing whitespace from pet names.
+  trim: true

@@ -1,0 +1,9 @@
+entity-type: "CAT"
+display-name: "<yellow>Agile Cat</yellow>"
+price: 6000.0
+lore:
+  - "<gray>A sneaky and quick companion."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "NONE"

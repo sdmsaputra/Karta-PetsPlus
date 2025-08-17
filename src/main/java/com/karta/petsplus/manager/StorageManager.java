@@ -58,4 +58,9 @@ public class StorageManager implements Storage {
     public void savePlayerPet(Player player, Pet pet) {
         storage.savePlayerPet(player, pet);
     }
+
+    @Override
+    public void removePet(Player player, Pet pet) {
+        storage.removePet(player, pet);
+    }
 }

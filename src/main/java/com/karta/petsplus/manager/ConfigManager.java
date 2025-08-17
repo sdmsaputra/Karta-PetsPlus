@@ -29,6 +29,19 @@ public class ConfigManager {
     private boolean autoRespawnOnDeath;
     private List<String> blacklistedWorlds;
     private DamagePolicy damagePolicy;
+    private boolean cancelFallDamageWhenRidingPet;
+    private boolean removePetOnWorldChange;
+    private boolean petInteractionGuiEnabled;
+
+    // Rename settings
+    private boolean renameEnabled;
+    private List<String> renameBlockedWords;
+    private String renameBlockedPattern;
+    private boolean renameColorEnabled;
+    private boolean renameColorHex;
+    private boolean renameLimitCharsEnabled;
+    private int renameLimitCharsNumber;
+    private boolean renameTrim;
 
     public enum DamagePolicy {
         INVULNERABLE,
@@ -75,6 +88,19 @@ public class ConfigManager {
             plugin.getLogger().log(Level.WARNING, "Invalid damage policy found in config.yml. Defaulting to INVULNERABLE.");
             damagePolicy = DamagePolicy.INVULNERABLE;
         }
+        cancelFallDamageWhenRidingPet = getConfig().getBoolean("pet-behavior.cancel-fall-damage-when-riding-pet", true);
+        removePetOnWorldChange = getConfig().getBoolean("pet-behavior.remove-pet-on-world-change", true);
+        petInteractionGuiEnabled = getConfig().getBoolean("pet-behavior.pet-interaction-gui-enabled", true);
+
+        // Load rename settings
+        renameEnabled = getConfig().getBoolean("pet-rename.enabled", true);
+        renameBlockedWords = getConfig().getStringList("pet-rename.blocked-words");
+        renameBlockedPattern = getConfig().getString("pet-rename.blocked-pattern", "");
+        renameColorEnabled = getConfig().getBoolean("pet-rename.color-enabled", true);
+        renameColorHex = getConfig().getBoolean("pet-rename.color-hex", true);
+        renameLimitCharsEnabled = getConfig().getBoolean("pet-rename.limit-chars-enabled", true);
+        renameLimitCharsNumber = getConfig().getInt("pet-rename.limit-chars-number", 16);
+        renameTrim = getConfig().getBoolean("pet-rename.trim", true);
     }
 
     public void reloadConfigs() {
@@ -123,4 +149,17 @@ public class ConfigManager {
     public boolean isAutoRespawnOnDeath() { return autoRespawnOnDeath; }
     public List<String> getBlacklistedWorlds() { return Collections.unmodifiableList(blacklistedWorlds); }
     public DamagePolicy getDamagePolicy() { return damagePolicy; }
+    public boolean isCancelFallDamageWhenRidingPet() { return cancelFallDamageWhenRidingPet; }
+    public boolean isRemovePetOnWorldChange() { return removePetOnWorldChange; }
+    public boolean isPetInteractionGuiEnabled() { return petInteractionGuiEnabled; }
+
+    // --- Rename Settings Getters ---
+    public boolean isRenameEnabled() { return renameEnabled; }
+    public List<String> getRenameBlockedWords() { return renameBlockedWords; }
+    public String getRenameBlockedPattern() { return renameBlockedPattern; }
+    public boolean isRenameColorEnabled() { return renameColorEnabled; }
+    public boolean isRenameColorHex() { return renameColorHex; }
+    public boolean isRenameLimitCharsEnabled() { return renameLimitCharsEnabled; }
+    public int getRenameLimitCharsNumber() { return renameLimitCharsNumber; }
+    public boolean isRenameTrim() { return renameTrim; }
 }

@@ -1,0 +1,9 @@
+entity-type: "GOAT"
+display-name: "<white>Mountain Goat</white>"
+price: 13000.0
+lore:
+  - "<gray>A goat that loves to climb mountains."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "NONE"

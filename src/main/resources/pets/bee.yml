@@ -1,0 +1,9 @@
+entity-type: "BEE"
+display-name: "<yellow>Buzzy Bee</yellow>"
+price: 4500.0
+lore:
+  - "<gray>A friendly bee that loves flowers."
+  - ""
+  - "<aqua>Price: <white>{price}</white>"
+abilities:
+  - "FLYING"

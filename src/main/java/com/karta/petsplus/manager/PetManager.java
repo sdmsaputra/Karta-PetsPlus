@@ -47,7 +47,12 @@ public class PetManager {
             despawnPet(player);
         }
 
-        String petTypeStr = plugin.getConfigManager().getPets().getString("pets." + pet.getPetType() + ".entity-type");
+        String petTypeStr = plugin.getPetConfigManager().getPetConfig(pet.getPetType()).getString("entity-type");
+        if (petTypeStr == null) {
+            logDebug("Entity type for pet " + pet.getPetType() + " is not defined in its configuration file.");
+            return;
+        }
+
         EntityType entityType;
         try {
             entityType = EntityType.valueOf(petTypeStr.toUpperCase());
@@ -218,7 +223,10 @@ public class PetManager {
                     Block ground = checkLoc.getBlock();
                     Block body = checkLoc.clone().add(0, 1, 0).getBlock();
                     Block head = checkLoc.clone().add(0, 2, 0).getBlock();
-                    if (!ground.getType().isSolid() && body.getType() == Material.AIR && head.getType() == Material.AIR) {
+
+                    // A safe location requires a solid block for the ground, with air for the body and head.
+                    if (ground.getType().isSolid() && body.getType() == Material.AIR && head.getType() == Material.AIR) {
+                        // The pet is spawned at the 'body' location, so its feet are on the 'ground' block.
                         return body.getLocation();
                     }
                 }

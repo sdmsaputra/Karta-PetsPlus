@@ -3,15 +3,21 @@ package com.karta.petsplus;
 import com.karta.petsplus.command.PetShopCommand;
 import com.karta.petsplus.command.PetsCommand;
 import com.karta.petsplus.command.PetsReloadCommand;
+import com.karta.petsplus.listener.DamageListener;
 import com.karta.petsplus.listener.EntityListener;
 import com.karta.petsplus.listener.GUIListener;
+import com.karta.petsplus.listener.LocationChangeListener;
+import com.karta.petsplus.listener.PetEventListener;
+import com.karta.petsplus.listener.PetSpawnListener;
 import com.karta.petsplus.listener.PlayerListener;
+import com.karta.petsplus.listener.InteractListener;
 import com.karta.petsplus.manager.ConfigManager;
 import com.karta.petsplus.manager.EconomyManager;
 import com.karta.petsplus.manager.GuiManager;
 import com.karta.petsplus.manager.MessageManager;
 import com.karta.petsplus.manager.DatabaseManager;
 import com.karta.petsplus.manager.PetManager;
+import com.karta.petsplus.manager.PetConfigManager;
 import com.karta.petsplus.manager.PlayerDataManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -33,6 +39,7 @@ public final class KartaPetsPlus extends JavaPlugin {
     private GuiManager guiManager;
     private DatabaseManager databaseManager;
     private PetManager petManager;
+    private PetConfigManager petConfigManager;
 
     @Override
     public void onEnable() {
@@ -57,6 +64,9 @@ public final class KartaPetsPlus extends JavaPlugin {
 
         // Setup pet manager
         petManager = new PetManager(this);
+
+        // Setup pet config manager
+        petConfigManager = new PetConfigManager(this);
 
         // Initialize economy manager and check for dependencies
         economyManager = new EconomyManager(this);
@@ -120,6 +130,11 @@ public final class KartaPetsPlus extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
         getServer().getPluginManager().registerEvents(new EntityListener(this), this);
+        getServer().getPluginManager().registerEvents(new DamageListener(this), this);
+        getServer().getPluginManager().registerEvents(new PetEventListener(this), this);
+        getServer().getPluginManager().registerEvents(new LocationChangeListener(this), this);
+        getServer().getPluginManager().registerEvents(new PetSpawnListener(this), this);
+        getServer().getPluginManager().registerEvents(new InteractListener(this), this);
         getLogger().info("Listeners have been registered.");
     }
 
@@ -184,5 +199,14 @@ public final class KartaPetsPlus extends JavaPlugin {
      */
     public PetManager getPetManager() {
         return petManager;
+    }
+
+    /**
+     * Gets the pet config manager.
+     *
+     * @return The pet config manager instance.
+     */
+    public PetConfigManager getPetConfigManager() {
+        return petConfigManager;
     }
 }
