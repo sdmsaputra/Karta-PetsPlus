@@ -1,9 +1,0 @@
-entity-type: "BLAZE"
-display-name: "<gold>Fiery Blaze</gold>"
-price: 25000.0
-lore:
-  - "<red>A creature of fire from the Nether."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "FLYING"

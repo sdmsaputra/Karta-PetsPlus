@@ -1,9 +1,0 @@
-entity-type: "POLAR_BEAR"
-display-name: "<white>Arctic Polar Bear</white>"
-price: 12000.0
-lore:
-  - "<gray>A strong and protective bear from the north."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"

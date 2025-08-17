@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.karta.petsplus'
+version = '1.0.0'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
+}
+
+shadowJar {
+    archiveClassifier.set('') // Do not append 'all' to the jar name
+    archiveFileName.set("KartaPetsPlus.jar")
+    destinationDirectory.set(file("build/libs"))
+    // relocate 'mysql', 'com.karta.petsplus.lib.mysql'
+    // relocate 'org.sqlite', 'com.karta.petsplus.lib.sqlite'
+}
+
+tasks.build {
+    dependsOn shadowJar
+}

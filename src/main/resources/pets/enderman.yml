@@ -1,9 +1,0 @@
-entity-type: "ENDERMAN"
-display-name: "<dark_purple>Mysterious Enderman</dark_purple>"
-price: 40000.0
-lore:
-  - "<gray>A teleporting being from the End."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"

@@ -1,9 +1,0 @@
-entity-type: "HOGLIN"
-display-name: "<dark_red>Fearsome Hoglin</dark_red>"
-price: 22000.0
-lore:
-  - "<gray>A beast from the Crimson Forest."
-  - ""
-  - "<aqua>Price: <white>{price}</white>"
-abilities:
-  - "NONE"
