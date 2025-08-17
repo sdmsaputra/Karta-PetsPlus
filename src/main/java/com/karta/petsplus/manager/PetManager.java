@@ -14,6 +14,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,11 +36,11 @@ public class PetManager {
 
     public void summonPet(Player player, Pet pet) {
         if (plugin.getConfigManager().getBlacklistedWorlds().contains(player.getWorld().getName())) {
-            plugin.getMessageManager().sendMessage(player, "cannot-summon-in-world");
+            plugin.getMessageManager().sendMessage(player, "cannot-summon-in-world", "<red>You cannot summon pets in this world.</red>");
             return;
         }
         if (activePets.size() >= plugin.getConfigManager().getMaxActivePetsPerPlayer() && !player.hasPermission("kartapetsplus.bypass.limit")) {
-            plugin.getMessageManager().sendMessage(player, "pet-limit-reached");
+            plugin.getMessageManager().sendMessage(player, "pet-limit-reached", "<red>You have reached the maximum number of active pets.</red>");
             return;
         }
         if (isPetActive(player)) {
@@ -71,8 +72,8 @@ public class PetManager {
 
             activePets.put(player.getUniqueId(), spawnedPet.getUniqueId());
             pet.setStatus(Pet.PetStatus.SUMMONED);
-            plugin.getStorageManager().savePlayerPet(player, pet);
-            plugin.getMessageManager().sendMessage(player, "pet-summoned", Map.of("pet_name", pet.getPetName()));
+            plugin.getPlayerDataManager().savePlayerPet(player, pet);
+            plugin.getMessageManager().sendMessage(player, "pet-summoned", "<green>You have summoned <pet_name>!</green>", Placeholder.parsed("pet_name", pet.getPetName()));
             logDebug("Summoned pet " + pet.getPetType() + " for player " + player.getName());
         });
     }
@@ -92,8 +93,8 @@ public class PetManager {
         despawnPet(player);
         getActivePet(player).ifPresent(pet -> {
             pet.setStatus(Pet.PetStatus.STOWED);
-            plugin.getStorageManager().savePlayerPet(player, pet);
-            plugin.getMessageManager().sendMessage(player, "pet-stowed", Map.of("pet_name", pet.getPetName()));
+            plugin.getPlayerDataManager().savePlayerPet(player, pet);
+            plugin.getMessageManager().sendMessage(player, "pet-stowed", "<gray>You have stowed <pet_name>.</gray>", Placeholder.parsed("pet_name", pet.getPetName()));
         });
     }
 
@@ -124,7 +125,7 @@ public class PetManager {
     }
 
     public Optional<Pet> getActivePet(Player player) {
-        return plugin.getStorageManager().getPets(player).stream()
+        return plugin.getPlayerDataManager().getPets(player).stream()
             .filter(p -> p.getStatus() == Pet.PetStatus.SUMMONED || p.getStatus() == Pet.PetStatus.STAY)
             .findFirst();
     }
@@ -174,7 +175,7 @@ public class PetManager {
                 if (petData.getStatus() == Pet.PetStatus.SUMMONED) {
                     handleFollowing(owner, petEntity, teleportDistSq);
                 } else if (petData.getStatus() == Pet.PetStatus.STAY) {
-                     if (petEntity instanceof Mob) ((Mob) petEntity).getPathfinder().stop();
+                     if (petEntity instanceof Mob) ((Mob) petEntity).getPathfinder().stopPathfinding();
                 }
             }, () -> cleanupPet(ownerId));
         }

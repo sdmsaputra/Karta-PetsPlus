@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import java.util.Map;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class PetsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            plugin.getMessageManager().sendMessage(sender, "player-only-command");
+            plugin.getMessageManager().sendMessage(sender, "player-only-command", "<red>This command can only be run by a player.</red>");
             return true;
         }
 
@@ -43,32 +44,32 @@ public class PetsCommand implements CommandExecutor {
 
         if ("stay".equals(subCommand)) {
             if (activePetOpt.isEmpty()) {
-                plugin.getMessageManager().sendMessage(player, "no-pet-active");
+                plugin.getMessageManager().sendMessage(player, "no-pet-active", "<red>You do not have an active pet.</red>");
                 return true;
             }
             Pet activePet = activePetOpt.get();
             if (activePet.getStatus() == Pet.PetStatus.STAY) {
-                plugin.getMessageManager().sendMessage(player, "pet-already-staying");
+                plugin.getMessageManager().sendMessage(player, "pet-already-staying", "<red>Your pet is already staying.</red>");
             } else {
                 activePet.setStatus(Pet.PetStatus.STAY);
-                plugin.getStorageManager().savePlayerPet(player, activePet);
-                plugin.getMessageManager().sendMessage(player, "pet-now-staying", Map.of("pet_name", activePet.getPetName()));
+                plugin.getPlayerDataManager().savePlayerPet(player, activePet);
+                plugin.getMessageManager().sendMessage(player, "pet-now-staying", "<green><pet_name> is now staying.</green>", Placeholder.parsed("pet_name", activePet.getPetName()));
             }
             return true;
         }
 
         if ("follow".equals(subCommand)) {
             if (activePetOpt.isEmpty()) {
-                plugin.getMessageManager().sendMessage(player, "no-pet-active");
+                plugin.getMessageManager().sendMessage(player, "no-pet-active", "<red>You do not have an active pet.</red>");
                 return true;
             }
             Pet activePet = activePetOpt.get();
             if (activePet.getStatus() == Pet.PetStatus.SUMMONED) {
-                plugin.getMessageManager().sendMessage(player, "pet-already-following");
+                plugin.getMessageManager().sendMessage(player, "pet-already-following", "<red>Your pet is already following you.</red>");
             } else {
                 activePet.setStatus(Pet.PetStatus.SUMMONED);
-                plugin.getStorageManager().savePlayerPet(player, activePet);
-                plugin.getMessageManager().sendMessage(player, "pet-now-following", Map.of("pet_name", activePet.getPetName()));
+                plugin.getPlayerDataManager().savePlayerPet(player, activePet);
+                plugin.getMessageManager().sendMessage(player, "pet-now-following", "<green><pet_name> is now following you.</green>", Placeholder.parsed("pet_name", activePet.getPetName()));
             }
             return true;
         }

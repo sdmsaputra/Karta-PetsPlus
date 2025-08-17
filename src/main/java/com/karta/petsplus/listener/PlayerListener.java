@@ -28,10 +28,10 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            plugin.getStorageManager().loadPlayerPets(player);
+            plugin.getPlayerDataManager().loadPlayerPets(player);
 
             if (plugin.getConfigManager().isAutoRespawnOnJoin()) {
-                Optional<Pet> petToSummon = plugin.getStorageManager().getPets(player).stream()
+                Optional<Pet> petToSummon = plugin.getPlayerDataManager().getPets(player).stream()
                     .filter(p -> p.getStatus() == Pet.PetStatus.SUMMONED || p.getStatus() == Pet.PetStatus.STAY)
                     .findFirst();
 
@@ -45,7 +45,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         plugin.getPetManager().handlePlayerQuit(event.getPlayer());
-        plugin.getStorageManager().savePlayerPets(event.getPlayer());
+        plugin.getPlayerDataManager().savePlayerPets(event.getPlayer());
     }
 
     @EventHandler
@@ -57,7 +57,7 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         if (plugin.getConfigManager().isAutoRespawnOnDeath()) {
             Player player = event.getPlayer();
-            Optional<Pet> petToSummon = plugin.getStorageManager().getPets(player).stream()
+            Optional<Pet> petToSummon = plugin.getPlayerDataManager().getPets(player).stream()
                 .filter(p -> p.getStatus() == Pet.PetStatus.SUMMONED || p.getStatus() == Pet.PetStatus.STAY)
                 .findFirst();
 
@@ -74,7 +74,7 @@ public class PlayerListener implements Listener {
             // Check world blacklist
             if (plugin.getConfigManager().getBlacklistedWorlds().contains(player.getWorld().getName())) {
                 plugin.getPetManager().stowPet(player);
-                plugin.getMessageManager().sendMessage(player, "pet-despawned-world");
+                plugin.getMessageManager().sendMessage(player, "pet-despawned-world", "<gray>Your pet has been stowed because you entered a disabled world.</gray>");
                 return;
             }
 
