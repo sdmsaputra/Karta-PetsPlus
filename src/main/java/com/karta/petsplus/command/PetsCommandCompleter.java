@@ -21,7 +21,17 @@ public class PetsCommandCompleter implements TabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        // No sub-commands for /pets, so return an empty list
+        if (args.length == 1) {
+            if (sender instanceof org.bukkit.entity.Player) {
+                org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
+                if (plugin.getPetManager().isPetActive(player)) {
+                    List<String> subcommands = java.util.Arrays.asList("stay", "follow");
+                    return subcommands.stream()
+                            .filter(s -> s.startsWith(args[0].toLowerCase()))
+                            .collect(java.util.stream.Collectors.toList());
+                }
+            }
+        }
         return new ArrayList<>();
     }
 }

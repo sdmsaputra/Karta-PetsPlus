@@ -46,3 +46,12 @@ pet-stowed: "<gray>You have stowed your pet, {pet_name}.</gray>"
 enter-new-name: "<green>Please enter the new name for your pet in chat. Type 'cancel' to abort.</green>"
 rename-cancelled: "<red>Pet renaming has been cancelled.</red>"
 rename-success: "<green>Your pet has been successfully renamed to {new_name}!</green>"
+
+# Pet behavior messages
+no-pet-active: "<red>You do not have an active pet.</red>"
+pet-now-staying: "<gray>Your pet, {pet_name}, is now staying put.</gray>"
+pet-already-staying: "<yellow>Your pet is already staying.</yellow>"
+pet-now-following: "<green>Your pet, {pet_name}, is now following you again.</green>"
+pet-already-following: "<yellow>Your pet is already following you.</yellow>"
+pet-despawned-world: "<red>Your pet has been despawned because this world is blacklisted.</red>"
+cannot-summon-in-world: "<red>You cannot summon pets in this world.</red>"

@@ -69,7 +69,11 @@ public class Pet {
      * Enum representing the current status of a pet.
      */
     public enum PetStatus {
+        /** The pet is active and following the owner. */
         SUMMONED,
-        STOWED
+        /** The pet is not spawned in the world. */
+        STOWED,
+        /** The pet is active in the world but stationary. */
+        STAY
     }
 }

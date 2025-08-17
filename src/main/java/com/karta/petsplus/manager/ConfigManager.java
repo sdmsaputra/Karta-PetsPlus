@@ -6,11 +6,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
 
-/**
- * Manages the plugin's configuration files.
- * This class handles loading, creating, and reloading config.yml, messages.yml, and pets.yml.
- */
 public class ConfigManager {
 
     private final KartaPetsPlus plugin;
@@ -21,105 +20,107 @@ public class ConfigManager {
     private FileConfiguration pets;
     private File petsFile;
 
+    // Behavior settings
+    private int behaviorTicks;
+    private int maxActivePetsPerPlayer;
+    private double teleportDistance;
+    private boolean debugLogging;
+    private boolean autoRespawnOnJoin;
+    private boolean autoRespawnOnDeath;
+    private List<String> blacklistedWorlds;
+    private DamagePolicy damagePolicy;
+
+    public enum DamagePolicy {
+        INVULNERABLE,
+        OWNER_ONLY,
+        ALL
+    }
+
     public ConfigManager(KartaPetsPlus plugin) {
         this.plugin = plugin;
         saveDefaultConfigs();
     }
 
-    /**
-     * Saves the default configuration files from the JAR to the plugin's data folder if they do not already exist.
-     */
     public void saveDefaultConfigs() {
-        if (configFile == null) {
-            configFile = new File(plugin.getDataFolder(), "config.yml");
-        }
-        if (!configFile.exists()) {
-            plugin.saveResource("config.yml", false);
-        }
+        if (configFile == null) configFile = new File(plugin.getDataFolder(), "config.yml");
+        if (!configFile.exists()) plugin.saveResource("config.yml", false);
 
-        if (messagesFile == null) {
-            messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        }
-        if (!messagesFile.exists()) {
-            plugin.saveResource("messages.yml", false);
-        }
+        if (messagesFile == null) messagesFile = new File(plugin.getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) plugin.saveResource("messages.yml", false);
 
-        if (petsFile == null) {
-            petsFile = new File(plugin.getDataFolder(), "pets.yml");
-        }
-        if (!petsFile.exists()) {
-            plugin.saveResource("pets.yml", false);
-        }
+        if (petsFile == null) petsFile = new File(plugin.getDataFolder(), "pets.yml");
+        if (!petsFile.exists()) plugin.saveResource("pets.yml", false);
     }
 
-    /**
-     * Loads all configuration files into memory.
-     */
     public void loadConfigs() {
         config = YamlConfiguration.loadConfiguration(configFile);
         messages = YamlConfiguration.loadConfiguration(messagesFile);
         pets = YamlConfiguration.loadConfiguration(petsFile);
+        loadBehaviorSettings();
         plugin.getLogger().info("Configuration files have been loaded.");
     }
 
-    /**
-     * Reloads all configuration files from disk.
-     */
+    private void loadBehaviorSettings() {
+        behaviorTicks = getConfig().getInt("pet-behavior.ticks-per-update", 10);
+        maxActivePetsPerPlayer = getConfig().getInt("pet-behavior.max-active-pets-per-player", 1);
+        teleportDistance = getConfig().getDouble("pet-behavior.teleport-distance", 15.0);
+        debugLogging = getConfig().getBoolean("pet-behavior.debug-logging", false);
+        autoRespawnOnJoin = getConfig().getBoolean("pet-behavior.auto-respawn-on-join", true);
+        autoRespawnOnDeath = getConfig().getBoolean("pet-behavior.auto-respawn-on-death", true);
+        blacklistedWorlds = getConfig().getStringList("pet-behavior.world-blacklist");
+
+        try {
+            damagePolicy = DamagePolicy.valueOf(getConfig().getString("pet-behavior.damage-policy", "INVULNERABLE").toUpperCase());
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().log(Level.WARNING, "Invalid damage policy found in config.yml. Defaulting to INVULNERABLE.");
+            damagePolicy = DamagePolicy.INVULNERABLE;
+        }
+    }
+
     public void reloadConfigs() {
         try {
             config.load(configFile);
             messages.load(messagesFile);
             pets.load(petsFile);
+            loadBehaviorSettings();
             plugin.getLogger().info("Configuration files have been reloaded.");
         } catch (Exception e) {
             plugin.getLogger().severe("Could not reload configuration files: " + e.getMessage());
         }
     }
 
-    /**
-     * Gets the main plugin configuration (config.yml).
-     * @return The FileConfiguration for config.yml.
-     */
     public FileConfiguration getConfig() {
-        if (config == null) {
-            loadConfigs();
-        }
+        if (config == null) loadConfigs();
         return config;
     }
 
-    /**
-     * Gets the messages configuration (messages.yml).
-     * @return The FileConfiguration for messages.yml.
-     */
     public FileConfiguration getMessages() {
-        if (messages == null) {
-            loadConfigs();
-        }
+        if (messages == null) loadConfigs();
         return messages;
     }
 
-    /**
-     * Gets the pets configuration (pets.yml).
-     * @return The FileConfiguration for pets.yml.
-     */
     public FileConfiguration getPets() {
-        if (pets == null) {
-            loadConfigs();
-        }
+        if (pets == null) loadConfigs();
         return pets;
     }
 
-    /**
-     * Saves the pets configuration to pets.yml.
-     */
     public void savePets() {
-        if (pets == null || petsFile == null) {
-            return;
-        }
+        if (pets == null || petsFile == null) return;
         try {
             pets.save(petsFile);
         } catch (IOException e) {
             plugin.getLogger().severe("Could not save pets.yml: " + e.getMessage());
         }
     }
+
+    // --- Behavior Settings Getters ---
+
+    public int getBehaviorTicks() { return behaviorTicks; }
+    public int getMaxActivePetsPerPlayer() { return maxActivePetsPerPlayer; }
+    public double getTeleportDistance() { return teleportDistance; }
+    public boolean isDebugLogging() { return debugLogging; }
+    public boolean isAutoRespawnOnJoin() { return autoRespawnOnJoin; }
+    public boolean isAutoRespawnOnDeath() { return autoRespawnOnDeath; }
+    public List<String> getBlacklistedWorlds() { return Collections.unmodifiableList(blacklistedWorlds); }
+    public DamagePolicy getDamagePolicy() { return damagePolicy; }
 }
