@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,9 +22,13 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class GUIListener implements Listener {
+
+    private final Map<UUID, Pet> renaming = new HashMap<>();
 
     private final KartaPetsPlus plugin;
 
@@ -61,7 +66,7 @@ public class GUIListener implements Listener {
         if (data.has(actionKey, PersistentDataType.STRING)) {
             handleActionClick(player, inventory, data.get(actionKey, PersistentDataType.STRING), data);
         } else {
-            handleItemClick(player, inventoryTitle, shopTitle, clickedItem);
+            handleItemClick(player, inventoryTitle, shopTitle, clickedItem, event);
         }
     }
 
@@ -93,7 +98,7 @@ public class GUIListener implements Listener {
         }
     }
 
-    private void handleItemClick(Player player, Component inventoryTitle, Component shopTitle, ItemStack clickedItem) {
+    private void handleItemClick(Player player, Component inventoryTitle, Component shopTitle, ItemStack clickedItem, InventoryClickEvent event) {
         PersistentDataContainer data = clickedItem.getItemMeta().getPersistentDataContainer();
 
         if (inventoryTitle.equals(shopTitle)) {
@@ -108,17 +113,48 @@ public class GUIListener implements Listener {
             if (petUuidStr != null) {
                 UUID petUuid = UUID.fromString(petUuidStr);
                 plugin.getPlayerDataManager().getPet(player, petUuid).ifPresent(pet -> {
-                    if (pet.getStatus() == Pet.PetStatus.STOWED) {
-                        plugin.getPetManager().summonPet(player, pet);
-                    } else {
-                        plugin.getPetManager().despawnPet(player);
+                    if (event.isLeftClick()) {
+                        if (pet.getStatus() == Pet.PetStatus.STOWED) {
+                            plugin.getPetManager().summonPet(player, pet);
+                        } else {
+                            plugin.getPetManager().despawnPet(player);
+                        }
+                        // Refresh the GUI
+                        int currentPage = getCurrentPage(player.getOpenInventory().getTopInventory());
+                        PetManagementGUI.open(plugin, player, currentPage);
+                    } else if (event.isRightClick()) {
+                        renamePet(player, pet);
                     }
-                    // Refresh the GUI
-                    int currentPage = getCurrentPage(player.getOpenInventory().getTopInventory());
-                    PetManagementGUI.open(plugin, player, currentPage);
                 });
             }
         }
+    }
+
+    private void renamePet(Player player, Pet pet) {
+        renaming.put(player.getUniqueId(), pet);
+        player.closeInventory();
+        plugin.getMessageManager().sendMessage(player, "enter-new-name", "<green>Please enter the new name for your pet in chat. Type 'cancel' to abort.</green>");
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
+        if (!renaming.containsKey(player.getUniqueId())) {
+            return;
+        }
+
+        event.setCancelled(true);
+        String newName = event.getMessage();
+        Pet pet = renaming.remove(player.getUniqueId());
+
+        if (newName.equalsIgnoreCase("cancel")) {
+            plugin.getMessageManager().sendMessage(player, "rename-cancelled", "<red>Pet renaming has been cancelled.</red>");
+            return;
+        }
+
+        pet.setPetName(newName);
+        plugin.getPlayerDataManager().savePlayerPet(player, pet);
+        plugin.getMessageManager().sendMessage(player, "rename-success", "<green>Your pet has been successfully renamed to {new_name}!</green>", Placeholder.parsed("new_name", newName));
     }
 
     private void purchasePet(Player player, String petId) {
@@ -135,7 +171,7 @@ public class GUIListener implements Listener {
             economyManager.getVaultEconomy().withdrawPlayer(player, price);
             playerDataManager.addPet(player, petId);
             String petName = plugin.getConfigManager().getPets().getString("pets." + petId + ".display-name", petId);
-            plugin.getMessageManager().sendMessage(player, "pet-purchase-success", "<green>You have successfully purchased <pet_name>!</green>", Placeholder.parsed("pet_name", petName));
+            plugin.getMessageManager().sendMessage(player, "pet-purchase-success", "<green>You have successfully purchased {pet_name}!</green>", Placeholder.parsed("pet_name", petName));
             player.closeInventory();
         } else {
             plugin.getMessageManager().sendMessage(player, "not-enough-money", "<red>You do not have enough money to purchase this pet.</red>");

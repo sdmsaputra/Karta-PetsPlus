@@ -7,6 +7,7 @@ import com.karta.petsplus.manager.PlayerDataManager;
 import com.karta.petsplus.ui.lib.PagedGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -64,7 +65,8 @@ public class PetManagementGUI extends PagedGUI {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.displayName(MiniMessage.miniMessage().deserialize(pet.getPetName()));
+        String petName = plugin.getMessageManager().replacePlaceholders(pet.getPetName(), Placeholder.parsed("pet_name", pet.getPetName()));
+        meta.displayName(MiniMessage.miniMessage().deserialize("<!i>" + petName));
 
         List<Component> lore = new ArrayList<>();
         String petTypeName = configManager.getPets().getString("pets." + petType + ".display-name", petType);

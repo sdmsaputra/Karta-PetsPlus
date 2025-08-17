@@ -53,4 +53,9 @@ public class StorageManager implements Storage {
     public boolean hasPet(Player player, String petType) {
         return storage.hasPet(player, petType);
     }
+
+    @Override
+    public void savePlayerPet(Player player, Pet pet) {
+        storage.savePlayerPet(player, pet);
+    }
 }
