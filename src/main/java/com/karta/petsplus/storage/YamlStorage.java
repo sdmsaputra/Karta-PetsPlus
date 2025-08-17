@@ -95,7 +95,7 @@ public class YamlStorage implements Storage {
     @Override
     public void addPet(Player player, String petType) {
         String displayName = plugin.getConfigManager().getPets().getString("pets." + petType + ".display-name", "My Pet");
-        Pet newPet = new Pet(player.getUniqueId(), PetType.valueOf(petType), displayName);
+        Pet newPet = new Pet(player.getUniqueId(), PetType.valueOf(petType.toUpperCase(java.util.Locale.ROOT)), displayName);
         playerPetCache.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()).add(newPet);
     }
 
