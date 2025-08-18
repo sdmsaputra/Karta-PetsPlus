@@ -8,7 +8,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -70,6 +72,43 @@ public class YamlStorage implements Storage {
             } catch (IOException e) {
                 plugin.getLogger().severe("Could not save pet data for " + uuid);
                 e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<Set<String>> getUnlockedPets(UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+            File playerFile = new File(dataFolder, uuid.toString() + ".yml");
+            if (!playerFile.exists()) {
+                return new HashSet<>();
+            }
+            FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+            return new HashSet<>(config.getStringList("unlocked-pets"));
+        });
+    }
+
+    @Override
+    public CompletableFuture<Boolean> isPetUnlocked(UUID uuid, String petType) {
+        return getUnlockedPets(uuid).thenApply(unlockedPets -> unlockedPets.contains(petType.toLowerCase()));
+    }
+
+    @Override
+    public CompletableFuture<Void> unlockPet(UUID uuid, String petType) {
+        return CompletableFuture.runAsync(() -> {
+            File playerFile = new File(dataFolder, uuid.toString() + ".yml");
+            FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+
+            List<String> unlockedPets = config.getStringList("unlocked-pets");
+            if (!unlockedPets.contains(petType.toLowerCase())) {
+                unlockedPets.add(petType.toLowerCase());
+                config.set("unlocked-pets", unlockedPets);
+                try {
+                    config.save(playerFile);
+                } catch (IOException e) {
+                    plugin.getLogger().severe("Could not save unlocked pet data for " + uuid);
+                    e.printStackTrace();
+                }
             }
         });
     }

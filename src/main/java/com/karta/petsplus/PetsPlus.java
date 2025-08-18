@@ -1,6 +1,8 @@
 package com.karta.petsplus;
 
 import com.karta.petsplus.commands.CommandManager;
+import com.karta.petsplus.listeners.InventoryListener;
+import com.karta.petsplus.shop.ShopManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PetsPlus extends JavaPlugin {
@@ -11,8 +13,6 @@ public class PetsPlus extends JavaPlugin {
     private PetManager petManager;
     private CommandManager commandManager;
     private ShopManager shopManager;
-    private EconomyManager economyManager;
-    private PurchaseHandler purchaseHandler;
 
 
     @Override
@@ -23,20 +23,20 @@ public class PetsPlus extends JavaPlugin {
         storageManager = new StorageManager(this);
         petManager = new PetManager(this);
         commandManager = new CommandManager(this);
-        shopManager = new ShopManager(this);
-        economyManager = new EconomyManager(this);
-        purchaseHandler = new PurchaseHandler(this);
+        // ShopManager needs to be initialized after others it depends on
+        shopManager = new ShopManager(this, storageManager, messageManager);
 
 
-        // Initialize Storage
+        // Initialize Storage and Managers
         storageManager.init();
         petManager.init();
+        shopManager.init();
 
         // Register Commands
         commandManager.registerCommands();
 
         // Register Listeners
-        getServer().getPluginManager().registerEvents(new com.karta.petsplus.listeners.InventoryListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
 
         getLogger().info("KartaPetsPlus has been enabled!");
     }
@@ -73,13 +73,5 @@ public class PetsPlus extends JavaPlugin {
 
     public ShopManager getShopManager() {
         return shopManager;
-    }
-
-    public EconomyManager getEconomyManager() {
-        return economyManager;
-    }
-
-    public PurchaseHandler getPurchaseHandler() {
-        return purchaseHandler;
     }
 }

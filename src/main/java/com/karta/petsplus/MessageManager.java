@@ -34,9 +34,21 @@ public class MessageManager {
     }
 
     public String getMessage(String path) {
+        return getMessage(path, new String[]{});
+    }
+
+    public String getMessage(String path, String... placeholders) {
         String message = messagesConfig.getString(path, "&cMessage not found: " + path);
         String prefix = messagesConfig.getString("prefix", "");
-        return ChatColor.translateAlternateColorCodes('&', message.replace("%prefix%", prefix));
+        message = message.replace("%prefix%", prefix);
+
+        if (placeholders.length > 0 && placeholders.length % 2 == 0) {
+            for (int i = 0; i < placeholders.length; i += 2) {
+                message = message.replace(placeholders[i], placeholders[i + 1]);
+            }
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public java.util.List<String> getHelpMessage() {

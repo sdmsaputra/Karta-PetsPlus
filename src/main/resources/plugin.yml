@@ -4,6 +4,7 @@ main: com.karta.petsplus.PetsPlus
 api-version: '1.21'
 author: Jules (AI Assistant)
 description: A powerful pets plugin.
+softdepend: [Vault, PlayerPoints, TokenManager]
 commands:
   pets:
     description: Main command for KartaPetsPlus.
@@ -17,6 +18,18 @@ permissions:
   petsplus.shop:
     description: Allows players to open the pet shop.
     default: true
+  petsplus.buy:
+    description: Allows players to buy any purchasable pet from the shop.
+    default: true
+  petsplus.buy.*:
+    description: Allows players to buy any purchasable pet from the shop.
+    default: op
+  petsplus.buy.<pet_type>:
+    description: Allows a player to purchase a specific pet.
+    default: op
+  petsplus.discount.<percent>:
+    description: Gives a player a percentage discount in the pet shop.
+    default: op
   petsplus.admin:
     description: Allows access to administrative commands.
     default: op

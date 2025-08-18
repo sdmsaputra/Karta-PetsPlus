@@ -19,19 +19,29 @@ pet-type-not-found: "%prefix%&cThe pet type '{type}' was not found."
 # --- Command Usage ---
 summon-usage: "%prefix%&cUsage: /pets summon <type>"
 rename-usage: "%prefix%&cUsage: /pets rename <name>"
+buy-usage: "%prefix%&cUsage: /pets buy <type>"
 
 # --- Pet List ---
 no-pets-owned: "%prefix%&cYou do not own any pets."
 owned-pets-header: "%prefix%&aYour owned pets:"
 owned-pets-entry: "&8- &b{pet_type}"
 
-# Shop Messages
-pet-not-found: "&cThat pet could not be found in the shop."
-pet-already-owned: "&cYou already own this pet."
-economy-disabled: "&cThe economy features are currently disabled."
-not-enough-money: "&cYou don't have enough money to purchase this pet."
-pet-purchase-success: "&aYou have successfully purchased the {pet_name} pet!"
-purchase-failed: "&cAn error occurred during the purchase. Please try again later."
+# --- Shop Messages ---
+shop_opened: "&aOpened Pet Shop."
+shop_unavailable: "&e%pet_display_name% &cis not purchasable at this time."
+shop_already_owned: "&eYou already own the &6%pet_display_name% &epet."
+shop_insufficient_funds: "&cYou don't have enough &e%currency_name% &cto purchase this."
+shop_purchase_success: "&aSuccessfully purchased the &6%pet_display_name% &apet for &6%pet_price% %currency_symbol%&a!"
+shop_error: "&cAn unexpected error occurred. Please contact an administrator."
+shop_disabled_no_economy: "%prefix%&cThe pet shop is currently disabled because no economy plugin was found."
+currency_provider_unavailable: "%prefix%&cThe currency provider for this item is not available."
+pet-not-purchasable: "%prefix%&cThis pet is not available for purchase."
+
+# --- Pet Preview ---
+shop_preview_start: "&7You are now previewing the &f%pet_display_name% &7pet for %seconds% seconds."
+shop_preview_end: "&7Your pet preview has ended."
+shop_preview_failed_region: "&cCould not spawn pet preview in this location."
+
 
 # --- Help Message ---
 help-message:
