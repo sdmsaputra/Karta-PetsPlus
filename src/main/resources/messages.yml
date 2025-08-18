@@ -15,6 +15,7 @@ pet-dismissed: "%prefix%&eYour pet has been dismissed."
 pet-renamed: "%prefix%&aYour pet has been renamed to {name}."
 no-active-pet: "%prefix%&cYou do not have an active pet."
 pet-type-not-found: "%prefix%&cThe pet type '{type}' was not found."
+pet-not-owned: "%prefix%&cYou do not own a %pet_type% pet."
 
 # --- Command Usage ---
 summon-usage: "%prefix%&cUsage: /pets summon <type>"

@@ -47,13 +47,18 @@ defaults:
   # Placeholders: %pet_display_name%, %pet_type%, %pet_price%, %currency_symbol%, %pet_status%, %pet_description%
   name: "&f%pet_display_name%"
   # Default lore for pet items.
-  lore:
-    - "&7Type: &f%pet_type%"
+  # You can use different lore for pets the player has unlocked vs. those they haven't.
+  lore-locked:
     - "&7Price: &6%pet_price% %currency_symbol%"
     - ""
-    - "%pet_description%"
-    - ""
-    - "%pet_status%"
+    - "&eClick to purchase!"
+  lore-unlocked:
+    - "&aYou own this pet!"
+    - "&7Click to summon."
+  # The text to be used for the %pet_status% placeholder in the item name or lore.
+  status-locked: "&eClick to Buy"
+  status-unlocked: "&aOwned"
+  status-unavailable: "&cNot for Sale"
   # Default price if not specified in pets.yml or overrides.
   price: 1000.0
   # Default currency. Valid options: VAULT, POINTS, TOKENS
@@ -87,10 +92,9 @@ overrides:
 
 # Configuration for the purchase confirmation menu.
 confirm:
-  # If true, a confirmation menu will appear before purchasing.
+  # If true, a confirmation menu will appear before a pet is purchased.
+  # If false, the pet will be purchased instantly.
   enabled: true
-  # Only show the confirmation menu for pets with a price greater than or equal to this value.
-  min-price-to-confirm: 5000.0
   # Title of the confirmation menu.
   title: "&6Confirm Purchase"
   # The "accept" button.

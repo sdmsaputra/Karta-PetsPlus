@@ -31,21 +31,25 @@ public class IconResolver {
 
         Material material = resolveMaterial(petType, override, defaults);
         String name = resolveString("name", override, defaults);
-        List<String> lore = resolveStringList("lore", override, defaults);
+
+        List<String> lore;
+        String status;
+
+        if (!isPurchasable) {
+            status = resolveString("status-unavailable", override, defaults);
+            lore = resolveStringList(isUnlocked ? "lore-unlocked" : "lore-locked", override, defaults);
+        } else if (isUnlocked) {
+            status = resolveString("status-unlocked", override, defaults);
+            lore = resolveStringList("lore-unlocked", override, defaults);
+        } else {
+            status = resolveString("status-locked", override, defaults);
+            lore = resolveStringList("lore-locked", override, defaults);
+        }
 
         ItemStack icon = new ItemStack(material);
         ItemMeta meta = icon.getItemMeta();
 
         if (meta != null) {
-            String status;
-            if (!isPurchasable) {
-                status = "&cUnavailable"; // Or make this configurable
-            } else if (isUnlocked) {
-                status = "&aUnlocked";
-            } else {
-                status = "&eClick to Buy";
-            }
-
             String formattedPrice = shopConfig.shouldFormatPrice() ? priceFormatter.format(price) : String.valueOf(price);
 
             meta.setDisplayName(replacePlaceholders(name, petType, status, formattedPrice, currency));

@@ -1,6 +1,7 @@
 package com.karta.petsplus.listeners;
 
 import com.karta.petsplus.PetsPlus;
+import com.karta.petsplus.gui.PetListMenu;
 import com.karta.petsplus.shop.PurchaseConfirmMenu;
 import com.karta.petsplus.shop.ShopMenu;
 import org.bukkit.entity.Player;
@@ -33,6 +34,10 @@ public class InventoryListener implements Listener {
             event.setCancelled(true);
             PurchaseConfirmMenu confirmMenu = (PurchaseConfirmMenu) holder;
             confirmMenu.handleClick(event.getRawSlot());
+        } else if (holder instanceof PetListMenu) {
+            event.setCancelled(true);
+            PetListMenu listMenu = (PetListMenu) holder;
+            listMenu.handleClick(event.getRawSlot(), event.getClick());
         }
     }
 }
