@@ -48,7 +48,7 @@ public class PurchaseHandler {
 
             if (economyManager.withdraw(player, price)) {
                 petData.addOwnedPet(petKey);
-                petManager.savePlayerData(player.getUniqueId(), petData);
+                petManager.savePlayerData(player.getUniqueId());
                 player.sendMessage(messageManager.getMessage("pet-purchase-success").replace("{pet_name}", petSection.getString("name")));
             } else {
                 player.sendMessage(messageManager.getMessage("purchase-failed"));

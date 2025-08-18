@@ -69,7 +69,7 @@ public class PetManager implements Listener {
         });
     }
 
-    private void savePlayerData(UUID uuid) {
+    void savePlayerData(UUID uuid) {
         PetData data = playerDataCache.get(uuid);
         if (data != null) {
             if (!activePets.containsKey(uuid)) {
