@@ -3,6 +3,7 @@ package com.karta.petsplus.commands;
 import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetManager;
 import com.karta.petsplus.PetsPlus;
+import com.karta.petsplus.ShopMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
