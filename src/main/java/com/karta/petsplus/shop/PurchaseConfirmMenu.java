@@ -96,7 +96,7 @@ public class PurchaseConfirmMenu implements InventoryHolder {
         ConfigurationSection acceptSection = confirmSection.getConfigurationSection("accept");
         ConfigurationSection cancelSection = confirmSection.getConfigurationSection("cancel");
 
-        ReentrantLock lock = shopManager.getPurchaseHandler().purchaseLocks.get(player.getUniqueId());
+        ReentrantLock lock = shopManager.getPurchaseHandler().getPurchaseLock(player.getUniqueId());
 
         try {
             if (acceptSection != null && slot == acceptSection.getInt("slot", 11)) {

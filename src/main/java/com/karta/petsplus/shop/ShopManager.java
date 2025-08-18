@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -69,15 +70,17 @@ public class ShopManager implements Listener {
             plugin.getLogger().log(Level.INFO, "Vault currency provider enabled.");
         }
 
-        PointsCurrencyProvider pointsProvider = new PointsCurrencyProvider(plugin);
+        PointsCurrencyProvider pointsProvider = new PointsCurrencyProvider(plugin, shopConfig.getPointsCurrencyName(), shopConfig.getPointsCurrencySymbol());
         if (pointsProvider.isEnabled()) {
             currencyProviders.put("POINTS", pointsProvider);
             plugin.getLogger().log(Level.INFO, "PlayerPoints currency provider enabled.");
         }
 
-        TokenCurrencyProvider tokenProvider = new TokenCurrencyProvider(plugin);
-        // Assuming TokenCurrencyProvider has an isEnabled method
-        // currencyProviders.put("TOKENS", tokenProvider);
+        TokenCurrencyProvider tokenProvider = new TokenCurrencyProvider(plugin, shopConfig.getTokenCurrencyName(), shopConfig.getTokenCurrencySymbol());
+        if (tokenProvider.isEnabled()) {
+            currencyProviders.put("TOKENS", tokenProvider);
+            plugin.getLogger().log(Level.INFO, "TokenManager currency provider enabled.");
+        }
 
         // Fallback logic
         if (currencyProviders.containsKey("VAULT")) {
