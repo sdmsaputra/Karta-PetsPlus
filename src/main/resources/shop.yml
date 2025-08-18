@@ -1,24 +1,124 @@
+# KartaPetsPlus Shop Configuration
+# This file controls the behavior and appearance of the Pet Shop.
+# The shop is dynamically populated from pets.yml. This file is used to override
+# the appearance, price, and availability of pets listed in the shop.
+
 shop-menu:
+  # Title of the main shop menu. Supports color codes.
   title: "&e&lPet Shop"
+  # Size of the inventory. Must be a multiple of 9, between 9 and 54.
   size: 54
-  pets:
-    dog:
-      slot: 11
-      material: WOLF_SPAWN_EGG
-      name: "&aDog"
+  # A list of slots or slot ranges to be used for displaying pet items.
+  # Any slots not listed here can be used for navigation or decoration.
+  # Example ranges: "10-16", "19-25". A single number is also valid.
+  content-slots:
+    - "10-16"
+    - "19-25"
+    - "28-34"
+    - "37-43"
+  buttons:
+    previous:
+      slot: 45
+      material: ARROW
+      name: "&7Previous Page"
       lore:
-        - "&7A loyal companion."
-        - "&7Status: %pet_status%"
-        - "&7Price: &6%pet_price% %currency_type%"
-      price: 1000
-      currency: VAULT
-    cat:
-      slot: 12
-      material: CAT_SPAWN_EGG
-      name: "&bCat"
+        - "&7Click to go to the"
+        - "&7previous page."
+    next:
+      slot: 53
+      material: ARROW
+      name: "&aNext Page"
       lore:
-        - "&7Independent and smart."
-        - "&7Status: %pet_status%"
-        - "&7Price: &6%pet_price% %currency_type%"
-      price: 1500
-      currency: VAULT
+        - "&7Click to go to the"
+        - "&7next page."
+    back:
+      enabled: false # Set to true to enable a back button to a main menu
+      slot: 49
+      material: BARRIER
+      name: "&cBack"
+      lore:
+        - "&7Return to the main menu."
+
+# Default settings for any pet from pets.yml that does not have a specific override below.
+defaults:
+  # Default icon material if a spawn egg isn't found or overridden.
+  material: PLAYER_HEAD
+  # Default name for pet items in the shop.
+  # Placeholders: %pet_display_name%, %pet_type%, %pet_price%, %currency_symbol%, %pet_status%, %pet_description%
+  name: "&f%pet_display_name%"
+  # Default lore for pet items.
+  lore:
+    - "&7Type: &f%pet_type%"
+    - "&7Price: &6%pet_price% %currency_symbol%"
+    - ""
+    - "%pet_description%"
+    - ""
+    - "%pet_status%"
+  # Default price if not specified in pets.yml or overrides.
+  price: 1000.0
+  # Default currency. Valid options: VAULT, POINTS, TOKENS
+  currency: VAULT
+  # Whether pets are purchasable by default.
+  purchasable: true
+  # If true, the pet will not be shown in the shop at all.
+  hidden: false
+  # Pet preview settings.
+  preview:
+    enabled: true
+    duration-seconds: 10
+
+# Use this section to override the default settings for specific pets.
+# The key must match the pet's internal name from pets.yml (e.g., "wolf", "cat").
+overrides:
+  wolf:
+    material: WOLF_SPAWN_EGG
+    price: 1200.0
+    currency: VAULT
+  cat:
+    material: CAT_SPAWN_EGG
+    price: 1500.0
+  baby_dragon:
+    material: DRAGON_EGG
+    price: 100000.0
+    currency: TOKENS
+    purchasable: false # Example of an unpurchasable "event" pet.
+  phoenix:
+    hidden: true # This pet will not appear in the shop.
+
+# Configuration for the purchase confirmation menu.
+confirm:
+  # If true, a confirmation menu will appear before purchasing.
+  enabled: true
+  # Only show the confirmation menu for pets with a price greater than or equal to this value.
+  min-price-to-confirm: 5000.0
+  # Title of the confirmation menu.
+  title: "&6Confirm Purchase"
+  # The "accept" button.
+  accept:
+    slot: 11
+    material: LIME_CONCRETE
+    name: "&aConfirm"
+    lore:
+      - "&7Buy %pet_display_name% for"
+      - "&6%pet_price% %currency_symbol%"
+  # The "cancel" button.
+  cancel:
+    slot: 15
+    material: RED_CONCRETE
+    name: "&cCancel"
+    lore:
+      - "&7Return to the shop."
+
+# General behavior settings for the shop.
+behavior:
+  # Cooldown in milliseconds between clicks to prevent double-charging.
+  click-cooldown-ms: 500
+  # If true, economy operations (checking balance, withdrawing) run on a separate thread.
+  async-economy: true
+  # If true, formats large prices with commas (e.g., 1,234,567).
+  format-price: true
+  # Sound played when a player has insufficient funds.
+  # A list of sounds can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+  insufficient-funds-sound: "ENTITY_VILLAGER_NO"
+  # Sound played on successful purchase.
+  success-sound: "ENTITY_PLAYER_LEVELUP"

@@ -12,7 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -52,7 +54,7 @@ public class SQLiteStorage implements Storage {
 
     @Override
     public void createTables() {
-        String tableQuery = "CREATE TABLE IF NOT EXISTS pet_data (" +
+        String petDataTableQuery = "CREATE TABLE IF NOT EXISTS pet_data (" +
                 "uuid VARCHAR(36) PRIMARY KEY," +
                 "active_pet_type VARCHAR(255)," +
                 "pet_name VARCHAR(255)," +
@@ -60,8 +62,16 @@ public class SQLiteStorage implements Storage {
                 "xp DOUBLE NOT NULL DEFAULT 0," +
                 "owned_pets TEXT NOT NULL DEFAULT ''" +
                 ");";
+
+        String unlockedPetsTableQuery = "CREATE TABLE IF NOT EXISTS petsplus_unlocked (" +
+                "uuid VARCHAR(36) NOT NULL," +
+                "pet_type VARCHAR(64) NOT NULL," +
+                "PRIMARY KEY (uuid, pet_type)" +
+                ");";
+
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute(tableQuery);
+            stmt.execute(petDataTableQuery);
+            stmt.execute(unlockedPetsTableQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,6 +118,55 @@ public class SQLiteStorage implements Storage {
                 stmt.setDouble(5, data.getXp());
                 String ownedPetsStr = String.join(",", data.getOwnedPets());
                 stmt.setString(6, ownedPetsStr);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<Set<String>> getUnlockedPets(UUID uuid) {
+        return CompletableFuture.supplyAsync(() -> {
+            Set<String> unlockedPets = new HashSet<>();
+            String query = "SELECT pet_type FROM petsplus_unlocked WHERE uuid = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, uuid.toString());
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    unlockedPets.add(rs.getString("pet_type"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return unlockedPets;
+        });
+    }
+
+    @Override
+    public CompletableFuture<Boolean> isPetUnlocked(UUID uuid, String petType) {
+        return CompletableFuture.supplyAsync(() -> {
+            String query = "SELECT 1 FROM petsplus_unlocked WHERE uuid = ? AND pet_type = ? LIMIT 1";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, uuid.toString());
+                stmt.setString(2, petType.toLowerCase());
+                ResultSet rs = stmt.executeQuery();
+                return rs.next();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return false;
+        });
+    }
+
+    @Override
+    public CompletableFuture<Void> unlockPet(UUID uuid, String petType) {
+        return CompletableFuture.runAsync(() -> {
+            // INSERT OR IGNORE is specific to SQLite
+            String query = "INSERT OR IGNORE INTO petsplus_unlocked (uuid, pet_type) VALUES (?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, uuid.toString());
+                stmt.setString(2, petType.toLowerCase());
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
