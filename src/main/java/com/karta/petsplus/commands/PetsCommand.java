@@ -1,5 +1,6 @@
 package com.karta.petsplus.commands;
 
+import com.karta.petsplus.OwnedPet;
 import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetManager;
 import com.karta.petsplus.PetType;
@@ -9,15 +10,16 @@ import com.karta.petsplus.shop.CurrencyProvider;
 import com.karta.petsplus.shop.ShopManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PetsCommand implements CommandExecutor, TabCompleter {
@@ -68,7 +70,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 if (args.length < 2) {
-                    player.sendMessage(plugin.getMessageManager().getMessage("buy-usage")); // Needs to be added to messages.yml
+                    player.sendMessage(plugin.getMessageManager().getMessage("buy-usage"));
                     return true;
                 }
                 handleBuyCommand(player, args[1]);
@@ -84,12 +86,11 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                 petManager.dismissPet(player, false);
                 break;
             case "rename":
-                if (args.length < 2) {
+                if (args.length < 3) {
                     player.sendMessage(plugin.getMessageManager().getMessage("rename-usage"));
                     return true;
                 }
-                String newName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-                petManager.renamePet(player, newName);
+                handleRenameCommand(player, args[1], String.join(" ", Arrays.copyOfRange(args, 2, args.length)));
                 break;
             case "list":
                 new PetListMenu(plugin, player).open();
@@ -111,23 +112,30 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    private void handleRenameCommand(Player player, String petIdStr, String newName) {
+        UUID petId;
+        try {
+            petId = UUID.fromString(petIdStr);
+        } catch (IllegalArgumentException e) {
+            player.sendMessage(plugin.getMessageManager().getMessage("invalid-pet-id", "%id%", petIdStr));
+            return;
+        }
+        petManager.renamePet(player, petId, newName);
+    }
+
     private void sendHelpMessage(Player player) {
         plugin.getMessageManager().getHelpMessage().forEach(player::sendMessage);
     }
 
-    private void handleSummonCommand(Player player, String petTypeName) {
-        PetData petData = petManager.getPlayerData(player);
-        if (petData == null) {
-            player.sendMessage(plugin.getMessageManager().getMessage("player-data-loading"));
+    private void handleSummonCommand(Player player, String petIdStr) {
+        UUID petId;
+        try {
+            petId = UUID.fromString(petIdStr);
+        } catch (IllegalArgumentException e) {
+            player.sendMessage(plugin.getMessageManager().getMessage("invalid-pet-id", "%id%", petIdStr));
             return;
         }
-
-        if (!petData.getOwnedPets().contains(petTypeName.toLowerCase())) {
-            player.sendMessage(plugin.getMessageManager().getMessage("pet-not-owned", "%pet_type%", petTypeName)); // Need to add this message
-            return;
-        }
-
-        petManager.summonPet(player, petTypeName);
+        petManager.summonPet(player, petId);
     }
 
     @Override
@@ -142,7 +150,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                     .collect(Collectors.toList());
         }
 
-        if (args.length == 2 && args[0].equalsIgnoreCase("summon")) {
+        if (args.length == 2 && (args[0].equalsIgnoreCase("summon") || args[0].equalsIgnoreCase("rename"))) {
             if (!(sender instanceof Player)) {
                 return new ArrayList<>();
             }
@@ -152,6 +160,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                 return new ArrayList<>();
             }
             return petData.getOwnedPets().stream()
+                    .map(pet -> pet.getPetId().toString())
                     .filter(s -> s.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }
@@ -185,10 +194,9 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        // Check for permission for specific pet
         if (!player.hasPermission("petsplus.buy." + petType.getInternalName()) && !player.hasPermission("petsplus.buy.*")) {
-             player.sendMessage(plugin.getMessageManager().getMessage("no-permission"));
-             return;
+            player.sendMessage(plugin.getMessageManager().getMessage("no-permission"));
+            return;
         }
 
         ConfigurationSection override = shopManager.getShopConfig().getOverride(petType.getInternalName());
@@ -217,7 +225,6 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        // The purchase handler will deal with already owned pets, funds, etc.
         shopManager.getPurchaseHandler().attemptPurchase(player, petType, price, currency);
     }
 }

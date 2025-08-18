@@ -2,6 +2,7 @@ package com.karta.petsplus;
 
 import com.karta.petsplus.commands.CommandManager;
 import com.karta.petsplus.listeners.InventoryListener;
+import com.karta.petsplus.listeners.PetListener;
 import com.karta.petsplus.shop.ShopManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,6 +38,7 @@ public class PetsPlus extends JavaPlugin {
 
         // Register Listeners
         getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
+        getServer().getPluginManager().registerEvents(new PetListener(this), this);
 
         getLogger().info("KartaPetsPlus has been enabled!");
     }

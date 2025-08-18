@@ -1,18 +1,17 @@
 package com.karta.petsplus.storage;
 
+import com.karta.petsplus.OwnedPet;
 import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetsPlus;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class YamlStorage implements Storage {
 
@@ -41,17 +40,53 @@ public class YamlStorage implements Storage {
         return CompletableFuture.supplyAsync(() -> {
             File playerFile = new File(dataFolder, uuid.toString() + ".yml");
             if (!playerFile.exists()) {
-                // Return a new PetData object for new players
-                return new PetData(null, null, 1, 0, new ArrayList<>());
+                return new PetData(); // New player
             }
+
             FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            String activePetType = config.getString("active-pet-type");
-            String petName = config.getString("pet-name");
+            List<OwnedPet> ownedPets = new ArrayList<>();
+            UUID activePetId = null;
+
+            if (config.isList("owned-pets")) {
+                // Check if it's the old format (List<String>) or new format (List<Map>)
+                Object firstElement = config.getList("owned-pets").get(0);
+                if (firstElement instanceof String) {
+                    // --- Data Migration from String List to OwnedPet List ---
+                    List<String> oldOwnedPets = config.getStringList("owned-pets");
+                    String oldActivePetType = config.getString("active-pet-type");
+                    String oldPetName = config.getString("pet-name");
+
+                    for (String petType : oldOwnedPets) {
+                        OwnedPet newPet = new OwnedPet(petType);
+                        if (petType.equalsIgnoreCase(oldActivePetType)) {
+                             if (oldPetName != null && !oldPetName.isEmpty()) {
+                                newPet.setCustomName(oldPetName);
+                            }
+                            activePetId = newPet.getPetId(); // Set this as the active pet
+                            oldActivePetType = null; // Ensure we only do this once
+                        }
+                        ownedPets.add(newPet);
+                    }
+                } else {
+                     // --- New Format (List<Map<String, Object>>) ---
+                    List<Map<?, ?>> petMaps = config.getMapList("owned-pets");
+                    for (Map<?, ?> petMap : petMaps) {
+                        String type = (String) petMap.get("type");
+                        UUID id = UUID.fromString((String) petMap.get("id"));
+                        String name = (String) petMap.get("name");
+                        ownedPets.add(new OwnedPet(type, id, name));
+                    }
+                     if (config.isString("active-pet-id")) {
+                        activePetId = UUID.fromString(config.getString("active-pet-id"));
+                    }
+                }
+            }
+
+
             int level = config.getInt("level", 1);
             double xp = config.getDouble("xp", 0);
-            List<String> ownedPets = config.getStringList("owned-pets");
 
-            return new PetData(activePetType, petName, level, xp, ownedPets);
+            return new PetData(activePetId, level, xp, ownedPets);
         });
     }
 
@@ -59,13 +94,26 @@ public class YamlStorage implements Storage {
     public CompletableFuture<Void> savePlayerData(UUID uuid, PetData data) {
         return CompletableFuture.runAsync(() -> {
             File playerFile = new File(dataFolder, uuid.toString() + ".yml");
-            FileConfiguration config = new YamlConfiguration(); // Use new config to avoid keeping old data
+            FileConfiguration config = new YamlConfiguration();
 
-            config.set("active-pet-type", data.getActivePetType());
-            config.set("pet-name", data.getPetName());
+            if (data.getActivePetId() != null) {
+                config.set("active-pet-id", data.getActivePetId().toString());
+            } else {
+                config.set("active-pet-id", null);
+            }
+
             config.set("level", data.getLevel());
             config.set("xp", data.getXp());
-            config.set("owned-pets", data.getOwnedPets());
+
+            List<Map<String, Object>> petList = new ArrayList<>();
+            for (OwnedPet pet : data.getOwnedPets()) {
+                Map<String, Object> petMap = new HashMap<>();
+                petMap.put("type", pet.getPetType());
+                petMap.put("id", pet.getPetId().toString());
+                petMap.put("name", pet.getCustomName());
+                petList.add(petMap);
+            }
+            config.set("owned-pets", petList);
 
             try {
                 config.save(playerFile);
@@ -78,14 +126,11 @@ public class YamlStorage implements Storage {
 
     @Override
     public CompletableFuture<Set<String>> getUnlockedPets(UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> {
-            File playerFile = new File(dataFolder, uuid.toString() + ".yml");
-            if (!playerFile.exists()) {
-                return new HashSet<>();
-            }
-            FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-            return new HashSet<>(config.getStringList("unlocked-pets"));
-        });
+         return loadPlayerData(uuid).thenApply(petData ->
+            petData.getOwnedPets().stream()
+                    .map(OwnedPet::getPetType)
+                    .collect(Collectors.toSet())
+        );
     }
 
     @Override
@@ -95,21 +140,13 @@ public class YamlStorage implements Storage {
 
     @Override
     public CompletableFuture<Void> unlockPet(UUID uuid, String petType) {
-        return CompletableFuture.runAsync(() -> {
-            File playerFile = new File(dataFolder, uuid.toString() + ".yml");
-            FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
-
-            List<String> unlockedPets = config.getStringList("unlocked-pets");
-            if (!unlockedPets.contains(petType.toLowerCase())) {
-                unlockedPets.add(petType.toLowerCase());
-                config.set("unlocked-pets", unlockedPets);
-                try {
-                    config.save(playerFile);
-                } catch (IOException e) {
-                    plugin.getLogger().severe("Could not save unlocked pet data for " + uuid);
-                    e.printStackTrace();
-                }
+        return loadPlayerData(uuid).thenCompose(petData -> {
+            boolean alreadyOwned = petData.getOwnedPets().stream()
+                    .anyMatch(p -> p.getPetType().equalsIgnoreCase(petType));
+            if (!alreadyOwned) {
+                petData.addOwnedPet(new OwnedPet(petType));
             }
+            return savePlayerData(uuid, petData);
         });
     }
 

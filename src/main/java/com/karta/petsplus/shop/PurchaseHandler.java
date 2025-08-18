@@ -1,6 +1,7 @@
 package com.karta.petsplus.shop;
 
 import com.karta.petsplus.MessageManager;
+import com.karta.petsplus.OwnedPet;
 import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetType;
 import com.karta.petsplus.PetsPlus;
@@ -114,7 +115,7 @@ public class PurchaseHandler {
                             // Also update the main PetData cache
                             PetData petData = plugin.getPetManager().getPlayerData(player);
                             if (petData != null) {
-                                petData.addOwnedPet(petType.getInternalName());
+                                petData.addOwnedPet(new OwnedPet(petType.getInternalName()));
                             }
 
                             player.sendMessage(messageManager.getMessage("shop_purchase_success", "%pet_display_name%", petType.getDisplayName(), "%pet_price%", String.valueOf(price), "%currency_symbol%", currency.getCurrencySymbol()));
