@@ -2,37 +2,34 @@ package com.karta.petsplus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.Optional;
 
 public class PetData {
 
-    private String activePetType;
-    private String petName;
+    private UUID activePetId;
     private int level;
     private double xp;
-    private final List<String> ownedPets;
+    private final List<OwnedPet> ownedPets;
 
-    public PetData(String activePetType, String petName, int level, double xp, List<String> ownedPets) {
-        this.activePetType = activePetType;
-        this.petName = petName;
+    public PetData(UUID activePetId, int level, double xp, List<OwnedPet> ownedPets) {
+        this.activePetId = activePetId;
         this.level = level;
         this.xp = xp;
         this.ownedPets = ownedPets != null ? new ArrayList<>(ownedPets) : new ArrayList<>();
     }
 
-    public String getActivePetType() {
-        return activePetType;
+    // Constructor for new players
+    public PetData() {
+        this(null, 1, 0, new ArrayList<>());
     }
 
-    public void setActivePetType(String activePetType) {
-        this.activePetType = activePetType;
+    public UUID getActivePetId() {
+        return activePetId;
     }
 
-    public String getPetName() {
-        return petName;
-    }
-
-    public void setPetName(String petName) {
-        this.petName = petName;
+    public void setActivePetId(UUID activePetId) {
+        this.activePetId = activePetId;
     }
 
     public int getLevel() {
@@ -51,13 +48,19 @@ public class PetData {
         this.xp = xp;
     }
 
-    public List<String> getOwnedPets() {
+    public List<OwnedPet> getOwnedPets() {
         return ownedPets;
     }
 
-    public void addOwnedPet(String petType) {
-        if (!ownedPets.contains(petType)) {
-            ownedPets.add(petType);
-        }
+    public Optional<OwnedPet> getOwnedPet(UUID petId) {
+        return ownedPets.stream().filter(p -> p.getPetId().equals(petId)).findFirst();
+    }
+
+    public Optional<OwnedPet> getOwnedPet(String petType) {
+        return ownedPets.stream().filter(p -> p.getPetType().equals(petType)).findFirst();
+    }
+
+    public void addOwnedPet(OwnedPet pet) {
+        ownedPets.add(pet);
     }
 }

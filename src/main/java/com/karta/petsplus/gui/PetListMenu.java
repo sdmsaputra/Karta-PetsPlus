@@ -1,5 +1,6 @@
 package com.karta.petsplus.gui;
 
+import com.karta.petsplus.OwnedPet;
 import com.karta.petsplus.PetManager;
 import com.karta.petsplus.PetType;
 import com.karta.petsplus.PetsPlus;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PetListMenu implements InventoryHolder {
 
@@ -26,17 +26,17 @@ public class PetListMenu implements InventoryHolder {
     private final Player player;
     private final PetManager petManager;
     private final IconResolver iconResolver;
-    private final List<PetType> ownedPets;
+    private final List<OwnedPet> ownedPets;
 
     private Inventory inventory;
     private int currentPage = 0;
-    private final int contentSlotsSize = 45; // 5 rows of 9 slots for pets
+    private final int contentSlotsSize = 45;
 
     public PetListMenu(PetsPlus plugin, Player player) {
         this.plugin = plugin;
         this.player = player;
         this.petManager = plugin.getPetManager();
-        this.iconResolver = plugin.getShopManager().getIconResolver(); // Reuse the shop's icon resolver
+        this.iconResolver = plugin.getShopManager().getIconResolver();
         this.ownedPets = new ArrayList<>();
     }
 
@@ -47,7 +47,7 @@ public class PetListMenu implements InventoryHolder {
             return;
         }
 
-        String title = ChatColor.translateAlternateColorCodes('&', "&1Your Pets"); // Can be made configurable later
+        String title = ChatColor.translateAlternateColorCodes('&', "&1Your Pets");
         inventory = Bukkit.createInventory(this, 54, title);
         renderPage();
         player.openInventory(inventory);
@@ -55,14 +55,8 @@ public class PetListMenu implements InventoryHolder {
 
     private void prepareOwnedPets() {
         ownedPets.clear();
-        List<String> ownedPetNames = petManager.getPlayerData(player).getOwnedPets();
-        for (String petName : ownedPetNames) {
-            PetType petType = plugin.getConfigManager().getPetType(petName);
-            if (petType != null) {
-                ownedPets.add(petType);
-            }
-        }
-        ownedPets.sort(Comparator.comparing(PetType::getDisplayName));
+        ownedPets.addAll(petManager.getPlayerData(player).getOwnedPets());
+        ownedPets.sort(Comparator.comparing(p -> p.getDisplayName(plugin)));
     }
 
     private void renderPage() {
@@ -74,20 +68,34 @@ public class PetListMenu implements InventoryHolder {
 
         for (int i = 0; i < (endIndex - startIndex); i++) {
             int slotIndex = i;
-            PetType petType = ownedPets.get(startIndex + i);
-            ItemStack icon = createPetIcon(petType);
+            OwnedPet pet = ownedPets.get(startIndex + i);
+            ItemStack icon = createPetIcon(pet);
             inventory.setItem(slotIndex, icon);
         }
     }
 
-    private ItemStack createPetIcon(PetType petType) {
-        // We can reuse the IconResolver, but we need to create a simpler lore for the list
+    private ItemStack createPetIcon(OwnedPet ownedPet) {
+        PetType petType = plugin.getConfigManager().getPetType(ownedPet.getPetType());
+        if (petType == null) {
+            // Create a fallback error item
+            ItemStack errorItem = new ItemStack(Material.BARRIER);
+            ItemMeta meta = errorItem.getItemMeta();
+            if (meta != null) {
+                meta.setDisplayName(ChatColor.RED + "Unknown Pet Type: " + ownedPet.getPetType());
+                meta.setLore(List.of(ChatColor.GRAY + "ID: " + ownedPet.getPetId().toString()));
+                errorItem.setItemMeta(meta);
+            }
+            return errorItem;
+        }
+
         ItemStack icon = iconResolver.createPetIcon(petType, true, false, 0, null);
         ItemMeta meta = icon.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + petType.getDisplayName());
+            meta.setDisplayName(ChatColor.AQUA + ownedPet.getDisplayName(plugin));
             List<String> lore = new ArrayList<>();
             lore.add(ChatColor.GRAY + "Click to summon this pet.");
+            lore.add("");
+            lore.add(ChatColor.DARK_GRAY + "ID: " + ownedPet.getPetId().toString());
             meta.setLore(lore);
             icon.setItemMeta(meta);
         }
@@ -132,9 +140,9 @@ public class PetListMenu implements InventoryHolder {
         if (slot >= 0 && slot < contentSlotsSize) {
             int index = slot + (currentPage * contentSlotsSize);
             if (index < ownedPets.size()) {
-                PetType clickedPet = ownedPets.get(index);
+                OwnedPet clickedPet = ownedPets.get(index);
                 player.closeInventory();
-                petManager.summonPet(player, clickedPet.getInternalName());
+                petManager.summonPet(player, clickedPet.getPetId());
             }
         }
     }

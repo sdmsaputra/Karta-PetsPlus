@@ -13,12 +13,14 @@ public class Pet {
 
     private final UUID owner;
     private final PetType petType;
+    private final UUID petId;
     private Entity entity;
     private String petName;
 
-    public Pet(UUID owner, PetType petType, String petName, Entity entity) {
+    public Pet(UUID owner, PetType petType, UUID petId, String petName, Entity entity) {
         this.owner = owner;
         this.petType = petType;
+        this.petId = petId;
         this.petName = petName;
         this.entity = entity;
     }
@@ -33,6 +35,10 @@ public class Pet {
 
     public PetType getPetType() {
         return petType;
+    }
+
+    public UUID getPetId() {
+        return petId;
     }
 
     public Entity getEntity() {

@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -60,10 +61,10 @@ public class PetManager implements Listener {
     private void loadPlayerData(UUID uuid) {
         plugin.getStorageManager().getStorage().loadPlayerData(uuid).thenAccept(petData -> {
             playerDataCache.put(uuid, petData);
-            if (petData.getActivePetType() != null && !petData.getActivePetType().equalsIgnoreCase("none")) {
+            if (petData.getActivePetId() != null) {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null && player.isOnline()) {
-                    Bukkit.getScheduler().runTask(plugin, () -> summonPet(player, petData.getActivePetType()));
+                    Bukkit.getScheduler().runTask(plugin, () -> summonPet(player, petData.getActivePetId()));
                 }
             }
         });
@@ -72,28 +73,33 @@ public class PetManager implements Listener {
     void savePlayerData(UUID uuid) {
         PetData data = playerDataCache.get(uuid);
         if (data != null) {
-            if (!activePets.containsKey(uuid)) {
-                data.setActivePetType(null);
-            }
+            // Active pet ID is already managed by summon/dismiss, so we just save.
             plugin.getStorageManager().getStorage().savePlayerData(uuid, data);
         }
     }
 
-    public void summonPet(Player player, String type) {
+    public void summonPet(Player player, UUID petId) {
         if (getActivePet(player) != null) {
-            dismissPet(player, true); // Be silent, a new pet is coming
+            dismissPet(player, true); // Dismiss current pet silently
         }
 
-        PetType petType = plugin.getConfigManager().getPetType(type);
+        PetData petData = getPlayerData(player);
+        Optional<OwnedPet> ownedPetOpt = petData.getOwnedPet(petId);
+
+        if (ownedPetOpt.isEmpty()) {
+            player.sendMessage(ChatColor.RED + "You don't own a pet with that ID.");
+            return;
+        }
+
+        OwnedPet ownedPet = ownedPetOpt.get();
+        PetType petType = plugin.getConfigManager().getPetType(ownedPet.getPetType());
+
         if (petType == null) {
-            player.sendMessage(ChatColor.RED + "Pet type '" + type + "' not found.");
+            player.sendMessage(ChatColor.RED + "Pet type '" + ownedPet.getPetType() + "' not found.");
             return;
         }
 
-        if (!player.hasPermission("petsplus.summon." + petType.getInternalName()) && !player.hasPermission("petsplus.summon.*")) {
-            player.sendMessage(ChatColor.RED + "You don't have permission to summon this pet.");
-            return;
-        }
+        // No permission check for now, assuming if they own it, they can summon it.
 
         Location spawnLocation = player.getLocation();
         Entity entity = player.getWorld().spawnEntity(spawnLocation, petType.getEntityType());
@@ -106,21 +112,16 @@ public class PetManager implements Listener {
             ((Tameable) entity).setOwner(player);
         }
 
-        PetData data = getPlayerData(player);
-        String petName = data.getPetName();
-        if (petName == null || petName.isEmpty()) {
-            petName = petType.getDisplayName();
-        }
-
+        String petName = ownedPet.getDisplayName(plugin);
         entity.setCustomName(ChatColor.translateAlternateColorCodes('&', petName));
         entity.setCustomNameVisible(true);
         entity.setPersistent(false);
 
-        Pet pet = new Pet(player.getUniqueId(), petType, petName, entity);
+        Pet pet = new Pet(player.getUniqueId(), petType, ownedPet.getPetId(), petName, entity);
         activePets.put(player.getUniqueId(), pet);
-        data.setActivePetType(petType.getInternalName());
+        petData.setActivePetId(ownedPet.getPetId());
 
-        player.sendMessage(ChatColor.GREEN + "You have summoned your pet: " + pet.getPetName());
+        player.sendMessage(ChatColor.GREEN + "You have summoned your pet: " + petName);
     }
 
     public void dismissPet(Player player, boolean silent) {
@@ -130,7 +131,7 @@ public class PetManager implements Listener {
                 pet.getEntity().remove();
             }
             activePets.remove(player.getUniqueId());
-            getPlayerData(player).setActivePetType(null);
+            getPlayerData(player).setActivePetId(null);
             if (!silent) {
                 player.sendMessage(ChatColor.YELLOW + "Your pet has been dismissed.");
             }
@@ -141,20 +142,34 @@ public class PetManager implements Listener {
         }
     }
 
-    public void renamePet(Player player, String name) {
-        Pet pet = getActivePet(player);
-        if (pet == null) {
-            player.sendMessage(ChatColor.RED + "You don't have an active pet to rename.");
+    public void renamePet(Player player, UUID petId, String name) {
+        PetData petData = getPlayerData(player);
+        Optional<OwnedPet> ownedPetOpt = petData.getOwnedPet(petId);
+
+        if (ownedPetOpt.isEmpty()) {
+            player.sendMessage(ChatColor.RED + "You don't own a pet with that ID.");
             return;
         }
+
+        OwnedPet ownedPet = ownedPetOpt.get();
         String coloredName = ChatColor.translateAlternateColorCodes('&', name);
-        pet.setPetName(coloredName);
-        getPlayerData(player).setPetName(coloredName);
+        ownedPet.setCustomName(coloredName);
+
+        // If the pet is active, update its name in the world
+        Pet activePet = getActivePet(player);
+        if (activePet != null && activePet.getPetId().equals(petId)) {
+            activePet.setPetName(coloredName);
+        }
+
         player.sendMessage(ChatColor.GREEN + "Your pet has been renamed to " + coloredName);
     }
 
     public Pet getActivePet(Player player) {
         return activePets.get(player.getUniqueId());
+    }
+
+    public Map<UUID, Pet> getActivePets() {
+        return activePets;
     }
 
     public PetData getPlayerData(Player player) {

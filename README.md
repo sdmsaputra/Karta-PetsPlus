@@ -1,6 +1,6 @@
 # KartaPetsPlus
 
-**Version: 2.0.0**
+**Version: 2.1.0**
 
 KartaPetsPlus is a feature-rich pets plugin for Spigot-based servers that provides an immersive experience for players to buy, collect, and summon their own companions.
 
@@ -8,7 +8,7 @@ KartaPetsPlus is a feature-rich pets plugin for Spigot-based servers that provid
 
 - **Advanced GUI Shop**: A clean, intuitive, and fully configurable GUI shop for players to browse and purchase pets.
 - **Confirmation on Purchase**: A confirmation screen to prevent accidental purchases.
-- **GUI-Based Pet Management**: Players can view their collected pets in a simple GUI.
+- **GUI-Based Pet Management**: Players can view their collected pets in a simple GUI, now with unique IDs for each pet.
 - **Multiple Currency Support**: Seamlessly integrates with Vault (for economy plugins like EssentialsX), PlayerPoints, and TokenManager.
 - **Highly Configurable**: Almost every aspect of the plugin can be customized through easy-to-edit YAML files.
   - Define unlimited pet types with custom names, entities, and prices.
@@ -16,6 +16,7 @@ KartaPetsPlus is a feature-rich pets plugin for Spigot-based servers that provid
   - Change every message sent to players.
 - **Pet Previews**: Players can right-click a pet in the shop to see a live preview before buying.
 - **Asynchronous by Default**: Economy and data storage operations are handled asynchronously to prevent server lag.
+- **Intelligent Pet Behavior**: Aggressive pets will not attack their owners. They will automatically become defensive, attacking any mob that harms their owner, and aggressive, attacking any mob their owner attacks.
 
 ## Commands & Permissions
 
@@ -30,19 +31,19 @@ The main command is `/pets` (or `/pet`).
   - **Permission**: `petsplus.shop` (default: `true`)
 
 - **`/pets list`**
-  - **Description**: Opens a GUI showing all pets you have purchased.
+  - **Description**: Opens a GUI showing all pets you have purchased. From here you can see your pet's unique ID.
   - **Permission**: `petsplus.use` (default: `true`)
 
-- **`/pets summon <pet_type>`**
-  - **Description**: Summons one of your purchased pets.
+- **`/pets summon <pet_id>`**
+  - **Description**: Summons one of your purchased pets using its unique ID.
   - **Permission**: `petsplus.use` (default: `true`)
 
 - **`/pets dismiss`**
   - **Description**: Dismisses your currently active pet.
   - **Permission**: `petsplus.use` (default: `true`)
 
-- **`/pets rename <new_name>`**
-  - **Description**: Renames your active pet. Supports color codes.
+- **`/pets rename <pet_id> <new_name>`**
+  - **Description**: Renames one of your pets using its unique ID. Supports color codes.
   - **Permission**: `petsplus.use` (default: `true`)
 
 - **`/pets reload`**
@@ -59,6 +60,9 @@ The main command is `/pets` (or `/pet`).
 ## Configuration
 
 The plugin's behavior can be customized through the files located in the `/plugins/KartaPetsPlus/` directory.
+
+### Data Migration
+**Important**: Version 2.1.0 introduces a new data storage system for pets to support renaming individual pets. The first time a player's data is loaded, it will be automatically converted to the new format. This is a one-way process. It's recommended to take a backup of your `playerdata` folder before updating.
 
 ### `config.yml`
 - Contains general settings like the maximum number of pets, default pet on join, and storage type (YAML, SQLite, MySQL).

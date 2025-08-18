@@ -64,14 +64,21 @@ public class IconResolver {
 
     private String replacePlaceholders(String text, PetType petType, String status, String price, CurrencyProvider currency) {
         if (text == null) return "";
-        return ChatColor.translateAlternateColorCodes('&', text
-                .replace("%pet_display_name%", petType.getDisplayName())
+
+        text = text.replace("%pet_display_name%", petType.getDisplayName())
                 .replace("%pet_type%", petType.getInternalName())
                 .replace("%pet_price%", price)
-                .replace("%currency_symbol%", currency.getCurrencySymbol())
-                .replace("%currency_name%", currency.getCurrencyName())
-                .replace("%pet_status%", status)
-        );
+                .replace("%pet_status%", status);
+
+        if (currency != null) {
+            text = text.replace("%currency_symbol%", currency.getCurrencySymbol())
+                    .replace("%currency_name%", currency.getCurrencyName());
+        } else {
+            text = text.replace("%currency_symbol%", "")
+                    .replace("%currency_name%", "");
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     private Material resolveMaterial(PetType petType, ConfigurationSection override, ConfigurationSection defaults) {
