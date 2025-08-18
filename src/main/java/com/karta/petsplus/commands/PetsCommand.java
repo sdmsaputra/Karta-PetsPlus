@@ -4,6 +4,7 @@ import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetManager;
 import com.karta.petsplus.PetType;
 import com.karta.petsplus.PetsPlus;
+import com.karta.petsplus.gui.PetListMenu;
 import com.karta.petsplus.shop.CurrencyProvider;
 import com.karta.petsplus.shop.ShopManager;
 import org.bukkit.command.Command;
@@ -77,7 +78,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(plugin.getMessageManager().getMessage("summon-usage"));
                     return true;
                 }
-                petManager.summonPet(player, args[1]);
+                handleSummonCommand(player, args[1]);
                 break;
             case "dismiss":
                 petManager.dismissPet(player, false);
@@ -91,7 +92,7 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
                 petManager.renamePet(player, newName);
                 break;
             case "list":
-                sendPetList(player);
+                new PetListMenu(plugin, player).open();
                 break;
             case "reload":
                 if (!player.hasPermission("petsplus.admin")) {
@@ -114,24 +115,19 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
         plugin.getMessageManager().getHelpMessage().forEach(player::sendMessage);
     }
 
-    private void sendPetList(Player player) {
+    private void handleSummonCommand(Player player, String petTypeName) {
         PetData petData = petManager.getPlayerData(player);
         if (petData == null) {
-            // Data might still be loading
             player.sendMessage(plugin.getMessageManager().getMessage("player-data-loading"));
             return;
         }
 
-        List<String> ownedPets = petData.getOwnedPets();
-        if (ownedPets.isEmpty()) {
-            player.sendMessage(plugin.getMessageManager().getMessage("no-pets-owned"));
+        if (!petData.getOwnedPets().contains(petTypeName.toLowerCase())) {
+            player.sendMessage(plugin.getMessageManager().getMessage("pet-not-owned", "%pet_type%", petTypeName)); // Need to add this message
             return;
         }
 
-        player.sendMessage(plugin.getMessageManager().getMessage("owned-pets-header"));
-        for (String petType : ownedPets) {
-            player.sendMessage(plugin.getMessageManager().getMessage("owned-pets-entry").replace("{pet_type}", petType));
-        }
+        petManager.summonPet(player, petTypeName);
     }
 
     @Override
@@ -147,8 +143,15 @@ public class PetsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("summon")) {
-            return plugin.getConfigManager().getPetTypes().keySet().stream()
-                    .filter(type -> sender.hasPermission("petsplus.summon." + type) || sender.hasPermission("petsplus.summon.*"))
+            if (!(sender instanceof Player)) {
+                return new ArrayList<>();
+            }
+            Player player = (Player) sender;
+            PetData petData = petManager.getPlayerData(player);
+            if (petData == null) {
+                return new ArrayList<>();
+            }
+            return petData.getOwnedPets().stream()
                     .filter(s -> s.startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
         }

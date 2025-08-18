@@ -1,6 +1,7 @@
 package com.karta.petsplus.shop;
 
 import com.karta.petsplus.MessageManager;
+import com.karta.petsplus.PetData;
 import com.karta.petsplus.PetType;
 import com.karta.petsplus.PetsPlus;
 import com.karta.petsplus.StorageManager;
@@ -64,9 +65,8 @@ public class PurchaseHandler {
 
             // 4. Check for confirmation screen
             boolean confirmEnabled = shopConfig.getConfirmSection().getBoolean("enabled", true);
-            double minPriceToConfirm = shopConfig.getConfirmSection().getDouble("min-price-to-confirm", 5000.0);
 
-            if (confirmEnabled && price >= minPriceToConfirm) {
+            if (confirmEnabled) {
                 // Open confirmation menu
                 new PurchaseConfirmMenu(plugin, shopManager, player, petType, price, currency).open();
             } else {
@@ -78,8 +78,7 @@ public class PurchaseHandler {
             // If we didn't open a confirm menu, the lock is released here.
             // If we did, the confirm menu is now responsible for releasing the lock.
             boolean confirmEnabled = shopConfig.getConfirmSection().getBoolean("enabled", true);
-            double minPriceToConfirm = shopConfig.getConfirmSection().getDouble("min-price-to-confirm", 5000.0);
-            if (!confirmEnabled || price < minPriceToConfirm) {
+            if (!confirmEnabled) {
                 lock.unlock();
             }
         }
@@ -110,7 +109,14 @@ public class PurchaseHandler {
                     @Override
                     public void run() {
                         storageManager.getStorage().unlockPet(player.getUniqueId(), petType.getInternalName()).thenAccept(v -> {
-                            shopManager.addUnlockedPet(player, petType.getInternalName()); // Update cache
+                            shopManager.addUnlockedPet(player, petType.getInternalName()); // Update shop cache
+
+                            // Also update the main PetData cache
+                            PetData petData = plugin.getPetManager().getPlayerData(player);
+                            if (petData != null) {
+                                petData.addOwnedPet(petType.getInternalName());
+                            }
+
                             player.sendMessage(messageManager.getMessage("shop_purchase_success", "%pet_display_name%", petType.getDisplayName(), "%pet_price%", String.valueOf(price), "%currency_symbol%", currency.getCurrencySymbol()));
                             player.playSound(player.getLocation(), shopConfig.getSuccessSound(), 1, 1);
                             shopManager.refreshShopMenuFor(player); // Refresh the menu to show "Unlocked"
