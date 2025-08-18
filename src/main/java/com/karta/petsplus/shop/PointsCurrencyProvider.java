@@ -1,8 +1,8 @@
 package com.karta.petsplus.shop;
 
 import com.karta.petsplus.PetsPlus;
-import com.karta.petsplus.api.points.PlayerPoints;
-import com.karta.petsplus.api.points.PlayerPointsAPI;
+import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -10,54 +10,55 @@ import org.bukkit.plugin.Plugin;
 public class PointsCurrencyProvider implements CurrencyProvider {
 
     private PlayerPointsAPI pointsApi;
+    private final String currencyName;
+    private final String currencySymbol;
+    private boolean enabled = false;
 
-    public PointsCurrencyProvider(PetsPlus plugin) {
-        setupPlayerPoints();
-    }
-
-    private void setupPlayerPoints() {
-        Plugin pointsPlugin = Bukkit.getPluginManager().getPlugin("PlayerPoints");
-        if (pointsPlugin instanceof PlayerPoints) {
-            this.pointsApi = ((PlayerPoints) pointsPlugin).getAPI();
+    public PointsCurrencyProvider(PetsPlus plugin, String currencyName, String currencySymbol) {
+        this.currencyName = currencyName;
+        this.currencySymbol = currencySymbol;
+        if (Bukkit.getPluginManager().isPluginEnabled("PlayerPoints")) {
+            this.pointsApi = PlayerPoints.getInstance().getAPI();
+            this.enabled = this.pointsApi != null;
         } else {
-            this.pointsApi = null;
+            plugin.getLogger().warning("PlayerPoints plugin not found, Points currency will not be available.");
         }
-    }
-
-    public boolean isEnabled() {
-        return this.pointsApi != null;
-    }
-
-    @Override
-    public String getInternalName() {
-        return "POINTS";
     }
 
     @Override
     public String getCurrencyName() {
-        return "Points";
+        return currencyName;
     }
 
     @Override
     public String getCurrencySymbol() {
-        return "pts";
+        return currencySymbol;
     }
 
     @Override
     public boolean has(Player player, double amount) {
-        if (!isEnabled()) return false;
+        if (!enabled) return false;
         return pointsApi.look(player.getUniqueId()) >= amount;
     }
 
     @Override
     public boolean withdraw(Player player, double amount) {
-        if (!isEnabled() || amount < 0) return false;
-        return pointsApi.takePoints(player.getUniqueId(), (int) Math.round(amount));
+        if (!enabled) return false;
+        return pointsApi.take(player.getUniqueId(), (int) Math.round(amount));
     }
 
     @Override
     public double getBalance(Player player) {
-        if (!isEnabled()) return 0;
+        if (!enabled) return 0;
         return pointsApi.look(player.getUniqueId());
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public String getInternalName() {
+        return "POINTS";
     }
 }

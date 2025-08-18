@@ -126,4 +126,20 @@ public class ShopConfig {
     public ConfigurationSection getConfirmSection() {
         return config.getConfigurationSection("confirm");
     }
+
+    public String getPointsCurrencyName() {
+        return config.getString("currency-providers.points.name", "Points");
+    }
+
+    public String getPointsCurrencySymbol() {
+        return config.getString("currency-providers.points.symbol", "P");
+    }
+
+    public String getTokenCurrencyName() {
+        return config.getString("currency-providers.tokens.name", "Tokens");
+    }
+
+    public String getTokenCurrencySymbol() {
+        return config.getString("currency-providers.tokens.symbol", "T");
+    }
 }

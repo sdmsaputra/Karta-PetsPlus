@@ -155,4 +155,8 @@ public class PurchaseHandler {
         // The confirm menu will handle its own lock release.
         lock.unlock();
     }
+
+    public ReentrantLock getPurchaseLock(UUID playerUuid) {
+        return purchaseLocks.get(playerUuid);
+    }
 }

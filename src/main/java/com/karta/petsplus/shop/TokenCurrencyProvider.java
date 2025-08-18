@@ -1,16 +1,26 @@
 package com.karta.petsplus.shop;
 
 import com.karta.petsplus.PetsPlus;
-import com.karta.petsplus.api.tokens.TokenManager;
+import me.realized.tokenmanager.api.TokenManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TokenCurrencyProvider implements CurrencyProvider {
 
-    private boolean isEnabled;
+    private final String currencyName;
+    private final String currencySymbol;
+    private TokenManager tokenManager;
+    private boolean enabled = false;
 
-    public TokenCurrencyProvider(PetsPlus plugin) {
-        this.isEnabled = Bukkit.getPluginManager().getPlugin("TokenManager") != null;
+    public TokenCurrencyProvider(PetsPlus plugin, String currencyName, String currencySymbol) {
+        this.currencyName = currencyName;
+        this.currencySymbol = currencySymbol;
+        if (Bukkit.getPluginManager().isPluginEnabled("TokenManager")) {
+            this.tokenManager = (TokenManager) Bukkit.getPluginManager().getPlugin("TokenManager");
+            this.enabled = this.tokenManager != null;
+        } else {
+            plugin.getLogger().warning("TokenManager plugin not found, Tokens currency will not be available.");
+        }
     }
 
     @Override
@@ -20,31 +30,34 @@ public class TokenCurrencyProvider implements CurrencyProvider {
 
     @Override
     public String getCurrencyName() {
-        return "Tokens";
+        return currencyName;
     }
 
     @Override
     public String getCurrencySymbol() {
-        return "tkn";
+        return currencySymbol;
     }
 
     @Override
     public boolean has(Player player, double amount) {
-        if (!isEnabled) return false;
-        // The placeholder API uses static methods.
-        // Also assuming tokens are stored as long.
-        return TokenManager.hasTokens(player, (long) Math.round(amount));
+        if (!enabled) return false;
+        return tokenManager.getTokens(player).orElse(0) >= amount;
     }
 
     @Override
     public boolean withdraw(Player player, double amount) {
-        if (!isEnabled || amount < 0) return false;
-        return TokenManager.removeTokens(player, (long) Math.round(amount));
+        if (!enabled) return false;
+        tokenManager.removeTokens(player, (long) Math.round(amount));
+        return true; // TokenManager doesn't return a boolean, so we assume success
     }
 
     @Override
     public double getBalance(Player player) {
-        if (!isEnabled) return 0;
-        return TokenManager.getTokens(player);
+        if (!enabled) return 0;
+        return tokenManager.getTokens(player).orElse(0);
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

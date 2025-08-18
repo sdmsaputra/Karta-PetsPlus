@@ -67,7 +67,6 @@ public class IconResolver {
                 .replace("%currency_symbol%", currency.getCurrencySymbol())
                 .replace("%currency_name%", currency.getCurrencyName())
                 .replace("%pet_status%", status)
-                .replace("%pet_description%", petType.getDescription() != null ? petType.getDescription() : "")
         );
     }
 
