@@ -86,18 +86,8 @@ public class PurchaseHandler {
     }
 
     public void executePurchase(Player player, PetType petType, double price, CurrencyProvider currency) {
-        ReentrantLock lock = purchaseLocks.get(player.getUniqueId());
-        if (lock == null || !lock.isHeldByCurrentThread()) {
-             // This method should only be called after acquiring the lock.
-             // If we are opening a confirm menu, the lock is held until a choice is made.
-             // If not, we re-acquire it here to be safe.
-             if(lock == null) {
-                 lock = purchaseLocks.computeIfAbsent(player.getUniqueId(), k -> new ReentrantLock());
-             }
-             if(!lock.tryLock()) {
-                 return; // Should not happen if logic is correct
-             }
-        }
+        // This method should only be called after acquiring the lock.
+        // The calling method is responsible for managing the lock's lifecycle.
 
         Runnable purchaseTask = () -> {
             // Perform economy operations
@@ -147,13 +137,7 @@ public class PurchaseHandler {
             purchaseTask.run();
         }
 
-        // The lock should be released after the purchase flow is complete.
-        // Since the process is now async, we can't just unlock in a finally block here.
-        // The lock should be released by the final task on the main thread.
-        // For simplicity in this stage, we will unlock it here, but a better implementation
-        // would pass the lock to the final stage.
-        // The confirm menu will handle its own lock release.
-        lock.unlock();
+        // The calling method is now responsible for releasing the lock.
     }
 
     public ReentrantLock getPurchaseLock(UUID playerUuid) {
